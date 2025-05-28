@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title>메모 목록</title>
+    <th:block layout:fragment="page-css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            .table th { background-color: #f8f9fa; }
+            .table-hover tbody tr:hover { background-color: #f5f5f5; }
+            .btn-primary { margin-right: 5px; }
+        </style>
+    </th:block>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid">
+            <h2 class="mb-4">메모 목록</h2>
+            
+            <div class="row mb-3">
+                <div class="col">
+                    <a th:href="@{/memo/memoForm}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> 새 메모
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>제목</th>
+                                            <th>작성자</th>
+                                            <th>작성일</th>
+                                            <th>조회수</th>
+                                            <th>고정</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="memo : ${memoList}">
+                                            <td>
+                                                <a th:href="@{/memo/memoDetail/{id}(id=${memo.memoId})}" 
+                                                   th:text="${memo.memoName}"></a>
+                                            </td>
+                                            <td th:text="${memo.createBy}"></td>
+                                            <td th:text="${#temporals.format(memo.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+                                            <td th:text="${memo.viewCount}"></td>
+                                            <td>
+                                                <i th:if="${memo.isPinned == 'Y'}" class="fas fa-thumbtack text-primary"></i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

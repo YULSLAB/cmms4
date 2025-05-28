@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title th:text="${workOrder.orderId == null ? 'New Work Order' : 'Edit Work Order'}">Work Order Form</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <!-- User info (from session) - Handled by layout/defaultLayout.html -->
+
+        <h1 th:text="${workOrder.orderId == null ? 'Create New Work Order' : 'Edit Work Order: ' + workOrder.orderId}">Work Order Form</h1>
+        
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <form th:action="@{/workorders/save}" th:object="${workOrder}" method="post" class="needs-validation" novalidate>
+            <!-- Hidden fields for IDs and audit info if not part of form -->
+            <input type="hidden" th:field="*{companyId}" />
+            <input type="hidden" th:field="*{createBy}" />
+            <input type="hidden" th:field="*{createDate}" />
+            <input type="hidden" th:field="*{updateBy}" />
+            <input type="hidden" th:field="*{updateDate}" />
+
+            <div class="card mb-3">
+                <div class="card-header">Basic Information</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="orderId" class="form-label">Order ID:</label>
+                            <input type="text" class="form-control" id="orderId" th:field="*{orderId}" th:readonly="${workOrder.orderId != null && !workOrder.orderId.isEmpty()}" required />
+                            <div class="invalid-feedback">Order ID is required.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="orderName" class="form-label">Order Name:</label>
+                            <input type="text" class="form-control" id="orderName" th:field="*{orderName}" required />
+                            <div class="invalid-feedback">Order Name is required.</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="plantId" class="form-label">Plant ID:</label>
+                            <input type="text" class="form-control" id="plantId" th:field="*{plantId}" />
+                            <!-- TODO: Consider a dropdown/search for existing Plant Masters -->
+                        </div>
+                         <div class="col-md-6 mb-3">
+                            <label for="siteId" class="form-label">Site ID:</label>
+                            <input type="text" class="form-control" id="siteId" th:field="*{siteId}" required />
+                             <div class="invalid-feedback">Site ID is required.</div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="memoId" class="form-label">Memo ID (Ref):</label>
+                            <input type="text" class="form-control" id="memoId" th:field="*{memoId}" />
+                            <div class="form-text text-muted">Note: WorkOrder.memoId (CHAR(10)) vs Memo.memoId (INT). Ensure consistency or handle conversion.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="jobType" class="form-label">Job Type:</label>
+                            <input type="text" class="form-control" id="jobType" th:field="*{jobType}" />
+                            <!-- TODO: Consider a dropdown for common job types (from CommonCode) -->
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="performDept" class="form-label">Performing Dept:</label>
+                        <input type="text" class="form-control" id="performDept" th:field="*{performDept}" />
+                         <!-- TODO: Consider a dropdown for departments -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">Schedule Information</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="scheduleDate" class="form-label">Schedule Date:</label>
+                            <input type="date" class="form-control" id="scheduleDate" th:field="*{scheduleDate}" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="scheduleMM" class="form-label">Est. Man-Months (MM):</label>
+                            <input type="number" step="0.01" class="form-control" id="scheduleMM" th:field="*{scheduleMM}" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="scheduleCost" class="form-label">Est. Cost:</label>
+                            <input type="number" step="0.01" class="form-control" id="scheduleCost" th:field="*{scheduleCost}" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="scheduleHSE" class="form-label">Schedule HSE Plan:</label>
+                        <input type="text" class="form-control" id="scheduleHSE" th:field="*{scheduleHSE}" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="card-header">Execution Information</div>
+                <div class="card-body">
+                     <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="executeDate" class="form-label">Execution Date:</label>
+                            <input type="date" class="form-control" id="executeDate" th:field="*{executeDate}" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="executeMM" class="form-label">Actual Man-Months (MM):</label>
+                            <input type="number" step="0.01" class="form-control" id="executeMM" th:field="*{executeMM}" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="executeCost" class="form-label">Actual Cost:</label>
+                            <input type="number" step="0.01" class="form-control" id="executeCost" th:field="*{executeCost}" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="executeHSE" class="form-label">Execution HSE Record:</label>
+                        <input type="text" class="form-control" id="executeHSE" th:field="*{executeHSE}" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">Notes & Files</div>
+                 <div class="card-body">
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes:</label>
+                        <textarea class="form-control" id="notes" th:field="*{notes}" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fileGroupId" class="form-label">File Group ID:</label>
+                        <input type="text" class="form-control" id="fileGroupId" th:field="*{fileGroupId}" />
+                        <!-- TODO: File upload handling to be implemented separately -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Save Work Order</button>
+                <a th:href="@{/workorders/list(companyId=${workOrder.companyId}, siteId=${workOrder.siteId})}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

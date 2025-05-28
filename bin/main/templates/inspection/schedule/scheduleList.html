@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title th:text="'Schedules for Inspection: ' + (${inspection} ? (${inspection.inspectionName} ?: ${inspection.inspectionId}) : '')">Inspection Schedules</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <!-- User info (from session) - Handled by layout/defaultLayout.html -->
+
+        <div th:if="${inspection}">
+            <h1>Schedules for Inspection: <span th:text="${inspection.inspectionName ?: inspection.inspectionId}"></span></h1>
+            <p>
+                <strong>Inspection ID:</strong> <span th:text="${inspection.inspectionId}"></span> | 
+                <strong>Company ID:</strong> <span th:text="${inspection.companyId}"></span> |
+                <strong>Site ID:</strong> <span th:text="${inspection.siteId}"></span>
+            </p>
+        </div>
+         <div th:unless="${inspection}">
+            <h1>Inspection Schedules</h1>
+            <p class="alert alert-warning">Parent inspection details not available.</p>
+        </div>
+        
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="mb-3">
+            <a th:if="${inspection}" th:href="@{/inspections/{inspectionId}/schedules/new(inspectionId=${inspection.inspectionId}, companyId=${inspection.companyId})}" class="btn btn-primary">Add New Schedule</a>
+            <a th:if="${inspection}" th:href="@{/inspections/list(companyId=${inspection.companyId}, siteId=${inspection.siteId})}" class="btn btn-secondary">Back to Inspection List</a>
+            <a th:unless="${inspection}" th:href="@{/inspections/list(companyId=${companyId ?: ''}, siteId=${siteId ?: ''})}" class="btn btn-secondary">Back to Inspection List</a>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Schedule List
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Schedule ID</th>
+                            <th>Frequency</th>
+                            <th>Scheduled Date</th>
+                            <th>Executed Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sch : ${schedules}">
+                            <td th:text="${sch.scheduleId}"></td>
+                            <td th:text="${sch.frequency}"></td>
+                            <td th:text="${sch.scheduleDate != null ? #temporals.format(sch.scheduleDate, 'yyyy-MM-dd HH:mm') : ''}"></td>
+                            <td th:text="${sch.executeDate != null ? #temporals.format(sch.executeDate, 'yyyy-MM-dd HH:mm') : ''}"></td>
+                            <td>
+                                <a th:href="@{/inspections/{inspId}/schedules/{schId}/items(inspId=${sch.inspectionId}, schId=${sch.scheduleId}, companyId=${sch.companyId})}" class="btn btn-sm btn-info">Items</a>
+                                <a th:href="@{/inspections/{inspId}/schedules/{schId}/edit(inspId=${sch.inspectionId}, schId=${sch.scheduleId}, companyId=${sch.companyId})}" class="btn btn-sm btn-warning">Edit</a>
+                                <form th:action="@{/inspections/{inspId}/schedules/{schId}/delete(inspId=${sch.inspectionId}, schId=${sch.scheduleId}, companyId=${sch.companyId})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this schedule?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(schedules)}">
+                            <td colspan="5" class="text-center">No schedules found for this inspection.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

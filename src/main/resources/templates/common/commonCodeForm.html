@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title th:text="${commonCode.codeId == null ? 'New Common Code' : 'Edit Common Code'}">Common Code Form</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <!-- User Info (from session) - Handled by layout/defaultLayout.html -->
+
+        <h1 th:text="${commonCode.codeId == null ? 'Create New Common Code' : 'Edit Common Code: ' + commonCode.codeId}">Common Code Form</h1>
+        
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card">
+            <div class="card-header" th:text="${commonCode.codeId == null ? 'New Common Code Details' : 'Edit Common Code Details'}">
+                Common Code Details
+            </div>
+            <div class="card-body">
+                <form th:action="@{/common/codes/save}" th:object="${commonCode}" method="post" class="needs-validation" novalidate>
+                    
+                    <div class="mb-3">
+                        <label for="companyId" class="form-label">Company ID:</label>
+                        <input type="text" class="form-control" id="companyId" th:field="*{companyId}" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="codeId" class="form-label">Code ID:</label>
+                        <input type="text" class="form-control" id="codeId" th:field="*{codeId}" th:readonly="${commonCode.codeId != null && !commonCode.codeId.isEmpty()}" required />
+                        <div class="invalid-feedback">Code ID is required.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="codeName" class="form-label">Code Name:</label>
+                        <input type="text" class="form-control" id="codeName" th:field="*{codeName}" required />
+                        <div class="invalid-feedback">Code Name is required.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="codeType" class="form-label">Code Type:</label>
+                        <input type="text" class="form-control" id="codeType" th:field="*{codeType}" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Common Code</button>
+                    <a th:href="@{/common/codes(companyId=${commonCode.companyId})}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

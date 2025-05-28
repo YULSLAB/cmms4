@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title th:text="${inspection.inspectionId == null ? 'New Inspection' : 'Edit Inspection'}">Inspection Form</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <!-- User Info (from session) - Handled by layout/defaultLayout.html -->
+
+        <h1 th:text="${inspection.inspectionId == null ? 'Create New Inspection' : 'Edit Inspection: ' + inspection.inspectionId}">Inspection Form</h1>
+        
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <form th:action="@{/inspections/save}" th:object="${inspection}" method="post" class="needs-validation" novalidate>
+            <!-- Hidden fields for IDs and audit info if not part of form -->
+            <input type="hidden" th:field="*{companyId}" />
+            <input type="hidden" th:field="*{createBy}" />
+            <input type="hidden" th:field="*{createDate}" />
+            <input type="hidden" th:field="*{updateBy}" />
+            <input type="hidden" th:field="*{updateDate}" />
+
+            <div class="card mb-3">
+                <div class="card-header">Inspection Details</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="inspectionId" class="form-label">Inspection ID:</label>
+                            <input type="text" class="form-control" id="inspectionId" th:field="*{inspectionId}" th:readonly="${inspection.inspectionId != null && !inspection.inspectionId.isEmpty()}" required />
+                            <div class="invalid-feedback">Inspection ID is required.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="inspectionName" class="form-label">Inspection Name:</label>
+                            <input type="text" class="form-control" id="inspectionName" th:field="*{inspectionName}" required />
+                            <div class="invalid-feedback">Inspection Name is required.</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="plantId" class="form-label">Plant ID:</label>
+                            <input type="text" class="form-control" id="plantId" th:field="*{plantId}" />
+                            <!-- TODO: Consider a dropdown/search for existing Plant Masters -->
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="siteId" class="form-label">Site ID:</label>
+                            <input type="text" class="form-control" id="siteId" th:field="*{siteId}" required />
+                             <div class="invalid-feedback">Site ID is required.</div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="jobType" class="form-label">Job Type:</label>
+                            <input type="text" class="form-control" id="jobType" th:field="*{jobType}" />
+                            <!-- TODO: Consider a dropdown for common job types (from CommonCode) -->
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="performDept" class="form-label">Performing Dept:</label>
+                            <input type="text" class="form-control" id="performDept" th:field="*{performDept}" />
+                             <!-- TODO: Consider a dropdown for departments -->
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fileGroupId" class="form-label">File Group ID:</label>
+                        <input type="text" class="form-control" id="fileGroupId" th:field="*{fileGroupId}" />
+                        <!-- TODO: File upload handling to be implemented separately -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Note:</label>
+                        <textarea class="form-control" id="note" th:field="*{note}" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Save Inspection</button>
+                <a th:href="@{/inspections/list(companyId=${inspection.companyId}, siteId=${inspection.siteId})}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

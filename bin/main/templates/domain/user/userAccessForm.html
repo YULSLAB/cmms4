@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title>Grant Site Access to <span th:text="${user != null ? user.userFullName : 'User'}">User</span></title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <div th:if="${user}">
+            <h1>Grant Site Access to User: <span th:text="${user.userFullName ?: user.username}"></span></h1>
+        </div>
+        <div th:unless="${user}">
+             <h1>Grant Site Access</h1>
+             <p class="alert alert-warning">User details not available.</p>
+        </div>
+        
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                New Site Access Details
+            </div>
+            <div class="card-body">
+                <form th:if="${user}" th:action="@{/admin/users/{username}/access/save(username=${user.username})}" th:object="${siteAccess}" method="post" class="needs-validation" novalidate>
+                    <input type="hidden" th:field="*{companyId}" />
+                    <input type="hidden" th:field="*{username}" />
+
+                    <div class="mb-3">
+                        <label for="usernameDisplay" class="form-label">Username:</label>
+                        <input type="text" class="form-control" id="usernameDisplay" th:value="${user.username}" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="siteAccessId" class="form-label">Site Access ID/Type:</label>
+                        <input type="text" class="form-control" id="siteAccessId" th:field="*{siteAccessId}" placeholder="e.g., P (Primary), S (Secondary)" required maxlength="1" />
+                        <div class="invalid-feedback">Site Access ID/Type is required.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="siteId" class="form-label">Site:</label>
+                        <select class="form-select" id="siteId" th:field="*{siteId}" required>
+                            <option value="">Select a Site</option>
+                            <option th:each="siteOpt : ${availableSites}" th:value="${siteOpt.siteId}" th:text="${siteOpt.siteName} + ' (' + ${siteOpt.siteId} + ')'"></option>
+                        </select>
+                        <div class="invalid-feedback">Please select a site.</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Grant Access</button>
+                    <a th:href="@{/admin/users/{username}/access(username=${user.username}, companyId=${siteAccess.companyId})}" class="btn btn-secondary">Cancel</a>
+                </form>
+                 <div th:unless="${user}">
+                    <p>Cannot display form because user context is missing.</p>
+                    <a th:href="@{/}" class="btn btn-secondary">Go to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

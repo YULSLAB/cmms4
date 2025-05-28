@@ -1,0 +1,96 @@
+package com.cmms4.inspection.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+/**
+ * cmms4 - Inspection
+ * 점검 계획 관리 엔티티
+ * 
+ * @author cmms4
+ * @since 2024-03-19
+ */
+@Entity
+@Table(name = "inspection")
+@IdClass(InspectionIdClass.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Inspection {
+
+    @Id
+    @Column(name = "companyId", length = 5, nullable = false)
+    private String companyId;
+
+    @Id
+    @Column(name = "inspectionId", length = 10, nullable = false)
+    private String inspectionId;
+
+    @Column(name = "inspectionName", length = 100)
+    private String inspectionName;
+
+    @Column(name = "plantId", length = 10)
+    private String plantId;
+
+    @Column(name = "jobType", length = 5)
+    private String jobType;
+
+    @Column(name = "performDept", length = 5)
+    private String performDept;
+
+    @Column(name = "note", length = 200)
+    private String note;
+
+    @Column(name = "siteId", length = 5)
+    private String siteId;
+
+    @Column(name = "fileGroupId", length = 10)
+    private String fileGroupId;
+
+    @Column(name = "createBy", length = 5)
+    private String createBy;
+
+    @Column(name = "createDate")
+    private LocalDateTime createDate;
+
+    @Column(name = "updateBy", length = 5)
+    private String updateBy;
+
+    @Column(name = "updateDate")
+    private LocalDateTime updateDate;
+
+    @OneToMany(mappedBy = "inspection", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<InspectionSchedule> schedules;
+
+    public Inspection(String companyId, String inspectionId) {
+        this.companyId = companyId;
+        this.inspectionId = inspectionId;
+    }
+
+    public Inspection(String companyId, String inspectionId, String inspectionName) {
+        this.companyId = companyId;
+        this.inspectionId = inspectionId;
+        this.inspectionName = inspectionName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Inspection that = (Inspection) o;
+        return Objects.equals(companyId, that.companyId) &&
+               Objects.equals(inspectionId, that.inspectionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(companyId, inspectionId);
+    }
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title th:text="${item.itemId == null ? 'New Work Order Item' : 'Edit Work Order Item'}">Work Order Item Form</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <!-- User info (from session) - Handled by layout/defaultLayout.html -->
+
+        <h1 th:text="${item.itemId == null ? 'Add New Item' : 'Edit Item: ' + item.itemId}">Item Form</h1>
+        
+        <div th:if="${workOrder}" class="mb-3 alert alert-secondary">
+            <h5>Parent Work Order</h5>
+            <p><strong>Order ID:</strong> <span th:text="${workOrder.orderId}"></span></p>
+            <p><strong>Name:</strong> <span th:text="${workOrder.orderName}"></span></p>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <form th:action="@{/workorders/{orderId}/items/save(orderId=${item.orderId})}" th:object="${item}" method="post" class="needs-validation" novalidate>
+            <input type="hidden" th:field="*{companyId}" />
+            <input type="hidden" th:field="*{orderId}" />
+
+            <div class="card mb-3">
+                <div class="card-header">Item Details</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="itemId" class="form-label">Item ID:</label>
+                            <input type="text" class="form-control" id="itemId" th:field="*{itemId}" th:readonly="${item.itemId != null && !item.itemId.isEmpty()}" required maxlength="2" />
+                            <div class="invalid-feedback">Item ID is required (max 2 chars).</div>
+                             <!-- TODO: Consider if client-side validation for ID format (e.g., "01") is needed, or if service handles all generation -->
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="itemName" class="form-label">Item Name:</label>
+                            <input type="text" class="form-control" id="itemName" th:field="*{itemName}" required />
+                            <div class="invalid-feedback">Item Name is required.</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemMethod" class="form-label">Method:</label>
+                        <input type="text" class="form-control" id="itemMethod" th:field="*{itemMethod}" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemResult" class="form-label">Result:</label>
+                        <input type="text" class="form-control" id="itemResult" th:field="*{itemResult}" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes:</label>
+                        <textarea class="form-control" id="notes" th:field="*{notes}" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Save Item</button>
+                <a th:href="@{/workorders/{orderId}/items(orderId=${item.orderId}, companyId=${item.companyId})}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

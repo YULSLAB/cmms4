@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title>Common Codes</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <!-- User Info (from session) - Handled by layout/defaultLayout.html -->
+
+        <h1>Common Codes</h1>
+        <p>Company ID: <span th:text="${companyId}"></span></p>
+        
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="mb-3">
+            <a th:href="@{/common/codes/new(companyId=${companyId})}" class="btn btn-primary">Add New Common Code</a>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Common Code List
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Code ID</th>
+                            <th>Code Name</th>
+                            <th>Code Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cc : ${commonCodes}">
+                            <td th:text="${cc.codeId}"></td>
+                            <td th:text="${cc.codeName}"></td>
+                            <td th:text="${cc.codeType}"></td>
+                            <td>
+                                <a th:href="@{/common/codes/{codeId}/items(codeId=${cc.codeId}, companyId=${cc.companyId})}" class="btn btn-sm btn-info">Items</a>
+                                <a th:href="@{/common/codes/edit/{codeId}(codeId=${cc.codeId}, companyId=${cc.companyId})}" class="btn btn-sm btn-warning">Edit</a>
+                                <form th:action="@{/common/codes/delete/{codeId}(codeId=${cc.codeId}, companyId=${cc.companyId})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this common code and all its items?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(commonCodes)}">
+                            <td colspan="4" class="text-center">No common codes found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
