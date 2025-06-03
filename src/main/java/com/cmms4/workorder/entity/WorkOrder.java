@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.NoArgsConstructor;
 
 /**
  * cmms4 - WorkOrder
@@ -32,7 +31,7 @@ public class WorkOrder {
 
     @Id
     @Column(name = "orderId", length = 10, nullable = false)
-    private String orderId;
+    private Integer orderId;
 
     @Column(name = "orderName", length = 100)
     private String orderName;

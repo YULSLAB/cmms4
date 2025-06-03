@@ -26,7 +26,7 @@ public class InventoryMaster {
 
     @Id
     @Column(name = "inventoryId", length = 10, nullable = false)
-    private String inventoryId;
+    private Integer inventoryId;
 
     @Column(name = "inventoryName", length = 100)
     private String inventoryName;
@@ -86,12 +86,12 @@ public class InventoryMaster {
     public InventoryMaster() {
     }
 
-    public InventoryMaster(String companyId, String inventoryId) {
+    public InventoryMaster(String companyId, Integer inventoryId) {
         this.companyId = companyId;
         this.inventoryId = inventoryId;
     }
 
-    public InventoryMaster(String companyId, String inventoryId, String inventoryName) {
+    public InventoryMaster(String companyId, Integer inventoryId, String inventoryName) {
         this.companyId = companyId;
         this.inventoryId = inventoryId;
         this.inventoryName = inventoryName;

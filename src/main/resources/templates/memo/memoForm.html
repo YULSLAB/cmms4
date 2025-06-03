@@ -31,7 +31,7 @@
                             <h5 class="mb-0" th:text="${memo != null ? '메모 수정' : '메모 등록'}"></h5>
                         </div>
                         <div class="card-body">
-                            <form th:action="@{/memo/save}" method="post" th:object="${memo}">
+                            <form th:action="@{/memo/memoSave}" method="post" th:object="${memo}">
                                 <input type="hidden" name="memoId" th:value="${memo?.memoId}">
                                 <input type="hidden" name="companyId" th:value="${memo?.companyId}">
                                 <input type="hidden" name="siteId" th:value="${memo?.siteId}">

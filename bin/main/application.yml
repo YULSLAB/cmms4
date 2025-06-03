@@ -19,9 +19,9 @@ spring:
   messages:
     basename: classpath:messages/messages
     encoding: UTF-8
-    fallback-to-system-locale: false
+    fallback-to-system-locale: true
     cache-duration: 3600
-    use-code-as-default-message: false
+    use-code-as-default-message: true
     default-locale: ko
   
   web:
@@ -41,3 +41,5 @@ logging:
   level:
     org.springframework.security: DEBUG
     com.cmms4: DEBUG 
+    org.springframework.context.support: DEBUG
+    org.springframework.context.i18n: DEBUG

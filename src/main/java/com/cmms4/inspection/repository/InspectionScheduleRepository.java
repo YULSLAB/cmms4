@@ -23,7 +23,7 @@ public interface InspectionScheduleRepository extends JpaRepository<InspectionSc
      * @param inspectionId 점검 ID
      * @return 점검 일정 엔티티 목록
      */
-    List<InspectionSchedule> findByCompanyIdAndInspectionIdOrderByScheduleDateAsc(String companyId, String inspectionId);
+    List<InspectionSchedule> findByCompanyIdAndInspectionIdOrderByScheduleDateAsc(String companyId, Integer inspectionId);
 
     /**
      * 회사 ID, 점검 ID, 일정 ID로 특정 점검 일정을 조회합니다.
@@ -33,5 +33,5 @@ public interface InspectionScheduleRepository extends JpaRepository<InspectionSc
      * @param scheduleId 일정 ID
      * @return 점검 일정 엔티티 (Optional)
      */
-    Optional<InspectionSchedule> findByCompanyIdAndInspectionIdAndScheduleId(String companyId, String inspectionId, String scheduleId);
+    Optional<InspectionSchedule> findByCompanyIdAndInspectionIdAndScheduleId(String companyId, Integer inspectionId, Integer scheduleId);
 }

@@ -36,7 +36,7 @@
                                 <a th:href="@{/memo/memoForm/{id}(id=${memo.memoId})}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i> 수정
                                 </a>
-                                <form th:action="@{/memo/delete/{id}(id=${memo.memoId})}" method="post" style="display:inline;">
+                                <form th:action="@{/memo/memoDelete/{id}(id=${memo.memoId})}" method="post" style="display:inline;">
                                     <button type="submit" class="btn btn-danger btn-sm" 
                                             onclick="return confirm('정말 삭제하시겠습니까?');">
                                         <i class="fas fa-trash"></i> 삭제

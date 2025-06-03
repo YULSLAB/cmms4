@@ -23,8 +23,6 @@ import java.util.Optional;
 public class InventoryMasterService {
 
     private final InventoryMasterRepository inventoryMasterRepository;
-    private static final String NON_DELETED_MARKER = "N";
-    private static final String DELETED_MARKER = "Y";
 
     public InventoryMasterService(InventoryMasterRepository inventoryMasterRepository) {
         this.inventoryMasterRepository = inventoryMasterRepository;
@@ -36,30 +34,30 @@ public class InventoryMasterService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<InventoryMaster> getInventoryMasterById(String companyId, String inventoryId) {
+    public Optional<InventoryMaster> getInventoryMasterByInventoryId(String companyId, String inventoryId) {
         return inventoryMasterRepository.findByCompanyIdAndInventoryIdAndDeleteMarkIsNull(companyId, inventoryId);
     }
 
     @Transactional
-    public InventoryMaster saveInventoryMaster(InventoryMaster inventoryMaster) {
-        if (inventoryMaster.getCreateDate() == null) {
-            inventoryMaster.setCreateDate(LocalDateTime.now());
-            inventoryMaster.setDeleteMark(NON_DELETED_MARKER);
-        }
-        inventoryMaster.setUpdateDate(LocalDateTime.now());
+    public InventoryMaster saveInventoryMaster(InventoryMaster inventoryMaster, String username) {
+        LocalDateTime now = LocalDateTime.now();
+        Integer maxInventoryId = inventoryMasterRepository.findMaxInventoryIdByCompanyId(inventoryMaster.getCompanyId());
+        int newInventoryId = (maxInventoryId == null) ? 2000000000 : maxInventoryId + 1;
+        inventoryMaster.setInventoryId(newInventoryId); 
+        inventoryMaster.setCreateDate(now);
+        inventoryMaster.setCreateBy(username);
+        
         return inventoryMasterRepository.save(inventoryMaster);
+
     }
 
     @Transactional
-    public void softDeleteInventoryMaster(String companyId, String inventoryId) {
+    public void deleteInventoryMaster(String companyId, String inventoryId) {
         InventoryMasterIdClass id = new InventoryMasterIdClass(companyId, inventoryId);
-        InventoryMaster inventoryMaster = inventoryMasterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("InventoryMaster not found with id: " + id));
-
-        if (!DELETED_MARKER.equals(inventoryMaster.getDeleteMark())) {
-            inventoryMaster.setDeleteMark(DELETED_MARKER);
-            inventoryMaster.setUpdateDate(LocalDateTime.now());
-            inventoryMasterRepository.save(inventoryMaster);
+        if (!inventoryMasterRepository.existsById(id)) {
+            throw new RuntimeException("InventoryMaster not found with id: " + id);
         }
+        inventoryMasterRepository.deleteById(id);
     }
+
 } 

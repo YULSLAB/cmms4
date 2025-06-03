@@ -7,10 +7,11 @@ import com.cmms4.memo.repository.MemoCommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 /**
  * cmms4 - MemoService
@@ -29,14 +30,39 @@ public class MemoService {
     private MemoCommentRepository memoCommentRepository;
 
     /**
-     * 메모 목록을 조회합니다.
+     * 페이징 처리된 메모 목록을 조회합니다.
      * 
      * @param companyId 회사 ID
-     * @param siteId 사이트 ID
-     * @return 메모 목록
+     * @param siteId 사이트 ID (기본)
+     * @param pageable 페이징 정보
+     * @return 페이징된 메모 목록
      */
-    public List<Memo> getMemoList(String companyId, String siteId) {
-        return memoRepository.findByCompanyIdAndSiteIdAndDeleteMarkIsNull(companyId, siteId);
+    public Page<Memo> getMemoListPage(String companyId, String siteId, Pageable pageable) {
+        return memoRepository.findByCompanyIdAndSiteIdAndDeleteMarkIsNull(companyId, siteId, pageable);
+    }
+
+    /**
+     * 페이징 처리된 메모 목록을 조회합니다.
+     * 
+     * @param companyId 회사 ID
+     * @param memoName 메모 이름 (부분 일치)
+     * @param pageable 페이징 정보
+     * @return 페이징된 메모 목록
+     */
+    public Page<Memo> getMemoListPagebymemoName(String companyId, String memoName, Pageable pageable) {
+        return memoRepository.findByCompanyIdAndMemoNameContainingAndDeleteMarkIsNull(companyId, memoName, pageable);
+    }
+
+        /**
+     * 페이징 처리된 메모 목록을 조회합니다.
+     * 
+     * @param companyId 회사 ID
+     * @param createBy 메모 생성자 (부분 일치)
+     * @param pageable 페이징 정보
+     * @return 페이징된 메모 목록
+     */
+    public Page<Memo> getMemoListPagebyCreateBy(String companyId, String createBy, Pageable pageable) {
+        return memoRepository.findByCompanyIdAndCreateByAndDeleteMarkIsNull(companyId, createBy, pageable);
     }
 
     /**
@@ -58,15 +84,22 @@ public class MemoService {
      * @return 저장된 메모
      */
     @Transactional
-    public Memo saveMemo(Memo memo, String username) {
+    public synchronized Memo saveMemo(Memo memo, String username) {
         LocalDateTime now = LocalDateTime.now();
-        
+
         if (memo.getMemoId() == null) {
+
             // 신규 등록
+            // 회사별 최대 메모ID 조회 후 +1 값을 새 메모ID로 설정
+            Integer maxMemoId = memoRepository.findMaxMemoIdByCompanyId(memo.getCompanyId());
+            int newMemoId = (maxMemoId == null) ? 1 : maxMemoId + 1;
+
+            memo.setMemoId(newMemoId);
             memo.setCreateBy(username);
             memo.setCreateDate(now);
             memo.setDeleteMark( null);
             memo.setViewCount(0);
+
         } else {
             // 수정
             memo.setUpdateBy(username);

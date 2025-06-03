@@ -3,9 +3,10 @@ package com.cmms4.workorder.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import com.cmms4.workorder.entity.WorkOrder;
 import com.cmms4.workorder.entity.WorkOrderIdClass;
@@ -18,6 +19,15 @@ import com.cmms4.workorder.entity.WorkOrderIdClass;
 public interface WorkOrderRepository extends JpaRepository<WorkOrder, WorkOrderIdClass> {
 
     /**
+     * 회사 ID별 최대 작업지시 ID를 조회합니다.
+     *
+     * @param companyId 회사 ID
+     * @return Optional<Integer> 최대 작업지시 ID
+     */
+    @Query("SELECT MAX(CAST(w.orderId AS integer)) FROM WorkOrder w WHERE w.companyId = :companyId")
+    Integer findMaxOrderIdByCompanyId(@Param("companyId") String companyId);
+
+    /**
      * Finds a page of WorkOrder entries for a given companyId and siteId.
      *
      * @param companyId The ID of the company.
@@ -28,31 +38,22 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, WorkOrderI
     Page<WorkOrder> findByCompanyIdAndSiteId(String companyId, String siteId, Pageable pageable);
 
     /**
+     * CompanyId와 plantid로 WorkOrder 엔티티를 페이징하여 조회합니다.
+     * @param companyId
+     * @param plantId
+     * @param pageable
+     * @return
+     */
+    Page<WorkOrder> findByCompanyIdAndPlantId(String companyId, Integer plantId, Pageable pageable);
+
+    /**
      * Finds a specific WorkOrder by its companyId and orderId.
      *
      * @param companyId The ID of the company.
      * @param orderId The ID of the work order.
      * @return An Optional containing the WorkOrder if found, or empty otherwise.
      */
-    Optional<WorkOrder> findByCompanyIdAndOrderId(String companyId, String orderId);
+    Optional<WorkOrder> findByCompanyIdAndOrderId(String companyId, Integer orderId);
 
-    /**
-     * Finds all WorkOrder entries related to a specific plantId within a company.
-     *
-     * @param companyId The ID of the company.
-     * @param plantId The ID of the plant.
-     * @return A list of WorkOrder entities.
-     */
-    List<WorkOrder> findByCompanyIdAndPlantId(String companyId, String plantId);
 
-    /**
-     * Finds all WorkOrder entries related to a specific memoId within a company.
-     * Note: The type of memoId in WorkOrder is currently String (CHAR(10)),
-     * while in Memo entity it's Integer. This might require adjustment or careful handling.
-     *
-     * @param companyId The ID of the company.
-     * @param memoId The ID of the memo.
-     * @return A list of WorkOrder entities.
-     */
-    List<WorkOrder> findByCompanyIdAndMemoId(String companyId, String memoId);
 }

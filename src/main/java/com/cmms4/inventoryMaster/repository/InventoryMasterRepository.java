@@ -3,6 +3,8 @@ package com.cmms4.inventoryMaster.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.cmms4.inventoryMaster.entity.InventoryMaster;
@@ -13,6 +15,15 @@ import java.util.Optional;
 
 @Repository
 public interface InventoryMasterRepository extends JpaRepository<InventoryMaster, InventoryMasterIdClass> {
+
+    /**
+     * 회사 ID별 최대 inventory ID를 조회합니다.
+     *
+     * @param companyId 회사 ID
+     * @return Optional<String> 최대 inventory ID
+     */
+    @Query("SELECT MAX(p.inventoryId) FROM InventoryMaster p WHERE p.companyId = :companyId")
+    Integer findMaxInventoryIdByCompanyId(@Param("companyId") String companyId);
 
     /**
      * Finds all non-deleted InventoryMaster entries for a given companyId and siteId.
@@ -35,6 +46,15 @@ public interface InventoryMasterRepository extends JpaRepository<InventoryMaster
      */
     Page<InventoryMaster> findByCompanyIdAndSiteIdAndDeleteMarkIsNull(String companyId, String siteId, Pageable pageable);
 
+    /**
+     * Finds all non-deleted InventoryMaster entries for a given companyId.
+     *
+     * @param companyId The ID of the company.
+     * @param respDept The ID of the responsible department.
+     * @return A list of non-deleted InventoryMaster entities.
+     */
+    Page<InventoryMaster> findByCompanyIdAndRespDeptAndDeleteMarkIsNull(String companyId, String respDept, Pageable pageable);
+    
     /**
      * Finds a specific non-deleted InventoryMaster by its companyId and inventoryId.
      *

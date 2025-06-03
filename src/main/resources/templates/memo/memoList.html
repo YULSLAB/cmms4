@@ -10,6 +10,11 @@
             .table th { background-color: #f8f9fa; }
             .table-hover tbody tr:hover { background-color: #f5f5f5; }
             .btn-primary { margin-right: 5px; }
+            .pagination { margin-top: 20px; }
+            .page-item.active .page-link { 
+                background-color: #007bff; 
+                border-color: #007bff; 
+            }
         </style>
     </th:block>
 </head>
@@ -42,7 +47,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="memo : ${memoList}">
+                                        <tr th:each="memo : ${memoPage.content}">
                                             <td>
                                                 <a th:href="@{/memo/memoDetail/{id}(id=${memo.memoId})}" 
                                                    th:text="${memo.memoName}"></a>
@@ -57,6 +62,31 @@
                                     </tbody>
                                 </table>
                             </div>
+                            
+                            <!-- 페이징 네비게이션 -->
+                            <nav aria-label="Page navigation" th:if="${memoPage.totalPages > 0}">
+                                <ul class="pagination justify-content-center">
+                                    <!-- 이전 페이지 -->
+                                    <li class="page-item" th:classappend="${!memoPage.hasPrevious()} ? 'disabled'">
+                                        <a class="page-link" th:href="@{/memo/memoList(page=${memoPage.number - 1})}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <!-- 페이지 번호 -->
+                                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, memoPage.totalPages - 1)}"
+                                        th:classappend="${pageNumber == memoPage.number} ? 'active'">
+                                        <a class="page-link" th:href="@{/memo/memoList(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                                    </li>
+                                    
+                                    <!-- 다음 페이지 -->
+                                    <li class="page-item" th:classappend="${!memoPage.hasNext()} ? 'disabled'">
+                                        <a class="page-link" th:href="@{/memo/memoList(page=${memoPage.number + 1})}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,6 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 /**
  * cmms4 - Inspection
@@ -22,7 +21,7 @@ import lombok.AllArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class Inspection {
 
     @Id
@@ -31,7 +30,7 @@ public class Inspection {
 
     @Id
     @Column(name = "inspectionId", length = 10, nullable = false)
-    private String inspectionId;
+    private Integer inspectionId;
 
     @Column(name = "inspectionName", length = 100)
     private String inspectionName;
@@ -69,12 +68,12 @@ public class Inspection {
     @OneToMany(mappedBy = "inspection", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<InspectionSchedule> schedules;
 
-    public Inspection(String companyId, String inspectionId) {
+    public Inspection(String companyId, Integer inspectionId) {
         this.companyId = companyId;
         this.inspectionId = inspectionId;
     }
 
-    public Inspection(String companyId, String inspectionId, String inspectionName) {
+    public Inspection(String companyId, Integer inspectionId, String inspectionName) {
         this.companyId = companyId;
         this.inspectionId = inspectionId;
         this.inspectionName = inspectionName;

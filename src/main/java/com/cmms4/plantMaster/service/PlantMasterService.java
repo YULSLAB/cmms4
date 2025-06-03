@@ -35,16 +35,19 @@ public class PlantMasterService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<PlantMaster> getPlantMasterById(String companyId, String plantId) {
+    public Optional<PlantMaster> getPlantMasterByplantId(String companyId, String plantId) {
         return plantMasterRepository.findByCompanyIdAndPlantIdAndDeleteMarkIsNull(companyId, plantId);
     }
 
     @Transactional
-    public PlantMaster savePlantMaster(PlantMaster plantMaster) {
-        if (plantMaster.getCreateDate() == null) {
-            plantMaster.setCreateDate(LocalDateTime.now());
-        }
-        plantMaster.setUpdateDate(LocalDateTime.now());
+    public PlantMaster savePlantMaster(PlantMaster plantMaster, String username) {
+        LocalDateTime now = LocalDateTime.now();
+        Integer maxPlantId = plantMasterRepository.findMaxPlantIdByCompanyId(plantMaster.getCompanyId());
+        int newPlantId = (maxPlantId == null) ? 1000000000 : maxPlantId + 1;
+        plantMaster.setPlantId(newPlantId); 
+        plantMaster.setCreateDate(now);
+        plantMaster.setCreateBy(username);
+        
         return plantMasterRepository.save(plantMaster);
     }
 

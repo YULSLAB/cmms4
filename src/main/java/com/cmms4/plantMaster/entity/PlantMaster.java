@@ -27,7 +27,7 @@ public class PlantMaster {
 
     @Id
     @Column(name = "plantId", length = 10, nullable = false)
-    private String plantId;
+    private Integer plantId;
 
     @Column(name = "plantName", length = 100)
     private String plantName;
@@ -108,12 +108,12 @@ public class PlantMaster {
     public PlantMaster() {
     }
 
-    public PlantMaster(String companyId, String plantId) {
+    public PlantMaster(String companyId, Integer plantId) {
         this.companyId = companyId;
         this.plantId = plantId;
     }
 
-    public PlantMaster(String companyId, String plantId, String plantName) {
+    public PlantMaster(String companyId, Integer plantId, String plantName) {
         this.companyId = companyId;
         this.plantId = plantId;
         this.plantName = plantName;

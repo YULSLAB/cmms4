@@ -3,12 +3,13 @@ package com.cmms4.plantMaster.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.cmms4.plantMaster.entity.PlantMaster;
 import com.cmms4.plantMaster.entity.PlantMasterIdClass;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,17 +19,19 @@ import java.util.Optional;
  * @author cmms4
  * @since 2024-03-19
  */
+
 @Repository
 public interface PlantMasterRepository extends JpaRepository<PlantMaster, PlantMasterIdClass> {
 
-    /**
-     * Finds all PlantMaster entries for a given companyId and siteId.
+        /**
+     * 회사 ID별 최대 plant ID를 조회합니다.
      *
-     * @param companyId The ID of the company.
-     * @param siteId The ID of the site.
-     * @return A list of PlantMaster entities.
+     * @param companyId 회사 ID
+     * @return Optional<String> 최대 plant ID
      */
-    List<PlantMaster> findByCompanyIdAndSiteIdAndDeleteMarkIsNull(String companyId, String siteId);
+    @Query("SELECT MAX(p.plantId) FROM PlantMaster p WHERE p.companyId = :companyId")
+    Integer findMaxPlantIdByCompanyId(@Param("companyId") String companyId);
+
 
     /**
      * Finds a page of PlantMaster entries for a given companyId and siteId.
@@ -39,6 +42,27 @@ public interface PlantMasterRepository extends JpaRepository<PlantMaster, PlantM
      * @return A page of PlantMaster entities.
      */
     Page<PlantMaster> findByCompanyIdAndSiteIdAndDeleteMarkIsNull(String companyId, String siteId, Pageable pageable);
+
+    /**
+     * Finds a page of PlantMaster entries for a given companyId and plantName.
+     *
+     * @param companyId The ID of the company.
+     * @param plantId The ID of the plant (partial match).
+     * @param pageable Pagination information.
+     * @return A page of PlantMaster entities.
+     */
+
+    Page<PlantMaster> findByCompanyIdAndPlantIdContainingAndDeleteMarkIsNull(String companyId, String plantId, Pageable pageable);
+    
+    /**
+     * Finds a page of PlantMaster entries for a given companyId and createBy.
+     *
+     * @param companyId The ID of the company.
+     * @param respDept Responsible department (partial match).
+     * @param pageable Pagination information.
+     * @return A page of PlantMaster entities.
+     */
+    Page<PlantMaster> findByCompanyIdAndRespDeptContainingAndDeleteMarkIsNull(String companyId, String respDept, Pageable pageable);
 
     /**
      * Finds a specific PlantMaster by its companyId and plantId.

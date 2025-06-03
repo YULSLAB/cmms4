@@ -27,11 +27,11 @@ public class WorkOrderItem {
 
     @Id
     @Column(name = "orderId", length = 10, nullable = false)
-    private String orderId;
+    private Integer orderId;
 
     @Id
     @Column(name = "itemId", length = 2, nullable = false)
-    private String itemId;
+    private Integer itemId;
 
     @Column(name = "itemName", length = 100)
     private String itemName;
