@@ -55,7 +55,11 @@ public class CommonCodeController {
 
     @GetMapping("/form")
     public String showCommonCodeForm(Model model) {
+        // 새로운 공통 코드 등록 폼을 위한 모델 초기화
         model.addAttribute("commonCode", new CommonCode());
+        // 공통 코드 항목 리스트 초기화
+        model.addAttribute("codeItem", new CommonCodeItem());
+ 
         return "commonCode/commonCodeForm";
     }
 

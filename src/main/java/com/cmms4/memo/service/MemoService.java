@@ -4,7 +4,6 @@ import com.cmms4.memo.entity.Memo;
 import com.cmms4.memo.entity.MemoComment;
 import com.cmms4.memo.repository.MemoRepository;
 import com.cmms4.memo.repository.MemoCommentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
@@ -22,12 +21,14 @@ import java.util.List;
  */
 @Service
 public class MemoService {
+    
+    private final MemoRepository memoRepository;
+    private final MemoCommentRepository memoCommentRepository;
 
-    @Autowired
-    private MemoRepository memoRepository;
-
-    @Autowired
-    private MemoCommentRepository memoCommentRepository;
+    public MemoService(MemoRepository memoRepository, MemoCommentRepository memoCommentRepository) {
+        this.memoRepository = memoRepository;
+        this.memoCommentRepository = memoCommentRepository;
+    }
 
     /**
      * 페이징 처리된 메모 목록을 조회합니다.
@@ -38,7 +39,7 @@ public class MemoService {
      * @return 페이징된 메모 목록
      */
     public Page<Memo> getMemoListPage(String companyId, String siteId, Pageable pageable) {
-        return memoRepository.findByCompanyIdAndSiteIdAndDeleteMarkIsNull(companyId, siteId, pageable);
+        return memoRepository.findByCompanyIdAndSiteId(companyId, siteId, pageable);
     }
 
     /**
@@ -50,7 +51,7 @@ public class MemoService {
      * @return 페이징된 메모 목록
      */
     public Page<Memo> getMemoListPagebymemoName(String companyId, String memoName, Pageable pageable) {
-        return memoRepository.findByCompanyIdAndMemoNameContainingAndDeleteMarkIsNull(companyId, memoName, pageable);
+        return memoRepository.findByCompanyIdAndMemoNameContaining(companyId, memoName, pageable);
     }
 
         /**
@@ -62,7 +63,7 @@ public class MemoService {
      * @return 페이징된 메모 목록
      */
     public Page<Memo> getMemoListPagebyCreateBy(String companyId, String createBy, Pageable pageable) {
-        return memoRepository.findByCompanyIdAndCreateByAndDeleteMarkIsNull(companyId, createBy, pageable);
+        return memoRepository.findByCompanyIdAndCreateBy(companyId, createBy, pageable);
     }
 
     /**
@@ -73,7 +74,15 @@ public class MemoService {
      * @return 메모
      */
     public Optional<Memo> getMemo(String companyId, Integer memoId) {
-        return memoRepository.findByCompanyIdAndMemoIdAndDeleteMarkIsNull(companyId, memoId);
+        Optional<Memo> memoOpt = memoRepository.findByCompanyIdAndMemoId(companyId, memoId);
+        
+        // 조회된 메모가 있으면 조회수 증가
+        memoOpt.ifPresent(memo -> {
+            memo.setViewCount(memo.getViewCount() + 1);
+            memoRepository.save(memo);
+        });
+        
+        return memoOpt;
     }
 
     /**
@@ -97,7 +106,6 @@ public class MemoService {
             memo.setMemoId(newMemoId);
             memo.setCreateBy(username);
             memo.setCreateDate(now);
-            memo.setDeleteMark( null);
             memo.setViewCount(0);
 
         } else {
@@ -118,13 +126,17 @@ public class MemoService {
      */
     @Transactional
     public void deleteMemo(String companyId, Integer memoId, String username) {
-        Optional<Memo> memoOpt = memoRepository.findByCompanyIdAndMemoIdAndDeleteMarkIsNull(companyId, memoId);
+        Optional<Memo> memoOpt = memoRepository.findByCompanyIdAndMemoId(companyId, memoId);
         if (memoOpt.isPresent()) {
-            Memo memo = memoOpt.get();
-            memo.setDeleteMark( "Y");
-            memo.setUpdateBy(username);
-            memo.setUpdateDate(LocalDateTime.now());
-            memoRepository.save(memo);
+            // 1. First delete all related comments
+            List<MemoComment> comments = memoCommentRepository
+                .findByCompanyIdAndMemoIdOrderBySortOrderAsc(companyId, memoId);
+            memoCommentRepository.deleteAll(comments);
+            
+            // 2. Then delete the memo
+            memoRepository.delete(memoOpt.get());
+        } else {
+            throw new RuntimeException("Memo not found with ID: " + memoId);
         }
     }
 
@@ -147,6 +159,26 @@ public class MemoService {
      */
     @Transactional
     public MemoComment saveMemoComment(MemoComment comment) {
+        Integer maxCommentId = memoCommentRepository.findMaxCommentIdByCompanyIdAndMemoId(
+            comment.getCompanyId(),
+            comment.getMemoId()
+        );
+        int newCommentId = (maxCommentId == null) ? 1 : maxCommentId + 1;
+        comment.setCommentId(newCommentId);
+        comment.setSortOrder(newCommentId); // 댓글 ID를 정렬 순서로 사용
         return memoCommentRepository.save(comment);
     }
-} 
+
+    /** 메모 댓글을 삭제합니다. */
+    @Transactional
+    public void deleteMemoComment(String companyId, Integer memoId, Integer commentId) {
+        Optional<MemoComment> commentOpt = memoCommentRepository.findByCompanyIdAndMemoIdAndCommentId(
+            companyId, memoId, commentId
+        );
+        if (commentOpt.isPresent()) {
+            memoCommentRepository.delete(commentOpt.get());
+        } else {
+            throw new RuntimeException("Comment not found with ID: " + commentId);
+        }
+    }
+}

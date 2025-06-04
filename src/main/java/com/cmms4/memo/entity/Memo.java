@@ -58,9 +58,6 @@ public class Memo {
     @Column(name = "updateDate")
     private LocalDateTime updateDate;
 
-    @Column(name = "deleteMark", length = 1)
-    private String deleteMark;
-
     // Constructors
     public Memo() {
     }

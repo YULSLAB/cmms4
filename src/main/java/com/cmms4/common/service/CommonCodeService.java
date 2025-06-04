@@ -7,7 +7,6 @@ import com.cmms4.common.repository.CommonCodeItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +28,7 @@ public class CommonCodeService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommonCode> getCommonCodesByType(String companyId, String codeType) {
+    public List<CommonCode> getCommonCodesByCodeType(String companyId, String codeType) {
         return commonCodeRepository.findByCompanyIdAndCodeType(companyId, codeType);
     }
 
@@ -45,23 +44,11 @@ public class CommonCodeService {
 
     @Transactional
     public CommonCode saveCommonCode(CommonCode commonCode, String username) {
-        LocalDateTime now = LocalDateTime.now();
-        commonCode.setCreateDate(now);
-        commonCode.setCreateBy(username);
-        commonCode.setUpdateDate(now);
-        commonCode.setUpdateBy(username);
-        
         return commonCodeRepository.save(commonCode);
     }
 
     @Transactional
     public CommonCodeItem saveCommonCodeItem(CommonCodeItem codeItem, String username) {
-        LocalDateTime now = LocalDateTime.now();
-        codeItem.setCreateDate(now);
-        codeItem.setCreateBy(username);
-        codeItem.setUpdateDate(now);
-        codeItem.setUpdateBy(username);
-        
         return commonCodeItemRepository.save(codeItem);
     }
 

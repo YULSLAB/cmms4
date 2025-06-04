@@ -47,22 +47,22 @@ public interface PlantMasterRepository extends JpaRepository<PlantMaster, PlantM
      * Finds a page of PlantMaster entries for a given companyId and plantName.
      *
      * @param companyId The ID of the company.
-     * @param plantId The ID of the plant (partial match).
+     * @param plantName The name of the plant (partial match).
      * @param pageable Pagination information.
      * @return A page of PlantMaster entities.
      */
 
-    Page<PlantMaster> findByCompanyIdAndPlantIdContainingAndDeleteMarkIsNull(String companyId, String plantId, Pageable pageable);
-    
+    Page<PlantMaster> findByCompanyIdAndPlantNameContainingAndDeleteMarkIsNull(String companyId, String plantName, Pageable pageable);
+
     /**
      * Finds a page of PlantMaster entries for a given companyId and createBy.
      *
      * @param companyId The ID of the company.
-     * @param respDept Responsible department (partial match).
+     * @param respDept Responsible department.
      * @param pageable Pagination information.
      * @return A page of PlantMaster entities.
      */
-    Page<PlantMaster> findByCompanyIdAndRespDeptContainingAndDeleteMarkIsNull(String companyId, String respDept, Pageable pageable);
+    Page<PlantMaster> findByCompanyIdAndRespDeptAndDeleteMarkIsNull(String companyId, String respDept, Pageable pageable);
 
     /**
      * Finds a specific PlantMaster by its companyId and plantId.
@@ -72,6 +72,6 @@ public interface PlantMasterRepository extends JpaRepository<PlantMaster, PlantM
      * @param plantId The ID of the plant.
      * @return An Optional containing the PlantMaster if found, or empty otherwise.
      */
-    Optional<PlantMaster> findByCompanyIdAndPlantIdAndDeleteMarkIsNull(String companyId, String plantId);
+    Optional<PlantMaster> findByCompanyIdAndPlantIdAndDeleteMarkIsNull(String companyId, Integer plantId);
 
 }

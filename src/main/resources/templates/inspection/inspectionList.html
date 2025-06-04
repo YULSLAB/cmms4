@@ -13,54 +13,48 @@
         <!-- User info (from session) - Handled by layout/defaultLayout.html -->
 
         <h1>Inspections</h1>
-        <p>Company ID: <span th:text="${companyId}"></span> | Site ID: <span th:text="${siteId}"></span></p>
-        
-        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-            <span th:text="${successMessage}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            <span th:text="${errorMessage}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
         <div class="mb-3">
-            <a th:href="@{/inspections/new(companyId=${companyId}, siteId=${siteId})}" class="btn btn-primary">Add New Inspection</a>
+            <a th:href="@{/inspection/inspectionForm}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> <span th:text="#{inspection.button.add}">Add New Inspection</span>
+            </a>
         </div>
 
         <div class="card">
             <div class="card-header">
                 Inspection List
             </div>
+            <div class="card">
+            <div class="card-header" th:text="#{inspection.list.header}">
+                Inspection List
+            </div>
             <div class="card-body">
                 <table class="table table-striped table-hover">
                     <thead class="thead-light">
                         <tr>
-                            <th>Inspection ID</th>
-                            <th>Inspection Name</th>
-                            <th>Plant ID</th>
-                            <th>Job Type</th>
-                            <th>Site ID</th>
-                            <th>Actions</th>
+                            <th th:text="#{inspection.list.column.id}">Inspection ID</th>
+                            <th th:text="#{inspection.list.column.name}">Inspection Name</th>
+                            <th th:text="#{inspection.list.column.plant}">Plant ID</th>
+                            <th th:text="#{inspection.list.column.jobType}">Job Type</th>
+                            <th th:text="#{inspection.list.column.site}">Site ID</th>
+                            <th th:text="#{inspection.list.column.actions}">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="insp : ${inspectionPage.content}">
-                            <td th:text="${insp.inspectionId}"></td>
-                            <td th:text="${insp.inspectionName}"></td>
-                            <td th:text="${insp.plantId}"></td>
-                            <td th:text="${insp.jobType}"></td>
-                            <td th:text="${insp.siteId}"></td>
+                        <!-- ...existing tr th:each loop... -->
                             <td>
-                                <a th:href="@{/inspections/{id}/schedules(id=${insp.inspectionId}, companyId=${insp.companyId})}" class="btn btn-sm btn-info">Schedules</a>
-                                <a th:href="@{/inspections/{id}/edit(id=${insp.inspectionId}, companyId=${insp.companyId})}" class="btn btn-sm btn-warning">Edit</a>
-                                <form th:action="@{/inspections/{id}/delete(id=${insp.inspectionId}, companyId=${insp.companyId}, siteId=${insp.siteId})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this inspection?');">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                <a th:href="@{/inspections/{id}/schedules(id=${insp.inspectionId}, companyId=${insp.companyId})}" 
+                                   class="btn btn-sm btn-info" th:text="#{inspection.button.schedules}">Schedules</a>
+                                <a th:href="@{/inspections/{id}/edit(id=${insp.inspectionId}, companyId=${insp.companyId})}" 
+                                   class="btn btn-sm btn-warning" th:text="#{inspection.button.edit}">Edit</a>
+                                <form th:action="@{/inspections/{id}/delete(id=${insp.inspectionId}, companyId=${insp.companyId}, siteId=${insp.siteId})}" 
+                                      method="post" style="display:inline;" 
+                                      th:onsubmit="return confirm(#{inspection.delete.confirm});">
+                                    <button type="submit" class="btn btn-sm btn-danger" th:text="#{inspection.button.delete}">Delete</button>
                                 </form>
                             </td>
                         </tr>
                         <tr th:if="${inspectionPage.empty}">
-                            <td colspan="6" class="text-center">No inspections found.</td>
+                            <td colspan="6" class="text-center" th:text="#{inspection.list.empty}">No inspections found.</td>
                         </tr>
                     </tbody>
                 </table>

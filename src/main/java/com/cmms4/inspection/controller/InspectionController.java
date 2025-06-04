@@ -60,6 +60,15 @@ public class InspectionController {
      */
     @GetMapping("/inspectionForm")
     public String form(Model model, HttpSession session) {
+        // Add empty Inspection object to model
+        model.addAttribute("inspection", new Inspection());
+    
+        // Add session attributes if needed
+        String companyId = (String) session.getAttribute("companyId");
+        String siteId = (String) session.getAttribute("siteId");
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("siteId", siteId);
+        
         return "inspection/inspectionForm";
     }
 
@@ -93,7 +102,7 @@ public class InspectionController {
      * @param redirectAttributes 리다이렉트 속성
      * @return 리다이렉트 URL
      */
-    @PostMapping("/save")
+    @PostMapping("/inspectionSave")
     public String saveInspection(@ModelAttribute Inspection inspection,
                                HttpSession session) {
         // 세션에서 사용자 정보 가져오기
@@ -120,8 +129,8 @@ public class InspectionController {
      * @param session 세션
      * @return 리다이렉트 URL
      */
-    @PostMapping("/delete/{inspectionId}")
-    public String deleteInspection(@PathVariable String inspectionId,
+    @PostMapping("/inspectionDelete/{inspectionId}")
+    public String deleteInspection(@PathVariable Integer inspectionId,
                                  HttpSession session) {
         try {
             // 세션에서 사용자 정보 가져오기

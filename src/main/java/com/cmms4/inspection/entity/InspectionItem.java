@@ -28,15 +28,15 @@ public class InspectionItem {
 
     @Id
     @Column(name = "inspectionId", length = 10, nullable = false)
-    private String inspectionId;
+    private Integer inspectionId;
 
     @Id
     @Column(name = "scheduleId", length = 2, nullable = false)
-    private String scheduleId;
+    private Integer scheduleId;
 
     @Id
     @Column(name = "itemId", length = 2, nullable = false)
-    private String itemId;
+    private Integer itemId;
 
     @Column(name = "itemName", length = 100)
     private String itemName;

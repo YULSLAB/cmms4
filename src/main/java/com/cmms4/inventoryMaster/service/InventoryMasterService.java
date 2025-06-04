@@ -19,6 +19,7 @@ import java.util.Optional;
  * @author cmms4
  * @since 2024-03-19
  */
+
 @Service
 public class InventoryMasterService {
 
@@ -34,7 +35,7 @@ public class InventoryMasterService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<InventoryMaster> getInventoryMasterByInventoryId(String companyId, String inventoryId) {
+    public Optional<InventoryMaster> getInventoryMasterByInventoryId(String companyId, Integer inventoryId) {
         return inventoryMasterRepository.findByCompanyIdAndInventoryIdAndDeleteMarkIsNull(companyId, inventoryId);
     }
 

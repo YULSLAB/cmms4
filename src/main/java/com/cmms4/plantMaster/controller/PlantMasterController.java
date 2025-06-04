@@ -37,9 +37,9 @@ public class PlantMasterController {
      * @return
      */
     @GetMapping("/plantMasterList")
-    public String plantMasterList(Model model,
-                                 HttpSession session,
-                                 @PageableDefault(size = 10, sort = "plantId") Pageable pageable) {
+    public String list(Model model,
+                        HttpSession session,
+                        @PageableDefault(size = 10, sort = "plantId") Pageable pageable) {
         // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
@@ -51,25 +51,31 @@ public class PlantMasterController {
     }
 
     /**
-     * 설비 등록 화면을 조회합니다.
+     * 설비 등록 화면
      * @param model
      * @param session
      * @return
      */
     @GetMapping("/plantMasterForm")
-    public String plantMasterForm(Model model, HttpSession session) {
-        
+    public String form(Model model, HttpSession session) {
+        // 새로운 설비 등록 폼을 위한 모델 초기화
+        model.addAttribute("plantMaster", new PlantMaster());
+        // 세션에서 사용자 정보 가져오기
+        String companyId = (String) session.getAttribute("companyId");
+        String siteId = (String) session.getAttribute("siteId");
+        model.addAttribute("companyId", companyId); 
+        model.addAttribute("siteId", siteId);
         return "plantMaster/plantMasterForm";
     }
-    
+
     /**
-     * 설비 등록 화면을 조회합니다.
+     * 설비 상세 화면
      * @param model
      * @param session
      * @return
      */
     @GetMapping("/plantMasterDetail/{plantId}")
-    public String showPlantMasterDetail(@PathVariable String plantId,
+    public String detail(@PathVariable Integer plantId,
                                        HttpSession session,
                                        Model model) {
         // 세션에서 사용자 정보 가져오기
@@ -86,7 +92,7 @@ public class PlantMasterController {
     }
 
     @PostMapping("/plantMasterSave")
-    public String handlePlantMasterSave(@ModelAttribute PlantMaster plantMaster,
+    public String save(@ModelAttribute PlantMaster plantMaster,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes) {
         // 세션에서 사용자 정보 가져오기
@@ -96,19 +102,19 @@ public class PlantMasterController {
         // 필수 정보 설정
         plantMaster.setCompanyId(companyId);
         plantMaster.setSiteId(siteId);
-        plantMaster.setCreateBy(username);
 
         if (companyId == null || siteId == null || username == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Session expired. Please log in again.");
             return "redirect:/login";
         }
+
         plantMasterService.savePlantMaster(plantMaster, username);
         
         return "redirect:/plantMaster/plantMasterList";
     }
 
     @PostMapping("/plantMasterDelete/{plantId}")
-    public String handelPlantMasterDelete(@PathVariable String plantId,
+    public String delete(@PathVariable String plantId,
                                   HttpSession session,
                                   RedirectAttributes redirectAttributes) {
 

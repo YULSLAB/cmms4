@@ -5,15 +5,15 @@ import java.util.Objects;
 
 public class InspectionItemIdClass implements Serializable {
     private String companyId;
-    private String inspectionId;
-    private String scheduleId;
-    private String itemId; // DB is CHAR(2)
+    private Integer inspectionId;
+    private Integer scheduleId;
+    private Integer itemId; // DB is CHAR(2)
 
     // Constructors
     public InspectionItemIdClass() {
     }
 
-    public InspectionItemIdClass(String companyId, String inspectionId, String scheduleId, String itemId) {
+    public InspectionItemIdClass(String companyId, Integer inspectionId, Integer scheduleId, Integer itemId) {
         this.companyId = companyId;
         this.inspectionId = inspectionId;
         this.scheduleId = scheduleId;
@@ -29,27 +29,27 @@ public class InspectionItemIdClass implements Serializable {
         this.companyId = companyId;
     }
 
-    public String getInspectionId() {
+    public Integer getInspectionId() {
         return inspectionId;
     }
 
-    public void setInspectionId(String inspectionId) {
+    public void setInspectionId(Integer inspectionId) {
         this.inspectionId = inspectionId;
     }
 
-    public String getScheduleId() {
+    public Integer getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(String scheduleId) {
+    public void setScheduleId(Integer scheduleId) {
         this.scheduleId = scheduleId;
     }
 
-    public String getItemId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(Integer itemId) {
         this.itemId = itemId;
     }
 

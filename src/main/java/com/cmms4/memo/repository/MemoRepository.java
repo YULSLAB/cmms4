@@ -41,7 +41,7 @@ public interface MemoRepository extends JpaRepository<Memo, MemoIdClass> {
      * @param deleteMark 삭제 여부 (삭제되지 않은 메모만 조회)
      * @return Optional<Memo> 메모 정보
      */
-    Optional<Memo> findByCompanyIdAndMemoIdAndDeleteMarkIsNull(
+    Optional<Memo> findByCompanyIdAndMemoId(
         String companyId, 
         Integer memoId
     );
@@ -54,7 +54,7 @@ public interface MemoRepository extends JpaRepository<Memo, MemoIdClass> {
      * @param pageable 페이지 정보
      * @return Page<Memo> 메모 페이지
      */
-    Page<Memo> findByCompanyIdAndSiteIdAndDeleteMarkIsNull(
+    Page<Memo> findByCompanyIdAndSiteId(
         String companyId, 
         String siteId, 
         Pageable pageable
@@ -68,11 +68,13 @@ public interface MemoRepository extends JpaRepository<Memo, MemoIdClass> {
      * @param pageable 페이지 정보
      * @return Page<Memo> 메모 페이지
      */
-    Page<Memo> findByCompanyIdAndMemoNameContainingAndDeleteMarkIsNull(
+
+    Page<Memo> findByCompanyIdAndMemoNameContaining(
         String companyId, 
         String memoName, 
         Pageable pageable
     );
+
     /**
      * 회사 ID와 생성자자로 삭제되지 않은 메모를 조회합니다.
      *
@@ -80,7 +82,7 @@ public interface MemoRepository extends JpaRepository<Memo, MemoIdClass> {
      * @param createBy 메모 생성자
      * @return Optional<Memo> 메모 정보
      */
-    Page<Memo> findByCompanyIdAndCreateByAndDeleteMarkIsNull(
+    Page<Memo> findByCompanyIdAndCreateBy(
         String companyId, 
         String createBy,
         Pageable pageable       

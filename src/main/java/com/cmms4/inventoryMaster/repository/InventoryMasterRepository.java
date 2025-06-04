@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.cmms4.inventoryMaster.entity.InventoryMaster;
 import com.cmms4.inventoryMaster.entity.InventoryMasterIdClass;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,21 +25,10 @@ public interface InventoryMasterRepository extends JpaRepository<InventoryMaster
     Integer findMaxInventoryIdByCompanyId(@Param("companyId") String companyId);
 
     /**
-     * Finds all non-deleted InventoryMaster entries for a given companyId and siteId.
-     *
-     * @param companyId The ID of the company.
-     * @param siteId The ID of the site.
-     * @param deleteMark The mark indicating a deleted item (e.g., "Y").
-     * @return A list of non-deleted InventoryMaster entities.
-     */
-    List<InventoryMaster> findByCompanyIdAndSiteIdAndDeleteMarkIsNull(String companyId, String siteId);
-
-    /**
      * Finds a page of non-deleted InventoryMaster entries for a given companyId and siteId.
      *
      * @param companyId The ID of the company.
      * @param siteId The ID of the site.
-     * @param deleteMark The mark indicating a deleted item (e.g., "Y").
      * @param pageable Pagination information.
      * @return A page of non-deleted InventoryMaster entities.
      */
@@ -51,6 +39,7 @@ public interface InventoryMasterRepository extends JpaRepository<InventoryMaster
      *
      * @param companyId The ID of the company.
      * @param respDept The ID of the responsible department.
+     * @param pageable Pagination information.
      * @return A list of non-deleted InventoryMaster entities.
      */
     Page<InventoryMaster> findByCompanyIdAndRespDeptAndDeleteMarkIsNull(String companyId, String respDept, Pageable pageable);
@@ -63,6 +52,6 @@ public interface InventoryMasterRepository extends JpaRepository<InventoryMaster
      * @param deleteMark The mark indicating a deleted item (e.g., "Y").
      * @return An Optional containing the non-deleted InventoryMaster if found, or empty otherwise.
      */
-    Optional<InventoryMaster> findByCompanyIdAndInventoryIdAndDeleteMarkIsNull(String companyId, String inventoryId);
+    Optional<InventoryMaster> findByCompanyIdAndInventoryIdAndDeleteMarkIsNull(String companyId, Integer inventoryId);
 
 }

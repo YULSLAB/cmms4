@@ -37,10 +37,10 @@ public class WorkOrder {
     private String orderName;
 
     @Column(name = "plantId", length = 10)
-    private String plantId;
+    private Integer plantId;
 
     @Column(name = "memoId", length = 10)
-    private String memoId;
+    private Integer memoId;
 
     @Column(name = "jobType", length = 5)
     private String jobType;

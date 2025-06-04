@@ -35,6 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final CompanyRepository companyRepository;
     private final SiteRepository siteRepository;
     private final DeptRepository deptRepository;
+    // default company ID
     private static final String DEFAULT_COMPANY_ID = "C0001";
 
     public CustomUserDetailsService(

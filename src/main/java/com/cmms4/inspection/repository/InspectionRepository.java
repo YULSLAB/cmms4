@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.cmms4.inspection.entity.Inspection;
 import com.cmms4.inspection.entity.InspectionIdClass;
 
-import java.util.List;
 import java.util.Optional;
 
 // Imports for Inspection and InspectionIdClass are not strictly needed here
@@ -35,7 +34,7 @@ public interface InspectionRepository extends JpaRepository<Inspection, Inspecti
      * @param inspectionId 점검 ID
      * @return 점검 엔티티 (Optional)
      */
-    Optional<Inspection> findByCompanyIdAndInspectionIdAndDeleteMarkIsNull(String companyId, Integer inspectionId);
+    Optional<Inspection> findByCompanyIdAndInspectionId(String companyId, Integer inspectionId);
   
     /**
      * 회사 ID와 사이트 ID로 점검 목록을 페이징하여 조회합니다.
@@ -45,7 +44,7 @@ public interface InspectionRepository extends JpaRepository<Inspection, Inspecti
      * @param pageable 페이징 정보
      * @return 점검 엔티티 페이지
      */
-    Page<Inspection> findByCompanyIdAndSiteIdAndDeleteMarkIsNull(String companyId, String siteId, Pageable pageable);
+    Page<Inspection> findByCompanyIdAndSiteId(String companyId, String siteId, Pageable pageable);
 
     /**
      * 회사 ID와 수행 부서로 점검 목록을 페이징하여 조회합니다.
@@ -55,7 +54,7 @@ public interface InspectionRepository extends JpaRepository<Inspection, Inspecti
      * @param pageable 페이징 정보
      * @return 점검 엔티티 페이지
      */
-    Page<Inspection> findByCompanyIdAndPerformDeptAndDeleteMarkIsNull(String companyId, String performDept, Pageable pageable);
+    Page<Inspection> findByCompanyIdAndPerformDept(String companyId, String performDept, Pageable pageable);
 
     /**
      * 회사 ID와 점검 이름으로 점검 목록을 페이징하여 조회합니다.
@@ -65,7 +64,7 @@ public interface InspectionRepository extends JpaRepository<Inspection, Inspecti
      * @param pageable 페이징 정보
      * @return 점검 엔티티 페이지
      */
-    Page<Inspection> findByCompanyIdAndInspectionNameContainingAndDeleteMarkIsNull(String companyId, String inspectionName, Pageable pageable);
+    Page<Inspection> findByCompanyIdAndInspectionNameContaining(String companyId, String inspectionName, Pageable pageable);
     
     /**
      * 회사 ID와 플랜트 ID로 점검을 조회합니다.
@@ -74,6 +73,6 @@ public interface InspectionRepository extends JpaRepository<Inspection, Inspecti
      * @param plantId 플랜트 ID
      * @return 점검 엔티티 목록
      */
-    Page<Inspection> findByCompanyIdAndPlantIdAndDeleteMarkIsNull(String companyId, String plantId, Pageable pageable);
+    Page<Inspection> findByCompanyIdAndPlantId(String companyId, Integer plantId, Pageable pageable);
 
 }

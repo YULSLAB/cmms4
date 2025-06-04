@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.Optional;
 
 /**
@@ -22,6 +21,7 @@ import java.util.Optional;
  * @author cmms4
  * @since 2024-03-19
  */
+
 @Controller
 @RequestMapping("/inventoryMaster")
 public class InventoryMasterController {
@@ -40,17 +40,19 @@ public class InventoryMasterController {
      * @return 뷰 이름
      */
     @GetMapping("/inventoryList")
-    public String showInventoryMasterList(Model model, 
-                                     HttpSession session,
-                                     @PageableDefault(size = 10, sort = "inventoryId") Pageable pageable) {
+    public String list(Model model, 
+                            HttpSession session,
+                            @PageableDefault(size = 10, sort = "inventoryId") Pageable pageable) {
         // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
+        String username = (String) session.getAttribute("username");
         
         Page<InventoryMaster> inventoryPage = inventoryMasterService.getAllInventoryMasters(companyId, siteId, pageable);
         model.addAttribute("inventoryPage", inventoryPage);
         model.addAttribute("companyId", companyId);
         model.addAttribute("siteId", siteId);
+        model.addAttribute("username", username);
         return "inventoryMaster/inventoryList";
     }
 
@@ -61,17 +63,39 @@ public class InventoryMasterController {
      * @return 뷰 이름
      */
     @GetMapping("/inventoryForm")
-    public String showNewInventoryMasterForm(Model model, HttpSession session) {
+    public String form(Model model, HttpSession session) {
+        // 새로운 재고 마스터 폼을 위한 모델 초기화
+        model.addAttribute("inventoryMaster", new InventoryMaster());
         // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("siteId", siteId);
         
-        InventoryMaster inventoryMaster = new InventoryMaster();
-        inventoryMaster.setCompanyId(companyId);
-        inventoryMaster.setSiteId(siteId);
-        model.addAttribute("inventoryMaster", inventoryMaster);
-        model.addAttribute("pageTitle", "Create New Inventory Master");
         return "inventoryMaster/inventoryForm";
+    }
+
+    /** 재고 마스터 상세 조회
+     * @param inventoryId 재고 ID
+     * @param model 모델
+     * @param session 세션
+     * @return 뷰 이름
+     */
+    @GetMapping("/inventoryDetail/{inventoryId}")
+    public String detail(@PathVariable Integer inventoryId,
+                          Model model,
+                          HttpSession session) {
+        // 세션에서 사용자 정보 가져오기
+        String companyId = (String) session.getAttribute("companyId");
+
+        Optional<InventoryMaster> inventoryMasterOpt = inventoryMasterService.getInventoryMasterByInventoryId(companyId, inventoryId);
+        if (inventoryMasterOpt.isPresent()) {
+            model.addAttribute("inventoryMaster", inventoryMasterOpt.get());
+            return "inventoryMaster/inventoryDetail";
+        } else {
+            model.addAttribute("errorMessage", "Inventory Master not found with ID: " + inventoryId);
+            return "inventoryMaster/inventoryList";
+        }
     }
 
     /**
@@ -82,27 +106,24 @@ public class InventoryMasterController {
      * @return 리다이렉트 URL
      */
     @PostMapping("/inventoryMasterSave")
-    public String handelInventoryMasterSave(@ModelAttribute InventoryMaster inventoryMaster,
+    public String save(@ModelAttribute InventoryMaster inventoryMaster,
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes) {
         // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
         String username = (String) session.getAttribute("username");
+        // 필수 정보 설정
+        inventoryMaster.setCompanyId(companyId);
+        inventoryMaster.setSiteId(siteId);
 
-        if (inventoryMaster.getCompanyId() == null || inventoryMaster.getCompanyId().isEmpty()) {
-            inventoryMaster.setCompanyId(companyId);
-        }
-        if (inventoryMaster.getSiteId() == null || inventoryMaster.getSiteId().isEmpty()) {
-            inventoryMaster.setSiteId(siteId);
+        if (companyId == null || siteId == null || username == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Session information is missing.");
+            return "redirect:/inventoryMaster/inventoryList";
         }
 
-        try {
-            inventoryMasterService.saveInventoryMaster(inventoryMaster, username);
-            redirectAttributes.addFlashAttribute("successMessage", "Inventory Master saved successfully!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error saving Inventory Master: " + e.getMessage());
-        }
+        inventoryMasterService.saveInventoryMaster(inventoryMaster, username);
+
         return "redirect:/inventoryMaster/inventoryMasterList";
     }
 
@@ -114,9 +135,9 @@ public class InventoryMasterController {
      * @return 리다이렉트 URL
      */
     @PostMapping("/inventoryMasterDelete/{inventoryId}")
-    public String handelInventoryMasterDelete(@PathVariable String inventoryId,
-                                      HttpSession session,
-                                      RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable String inventoryId,
+                            HttpSession session,
+                            RedirectAttributes redirectAttributes) {
         // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
                 
@@ -126,6 +147,7 @@ public class InventoryMasterController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error deleting Inventory Master: " + e.getMessage());
         }
+
         return "redirect:/inventoryMaster/inventoryMasterList";
     }
 }

@@ -24,10 +24,12 @@ public class WorkOrderController {
         this.workOrderService = workOrderService;
     }
 
-    @GetMapping("/list")
-    public String listWorkOrders(Model model,
+    @GetMapping("/workOrderList")
+    public String list(Model model,
                                HttpSession session,
                                @PageableDefault(size = 10, sort = "orderId") Pageable pageable) {
+        
+        // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
         
@@ -37,16 +39,26 @@ public class WorkOrderController {
         return "workOrder/workOrderList";
     }
 
-    @GetMapping("/form")
-    public String showWorkOrderForm(Model model) {
+    @GetMapping("/workOrderForm")
+    public String form(Model model, HttpSession session) {
+        // 새로운 작업 지시서 폼을 위한 모델 초기화
         model.addAttribute("workOrder", new WorkOrder());
+        // 작업 지시서 항목 리스트 초기화
+        model.addAttribute("workOrderItem", new WorkOrderItem());
+        // 세션에서 사용자 정보 가져오기
+        String companyId = (String) session.getAttribute("companyId");
+        String siteId = (String) session.getAttribute("siteId");
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("siteId", siteId);
+
         return "workOrder/workOrderForm";
     }
 
-    @GetMapping("/detail/{orderId}")
-    public String showWorkOrderDetail(@PathVariable Integer orderId,
+    @GetMapping("/workOrderDetail/{orderId}")
+    public String detail(@PathVariable Integer orderId,
                                     HttpSession session,
                                     Model model) {
+        // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         
         workOrderService.getWorkOrderByWorkOrderId(companyId, orderId)
@@ -59,11 +71,13 @@ public class WorkOrderController {
         return "workOrder/workOrderDetail";
     }
 
-    @PostMapping("/save")
-    public String saveWorkOrder(@ModelAttribute WorkOrder workOrder,
+    @PostMapping("/workOrderSave")
+    public String save(@ModelAttribute WorkOrder workOrder,
                               HttpSession session,
                               RedirectAttributes redirectAttributes) {
+        // 세션에서 사용자 정보 가져오기
         String username = (String) session.getAttribute("username");
+
         try {
             workOrderService.saveWorkOrder(workOrder, username);
             redirectAttributes.addFlashAttribute("successMessage", "Work order saved successfully");
@@ -73,10 +87,12 @@ public class WorkOrderController {
         return "redirect:/workOrder/list";
     }
 
-    @PostMapping("/item/save")
-    public String saveWorkOrderItem(@ModelAttribute WorkOrderItem workOrderItem,
+    @PostMapping("/item/workOrderItemSave")
+    public String saveItem(@ModelAttribute WorkOrderItem workOrderItem,
                                   HttpSession session,
                                   RedirectAttributes redirectAttributes) {
+        
+        // 세션에서 사용자 정보 가져오기
         String username = (String) session.getAttribute("username");
         try {
             workOrderService.saveWorkOrderItem(workOrderItem, username);
@@ -87,10 +103,12 @@ public class WorkOrderController {
         return "redirect:/workOrder/detail/" + workOrderItem.getOrderId();
     }
 
-    @PostMapping("/delete/{orderId}")
-    public String deleteWorkOrder(@PathVariable Integer orderId,
+    @PostMapping("/workOrderDelete/{orderId}")
+    public String delete(@PathVariable Integer orderId,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes) {
+        
+        // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         try {
             workOrderService.deleteWorkOrder(companyId, orderId);
@@ -101,11 +119,12 @@ public class WorkOrderController {
         return "redirect:/workOrder/list";
     }
 
-    @PostMapping("/item/delete/{orderId}/{itemId}")
-    public String deleteWorkOrderItem(@PathVariable Integer orderId,
+    @PostMapping("/item/workOrderItemDelete/{orderId}/{itemId}")
+    public String deleteItem(@PathVariable Integer orderId,
                                     @PathVariable Integer itemId,
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes) {
+        
         String companyId = (String) session.getAttribute("companyId");
         try {
             workOrderService.deleteWorkOrderItem(companyId, orderId, itemId);

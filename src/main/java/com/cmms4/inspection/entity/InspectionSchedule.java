@@ -29,11 +29,11 @@ public class InspectionSchedule {
 
     @Id
     @Column(name = "inspectionId", length = 10, nullable = false)
-    private String inspectionId;
+    private Integer inspectionId;
 
     @Id
     @Column(name = "scheduleId", length = 2, nullable = false)
-    private String scheduleId;
+    private Integer scheduleId;
 
     @Column(name = "frequency", length = 5)
     private String frequency;

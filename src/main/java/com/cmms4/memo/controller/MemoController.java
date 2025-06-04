@@ -8,14 +8,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;   
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Collections;
 
 /**
  * cmms4 - MemoController
@@ -41,7 +43,7 @@ public class MemoController {
      * @return 메모 목록 화면
      */
     @GetMapping("/memoList")
-    public String showMemoList(Model model, HttpSession session,
+    public String list(Model model, HttpSession session,
                     @RequestParam(defaultValue = "0") int page,
                     @RequestParam(defaultValue = "10") int size) {
         // 세션에서 사용자 정보 가져오기
@@ -56,8 +58,8 @@ public class MemoController {
         model.addAttribute("memoPage", memoPage);
         
         return "memo/memoList";
-    }
-
+    }      
+    
     /**
      * 메모 상세 화면을 조회합니다.
      * 
@@ -67,26 +69,47 @@ public class MemoController {
      * @return 메모 상세 화면
      */
     @GetMapping("/memoDetail/{memoId}")
-    public String showMemoDetail(Model model, HttpSession session, @PathVariable Integer memoId) {
-        // 세션에서 사용자 정보 가져오기
+    public String detail(Model model, 
+                        HttpSession session, 
+                        @PathVariable Integer memoId,
+                        RedirectAttributes redirectAttributes) {
+        // 1. Session validation first
         String companyId = (String) session.getAttribute("companyId");
-        
-        memoService.getMemo(companyId, memoId).ifPresent(memo -> {
-            model.addAttribute("memo", memo);
+        if (companyId == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            // 2. Get memo first
+            Optional<Memo> memoOpt = memoService.getMemo(companyId, memoId);
+            if (memoOpt.isEmpty()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "메모를 찾을 수 없습니다.");
+                return "redirect:/memo/memoList";
+            }
+
+            // 3. Get comments only if memo exists
+            Memo memo = memoOpt.get();
             List<MemoComment> commentList = memoService.getMemoCommentList(companyId, memoId);
-            model.addAttribute("commentList", commentList);
-        });
-        
-        return "memo/memoDetail";
+
+            // 4. Add attributes to model
+            model.addAttribute("memo", memo);
+            model.addAttribute("commentList", commentList != null ? commentList : Collections.emptyList());
+
+            return "memo/memoDetail";
+            
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "메모 조회 중 오류가 발생했습니다.");
+            return "redirect:/memo/memoList";
+        }
     }
 
     /**
-     * 메모 등록 화면을 조회합니다.
+     * 메모 등록 화면
      * 
      * @return 메모 등록 화면
      */
     @GetMapping("/memoForm")
-    public String handleMemoForm() {
+    public String form() {
         return "memo/memoForm";
     }
 
@@ -98,7 +121,7 @@ public class MemoController {
      * @return 메모 목록 화면으로 리다이렉트
      */
     @PostMapping("/memoSave")
-    public String handelMemoSave(@ModelAttribute Memo memo, HttpSession session) {
+    public String save(@ModelAttribute Memo memo, HttpSession session) {
         // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
@@ -112,8 +135,7 @@ public class MemoController {
         if (companyId == null || siteId == null || username == null) {
             // 로깅 또는 에러 처리
             return "redirect:/login";
-        }     
-
+        }
         // 메모 저장
         memoService.saveMemo(memo, username);
         return "redirect:/memo/memoList";
@@ -127,7 +149,7 @@ public class MemoController {
      * @return 메모 목록 화면으로 리다이렉트
      */
     @PostMapping("/memoDelete/{memoId}")
-    public String handelMemoDelete(@PathVariable Integer memoId, HttpSession session) {
+    public String delete(@PathVariable Integer memoId, HttpSession session) {
         String username = (String) session.getAttribute("username");
         String companyId = (String) session.getAttribute("companyId");
         memoService.deleteMemo(companyId, memoId, username);
@@ -142,10 +164,50 @@ public class MemoController {
      * @return 메모 상세 화면으로 리다이렉트
      */
     @PostMapping("/memoComment/save")
-    public String handelMemoCommentSave(@ModelAttribute MemoComment comment, HttpSession session) {
-        String companyId = (String) session.getAttribute("companyId");
-        comment.setCompanyId(companyId);
-        memoService.saveMemoComment(comment);
-        return "redirect:/memo/memoDetail/" + comment.getMemoId();
+    public String saveComment(@ModelAttribute MemoComment comment, 
+                                HttpSession session, 
+                                RedirectAttributes redirectAttributes) {
+        try {
+            // Get session info
+            String companyId = (String) session.getAttribute("companyId");
+            comment.setCompanyId(companyId);
+
+            System.out.println("companyId: " + comment.getCompanyId());
+            System.out.println("memoId: " + comment.getMemoId());
+            System.out.println("notes: " + comment.getNotes());
+
+            MemoComment savedComment = memoService.saveMemoComment(comment);
+            redirectAttributes.addFlashAttribute("successMessage", "Comment saved successfully");
+
+            return "redirect:/memo/memoDetail/" + savedComment.getMemoId();
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to save comment: " + e.getMessage());
+            return "redirect:/memo/memoDetail/" + comment.getMemoId();
+        }
     }
-} 
+
+    /**
+     * 메모 댓글을 삭제합니다.
+     * 
+     * @param commentId 댓글 ID
+     * @param memoId 메모 ID
+     * @param session 세션
+     * @return 메모 상세 화면으로 리다이렉트
+     */
+    @PostMapping("/memoComment/delete")
+    public String deleteComment(@RequestParam Integer commentId,
+                                @RequestParam Integer memoId,
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            // Get session info 
+            String companyId = (String) session.getAttribute("companyId");
+            memoService.deleteMemoComment(companyId, memoId, commentId);
+            redirectAttributes.addFlashAttribute("successMessage", "Comment deleted successfully");
+            return "redirect:/memo/memoDetail/" + memoId;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete comment: " + e.getMessage());
+            return "redirect:/memo/memoDetail/" + memoId;
+        }
+    }
+}

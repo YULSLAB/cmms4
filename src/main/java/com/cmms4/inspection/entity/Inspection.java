@@ -36,7 +36,7 @@ public class Inspection {
     private String inspectionName;
 
     @Column(name = "plantId", length = 10)
-    private String plantId;
+    private Integer plantId;
 
     @Column(name = "jobType", length = 5)
     private String jobType;

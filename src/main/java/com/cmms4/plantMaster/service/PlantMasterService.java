@@ -23,7 +23,6 @@ import java.util.Optional;
 public class PlantMasterService {
 
     private final PlantMasterRepository plantMasterRepository;
-
       
     public PlantMasterService(PlantMasterRepository plantMasterRepository) {
         this.plantMasterRepository = plantMasterRepository;
@@ -35,19 +34,25 @@ public class PlantMasterService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<PlantMaster> getPlantMasterByplantId(String companyId, String plantId) {
+    public Optional<PlantMaster> getPlantMasterByplantId(String companyId, Integer plantId) {
         return plantMasterRepository.findByCompanyIdAndPlantIdAndDeleteMarkIsNull(companyId, plantId);
     }
 
     @Transactional
     public PlantMaster savePlantMaster(PlantMaster plantMaster, String username) {
         LocalDateTime now = LocalDateTime.now();
-        Integer maxPlantId = plantMasterRepository.findMaxPlantIdByCompanyId(plantMaster.getCompanyId());
-        int newPlantId = (maxPlantId == null) ? 1000000000 : maxPlantId + 1;
-        plantMaster.setPlantId(newPlantId); 
-        plantMaster.setCreateDate(now);
-        plantMaster.setCreateBy(username);
-        
+        if(plantMaster.getPlantId() == null) {
+            Integer maxPlantId = plantMasterRepository.findMaxPlantIdByCompanyId(plantMaster.getCompanyId());
+            int newPlantId = (maxPlantId == null) ? 1000000000 : maxPlantId + 1;
+            plantMaster.setPlantId(newPlantId); 
+            plantMaster.setCreateDate(now);
+            plantMaster.setCreateBy(username);            
+        } else {
+            // 수정정
+            plantMaster.setUpdateDate(now);
+            plantMaster.setUpdateBy(username);
+        }   
+                
         return plantMasterRepository.save(plantMaster);
     }
 

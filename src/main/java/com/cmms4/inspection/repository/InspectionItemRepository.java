@@ -24,7 +24,7 @@ public interface InspectionItemRepository extends JpaRepository<InspectionItem, 
      * @param scheduleId The ID of the schedule.
      * @return A list of InspectionItem entities.
      */
-    List<InspectionItem> findByCompanyIdAndInspectionIdAndScheduleIdOrderByItemIdAsc(String companyId, String inspectionId, String scheduleId);
+    List<InspectionItem> findByCompanyIdAndInspectionIdAndScheduleIdOrderByItemIdAsc(String companyId, Integer inspectionId, Integer scheduleId);
 
     /**
      * Finds a specific InspectionItem by its full composite key.
@@ -35,5 +35,30 @@ public interface InspectionItemRepository extends JpaRepository<InspectionItem, 
      * @param itemId The ID of the item.
      * @return An Optional containing the InspectionItem if found, or empty otherwise.
      */
-    Optional<InspectionItem> findByCompanyIdAndInspectionIdAndScheduleIdAndItemId(String companyId, String inspectionId, String scheduleId, String itemId);
-}
+    Optional<InspectionItem> findByCompanyIdAndInspectionIdAndScheduleIdAndItemId(String companyId, Integer inspectionId, Integer scheduleId, Integer itemId);
+    
+    /**
+     * Deletes all InspectionItem entries for a given companyId and inspectionId.
+     *
+     * @param companyId The ID of the company.
+     * @param inspectionId The ID of the inspection.
+     */
+    void deleteByCompanyIdAndInspectionId(String companyId, Integer inspectionId);
+
+    /**
+     * companyId, inspectionId, scheduleId 로 삭제
+     * @param companyId 회사 ID
+     * @param inspectionId 점검 ID
+     * @param scheduleId 일정 ID
+     */
+    void deleteByCompanyIdAndInspectionIdAndScheduleId(String companyId, Integer inspectionId, Integer scheduleId);
+
+    /**
+     * companyId, inspectionId, scheduleId, itemId 로 삭제
+     * @param companyId 회사 ID 
+     * @param inspectionId 점검 ID
+     * @param scheduleId 일정 ID
+     * @param itemId 항목 ID
+     */
+    void deleteByCompanyIdAndInspectionIdAndScheduleIdAndItemId(String companyId, Integer inspectionId, Integer scheduleId, Integer itemId);
+ }

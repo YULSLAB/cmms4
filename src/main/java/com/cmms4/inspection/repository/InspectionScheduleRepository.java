@@ -34,4 +34,20 @@ public interface InspectionScheduleRepository extends JpaRepository<InspectionSc
      * @return 점검 일정 엔티티 (Optional)
      */
     Optional<InspectionSchedule> findByCompanyIdAndInspectionIdAndScheduleId(String companyId, Integer inspectionId, Integer scheduleId);
+
+    /** 회사 ID, 점검 ID 로 삭제
+     *
+     * @param companyId 회사 ID
+     * @param inspectionId 점검 ID
+     */
+    void deleteByCompanyIdAndInspectionId(String companyId, Integer inspectionId);  
+
+    /**
+     * 회사 ID, 점검 ID, 일정 ID로 점검 일정을 삭제합니다.
+     *
+     * @param companyId 회사 ID
+     * @param inspectionId 점검 ID
+     * @param scheduleId 일정 ID
+     */
+    void deleteByCompanyIdAndInspectionIdAndScheduleId(String companyId, Integer inspectionId, Integer scheduleId);
 }
