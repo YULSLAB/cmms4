@@ -2,6 +2,7 @@ package com.cmms4.inspection.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
@@ -21,7 +22,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
-
 public class Inspection {
 
     @Id
@@ -65,18 +65,25 @@ public class Inspection {
     @Column(name = "updateDate")
     private LocalDateTime updateDate;
 
-    @OneToMany(mappedBy = "inspection", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<InspectionSchedule> schedules;
+    @OneToMany(mappedBy = "inspection", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<InspectionSchedule> schedules = new ArrayList<>();
+
+    @Transient
+    private List<InspectionItem> items = new ArrayList<>(); // For form binding
 
     public Inspection(String companyId, Integer inspectionId) {
         this.companyId = companyId;
         this.inspectionId = inspectionId;
+        this.schedules = new ArrayList<>();
+        this.items = new ArrayList<>();
     }
 
     public Inspection(String companyId, Integer inspectionId, String inspectionName) {
         this.companyId = companyId;
         this.inspectionId = inspectionId;
         this.inspectionName = inspectionName;
+        this.schedules = new ArrayList<>();
+        this.items = new ArrayList<>();
     }
 
     @Override
@@ -91,5 +98,14 @@ public class Inspection {
     @Override
     public int hashCode() {
         return Objects.hash(companyId, inspectionId);
+    }
+
+    // Getter and Setter for items
+    public List<InspectionItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<InspectionItem> items) {
+        this.items = items;
     }
 }
