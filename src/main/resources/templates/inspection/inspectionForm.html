@@ -81,7 +81,8 @@
                             <div class="row mb-2">
                                 <div class="col-md-5">
                                     <label class="form-label">Schedule Date</label>
-                                    <input type="date" class="form-control" th:field="*{schedules[__${sStat.index}__].scheduleDate}" />
+                                    <input type="date" class="form-control" th:field="*{schedules[__${sStat.index}__].scheduleDate}"
+                                           th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" />
                                 </div>
                                 <div class="col-md-5">
                                     <label class="form-label" style="visibility: hidden;">Execute Date</label> <!-- Keep for alignment -->
@@ -121,7 +122,7 @@
                                 <input type="hidden" th:field="*{items[__${iStat.index}__].itemId}" />
                                 <input type="hidden" th:field="*{items[__${iStat.index}__].companyId}" />
                                 <input type="hidden" th:field="*{items[__${iStat.index}__].inspectionId}" />
-                                <td><input type="text" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemName}" /></td>
+                                <td><input type="text" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemName}" th:value="' '" /></td>
                                 <td><input type="number" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemLower}" /></td>
                                 <td><input type="number" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemUpper}" /></td>
                                 <td><input type="text" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemStandard}" /></td>

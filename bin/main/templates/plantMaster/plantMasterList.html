@@ -25,7 +25,9 @@
         </div>
 
         <div class="mb-3">
-            <a th:href="@{/asset/plants/new(companyId=${companyId}, siteId=${siteId})}" class="btn btn-primary">Add New Plant</a>
+            <!-- Change from: /asset/plants/new -->
+            <a th:href="@{/plantMaster/plantMasterForm}" 
+               class="btn btn-primary">Add New Plant</a>
         </div>
 
         <div class="card">
@@ -52,8 +54,14 @@
                             <td th:text="${plant.assetType}"></td>
                             <td th:text="${plant.siteId}"></td>
                             <td>
-                                <a th:href="@{/asset/plants/edit/{plantId}(plantId=${plant.plantId}, companyId=${plant.companyId})}" class="btn btn-sm btn-warning">Edit</a>
-                                <form th:action="@{/asset/plants/delete/{plantId}(plantId=${plant.plantId}, companyId=${plant.companyId}, siteId=${plant.siteId})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this plant master?');">
+                                <!-- Change from: /asset/plants/edit -->
+                                <a th:href="@{/plantMaster/plantMasterDetail/{plantId}(plantId=${plant.plantId}, companyId=${plant.companyId})}" 
+                                   class="btn btn-sm btn-warning">Edit</a>
+                                
+                                <!-- Change from: /asset/plants/delete -->
+                                <form th:action="@{/plantMaster/plantMasterDelete/{plantId}(plantId=${plant.plantId})}"
+                                      method="post" style="display:inline;" 
+                                      onsubmit="return confirm('Are you sure you want to delete this plant master?');">
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
                             </td>
@@ -69,14 +77,21 @@
         <!-- Pagination Controls -->
         <nav aria-label="Page navigation" th:if="${plantPage.totalPages > 0}">
             <ul class="pagination justify-content-center">
+                <!-- Change from: /asset/plants/list -->
                 <li class="page-item" th:classappend="${plantPage.first ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/asset/plants/list(companyId=${companyId}, siteId=${siteId}, page=${plantPage.number - 1}, size=${plantPage.size})}">Previous</a>
+                    <a class="page-link" 
+                       th:href="@{/plantMaster/plantMasterList(companyId=${companyId}, siteId=${siteId}, page=${plantPage.number - 1}, size=${plantPage.size})}">Previous</a>
                 </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, plantPage.totalPages - 1)}" th:classappend="${i == plantPage.number ? 'active' : ''}">
-                    <a class="page-link" th:href="@{/asset/plants/list(companyId=${companyId}, siteId=${siteId}, page=${i}, size=${plantPage.size})}" th:text="${i + 1}"></a>
+                <li class="page-item" 
+                    th:each="i : ${#numbers.sequence(0, plantPage.totalPages - 1)}" 
+                    th:classappend="${i == plantPage.number ? 'active' : ''}">
+                    <a class="page-link" 
+                       th:href="@{/plantMaster/plantMasterList(companyId=${companyId}, siteId=${siteId}, page=${i}, size=${plantPage.size})}" 
+                       th:text="${i + 1}"></a>
                 </li>
                 <li class="page-item" th:classappend="${plantPage.last ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/asset/plants/list(companyId=${companyId}, siteId=${siteId}, page=${plantPage.number + 1}, size=${plantPage.size})}">Next</a>
+                    <a class="page-link" 
+                       th:href="@{/plantMaster/plantMasterList(companyId=${companyId}, siteId=${siteId}, page=${plantPage.number + 1}, size=${plantPage.size})}">Next</a>
                 </li>
             </ul>
         </nav>

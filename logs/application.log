@@ -1572,3 +1572,292 @@ org.springframework.expression.spel.SpelEvaluationException: EL1007E: Property o
 2025-06-05 13:28:10 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-06-05 13:28:10 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-06-05 13:28:10 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-05 20:52:10 [main] INFO  com.cmms4.Cmms4Application - Starting Cmms4Application v0.0.1-SNAPSHOT using Java 17.0.15 with PID 21044 (C:\github\cmms4\build\libs\cmms4-0.0.1-SNAPSHOT.jar started by polkn in c:\github\cmms4)
+2025-06-05 20:52:10 [main] DEBUG com.cmms4.Cmms4Application - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-05 20:52:10 [main] INFO  com.cmms4.Cmms4Application - No active profile set, falling back to 1 default profile: "default"
+2025-06-05 20:52:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-05 20:52:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 43 ms. Found 17 JPA repository interfaces.
+2025-06-05 20:52:11 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-05 20:52:11 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-05 20:52:11 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-06-05 20:52:11 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-05 20:52:11 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 840 ms
+2025-06-05 20:52:11 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-05 20:52:11 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-06-05 20:52:11 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-05 20:52:12 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-05 20:52:12 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-05 20:52:12 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.mariadb.jdbc.Connection@12a6a69
+2025-06-05 20:52:12 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-05 20:52:12 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-05 20:52:13 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-05 20:52:13 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 20:52:14 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-05 20:52:15 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-05 20:52:15 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@13ade3d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@a4763f, org.springframework.security.web.context.SecurityContextHolderFilter@c0c594, org.springframework.security.web.header.HeaderWriterFilter@1da6a3, org.springframework.web.filter.CorsFilter@129b266, org.springframework.security.web.csrf.CsrfFilter@a257de, org.springframework.security.web.authentication.logout.LogoutFilter@24bff6, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@487b86, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1cd446, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5c3628, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@13063b7, org.springframework.security.web.access.ExceptionTranslationFilter@74f8f9, org.springframework.security.web.access.intercept.AuthorizationFilter@2ab1f4]
+2025-06-05 20:52:16 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase -2147483647
+2025-06-05 20:52:16 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'springBootLoggingLifecycle' of type [org.springframework.boot.context.logging.LoggingApplicationListener$Lifecycle]
+2025-06-05 20:52:16 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'springBootLoggingLifecycle'
+2025-06-05 20:52:16 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147481599
+2025-06-05 20:52:16 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'webServerStartStop' of type [org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle]
+2025-06-05 20:52:16 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2025-06-05 20:52:16 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'webServerStartStop'
+2025-06-05 20:52:16 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147482623
+2025-06-05 20:52:16 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'webServerGracefulShutdown' of type [org.springframework.boot.web.context.WebServerGracefulShutdownLifecycle]
+2025-06-05 20:52:16 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'webServerGracefulShutdown'
+2025-06-05 20:52:16 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647
+2025-06-05 20:52:16 [main] INFO  com.cmms4.Cmms4Application - Started Cmms4Application in 6.425 seconds (process running for 6.749)
+2025-06-05 20:52:26 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-05 20:52:26 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-05 20:52:26 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2025-06-05 20:52:26 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /login
+2025-06-05 20:52:26 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /login
+2025-06-05 20:52:27 [http-nio-8080-exec-2] WARN  o.a.c.util.SessionIdGeneratorBase - Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [110] milliseconds.
+2025-06-05 20:52:27 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-05 20:52:32 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing POST /login
+2025-06-05 20:52:32 [http-nio-8080-exec-1] DEBUG o.s.s.a.d.DaoAuthenticationProvider - Authenticated user
+2025-06-05 20:52:32 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.s.ChangeSessionIdAuthenticationStrategy - Changed session id from C6E914243FA36F981757A23C10D6AC4C
+2025-06-05 20:52:32 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.CsrfAuthenticationStrategy - Replaced CSRF Token
+2025-06-05 20:52:32 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Stored SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=C6E914243FA36F981757A23C10D6AC4C], Granted Authorities=[ROLE_USER]]] to HttpSession [org.apache.catalina.session.StandardSessionFacade@17fc8b4]
+2025-06-05 20:52:32 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.UsernamePasswordAuthenticationFilter - Set SecurityContextHolder to UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=C6E914243FA36F981757A23C10D6AC4C], Granted Authorities=[ROLE_USER]]
+2025-06-05 20:52:32 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /memo/memoList
+2025-06-05 20:52:32 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=C6E914243FA36F981757A23C10D6AC4C], Granted Authorities=[ROLE_USER]]]
+2025-06-05 20:52:32 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /memo/memoList
+2025-06-05 20:52:33 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing POST /login
+2025-06-05 20:52:33 [http-nio-8080-exec-4] DEBUG o.s.security.web.csrf.CsrfFilter - Invalid CSRF token found for http://localhost:8080/login
+2025-06-05 20:52:33 [http-nio-8080-exec-4] DEBUG o.s.s.w.a.AccessDeniedHandlerImpl - Responding with 403 status code
+2025-06-05 20:52:33 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing POST /error
+2025-06-05 20:52:33 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured POST /error
+2025-06-05 20:52:33 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=C6E914243FA36F981757A23C10D6AC4C], Granted Authorities=[ROLE_USER]]]
+2025-06-05 20:52:37 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /login
+2025-06-05 20:52:37 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /login
+2025-06-05 20:52:37 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=C6E914243FA36F981757A23C10D6AC4C], Granted Authorities=[ROLE_USER]]]
+2025-06-05 20:52:39 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing POST /login
+2025-06-05 20:52:39 [http-nio-8080-exec-6] DEBUG o.s.s.a.d.DaoAuthenticationProvider - Authenticated user
+2025-06-05 20:52:39 [http-nio-8080-exec-6] DEBUG o.s.s.w.a.s.ChangeSessionIdAuthenticationStrategy - Changed session id from B4CCB6DE0543B7F39A435679A3C3BF13
+2025-06-05 20:52:39 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.CsrfAuthenticationStrategy - Replaced CSRF Token
+2025-06-05 20:52:39 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Stored SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=B4CCB6DE0543B7F39A435679A3C3BF13], Granted Authorities=[ROLE_USER]]] to HttpSession [org.apache.catalina.session.StandardSessionFacade@17fc8b4]
+2025-06-05 20:52:39 [http-nio-8080-exec-6] DEBUG o.s.s.w.a.UsernamePasswordAuthenticationFilter - Set SecurityContextHolder to UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=B4CCB6DE0543B7F39A435679A3C3BF13], Granted Authorities=[ROLE_USER]]
+2025-06-05 20:52:39 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /memo/memoList
+2025-06-05 20:52:39 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=B4CCB6DE0543B7F39A435679A3C3BF13], Granted Authorities=[ROLE_USER]]]
+2025-06-05 20:52:39 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /memo/memoList
+2025-06-05 20:52:43 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /inspection/inspectionForm
+2025-06-05 20:52:43 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=B4CCB6DE0543B7F39A435679A3C3BF13], Granted Authorities=[ROLE_USER]]]
+2025-06-05 20:52:43 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /inspection/inspectionForm
+2025-06-05 20:56:39 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /.well-known/appspecific/com.chrome.devtools.json
+2025-06-05 20:56:39 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=B4CCB6DE0543B7F39A435679A3C3BF13], Granted Authorities=[ROLE_USER]]]
+2025-06-05 20:56:39 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /.well-known/appspecific/com.chrome.devtools.json
+2025-06-05 20:56:40 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /error
+2025-06-05 20:56:40 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /error
+2025-06-05 20:56:40 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=B4CCB6DE0543B7F39A435679A3C3BF13], Granted Authorities=[ROLE_USER]]]
+2025-06-05 20:59:57 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /inspection/inspectionForm
+2025-06-05 20:59:57 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=B4CCB6DE0543B7F39A435679A3C3BF13], Granted Authorities=[ROLE_USER]]]
+2025-06-05 20:59:57 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /inspection/inspectionForm
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] TRACE o.s.c.s.DefaultLifecycleProcessor - Asking bean 'applicationTaskExecutor' of type [org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor] to stop
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'applicationTaskExecutor' completed its stop procedure
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147482623
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] TRACE o.s.c.s.DefaultLifecycleProcessor - Asking bean 'webServerGracefulShutdown' of type [org.springframework.boot.web.context.WebServerGracefulShutdownLifecycle] to stop
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerGracefulShutdown' completed its stop procedure
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147481599
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] TRACE o.s.c.s.DefaultLifecycleProcessor - Asking bean 'webServerStartStop' of type [org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle] to stop
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerStartStop' completed its stop procedure
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase -2147483647
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] TRACE o.s.c.s.DefaultLifecycleProcessor - Asking bean 'springBootLoggingLifecycle' of type [org.springframework.boot.context.logging.LoggingApplicationListener$Lifecycle] to stop
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'springBootLoggingLifecycle' completed its stop procedure
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-05 21:14:08 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-05 21:14:40 [main] INFO  com.cmms4.Cmms4Application - Starting Cmms4Application v0.0.1-SNAPSHOT using Java 17.0.15 with PID 30992 (C:\github\cmms4\build\libs\cmms4-0.0.1-SNAPSHOT.jar started by polkn in c:\github\cmms4)
+2025-06-05 21:14:40 [main] DEBUG com.cmms4.Cmms4Application - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-05 21:14:40 [main] INFO  com.cmms4.Cmms4Application - No active profile set, falling back to 1 default profile: "default"
+2025-06-05 21:14:41 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-05 21:14:41 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 52 ms. Found 17 JPA repository interfaces.
+2025-06-05 21:14:42 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-05 21:14:42 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-05 21:14:42 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-06-05 21:14:42 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-05 21:14:42 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 957 ms
+2025-06-05 21:14:42 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-05 21:14:42 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-06-05 21:14:42 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-05 21:14:42 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-05 21:14:42 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-05 21:14:42 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.mariadb.jdbc.Connection@101897f
+2025-06-05 21:14:42 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-05 21:14:42 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-05 21:14:44 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-05 21:14:44 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 21:14:45 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-05 21:14:46 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-05 21:14:47 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@c7a7d3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1462469, org.springframework.security.web.context.SecurityContextHolderFilter@12da875, org.springframework.security.web.header.HeaderWriterFilter@1c70b62, org.springframework.web.filter.CorsFilter@141ba8e, org.springframework.security.web.csrf.CsrfFilter@fef807, org.springframework.security.web.authentication.logout.LogoutFilter@1d666e0, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6d4413, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2ab1f4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@487b86, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@15179be, org.springframework.security.web.access.ExceptionTranslationFilter@f329e7, org.springframework.security.web.access.intercept.AuthorizationFilter@66b3d9]
+2025-06-05 21:14:47 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase -2147483647
+2025-06-05 21:14:47 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'springBootLoggingLifecycle' of type [org.springframework.boot.context.logging.LoggingApplicationListener$Lifecycle]
+2025-06-05 21:14:47 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'springBootLoggingLifecycle'
+2025-06-05 21:14:47 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147481599
+2025-06-05 21:14:47 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'webServerStartStop' of type [org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle]
+2025-06-05 21:14:47 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2025-06-05 21:14:47 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'webServerStartStop'
+2025-06-05 21:14:47 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147482623
+2025-06-05 21:14:47 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'webServerGracefulShutdown' of type [org.springframework.boot.web.context.WebServerGracefulShutdownLifecycle]
+2025-06-05 21:14:47 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'webServerGracefulShutdown'
+2025-06-05 21:14:47 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647
+2025-06-05 21:14:47 [main] INFO  com.cmms4.Cmms4Application - Started Cmms4Application in 7.112 seconds (process running for 7.493)
+2025-06-05 21:14:56 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-05 21:14:56 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-05 21:14:56 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-06-05 21:14:56 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /login
+2025-06-05 21:14:56 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /login
+2025-06-05 21:14:57 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-05 21:15:02 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing POST /login
+2025-06-05 21:15:02 [http-nio-8080-exec-2] DEBUG o.s.s.a.d.DaoAuthenticationProvider - Authenticated user
+2025-06-05 21:15:02 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.s.ChangeSessionIdAuthenticationStrategy - Changed session id from 23E4E683B63887C9B63917051A2C88D6
+2025-06-05 21:15:02 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.CsrfAuthenticationStrategy - Replaced CSRF Token
+2025-06-05 21:15:02 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Stored SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=23E4E683B63887C9B63917051A2C88D6], Granted Authorities=[ROLE_USER]]] to HttpSession [org.apache.catalina.session.StandardSessionFacade@e42396]
+2025-06-05 21:15:02 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.UsernamePasswordAuthenticationFilter - Set SecurityContextHolder to UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=23E4E683B63887C9B63917051A2C88D6], Granted Authorities=[ROLE_USER]]
+2025-06-05 21:15:02 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /memo/memoList
+2025-06-05 21:15:02 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=23E4E683B63887C9B63917051A2C88D6], Granted Authorities=[ROLE_USER]]]
+2025-06-05 21:15:02 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /memo/memoList
+2025-06-05 21:15:06 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /inspection/inspectionForm
+2025-06-05 21:15:06 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=23E4E683B63887C9B63917051A2C88D6], Granted Authorities=[ROLE_USER]]]
+2025-06-05 21:15:06 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /inspection/inspectionForm
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] TRACE o.s.c.s.DefaultLifecycleProcessor - Asking bean 'applicationTaskExecutor' of type [org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor] to stop
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'applicationTaskExecutor' completed its stop procedure
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147482623
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] TRACE o.s.c.s.DefaultLifecycleProcessor - Asking bean 'webServerGracefulShutdown' of type [org.springframework.boot.web.context.WebServerGracefulShutdownLifecycle] to stop
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerGracefulShutdown' completed its stop procedure
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147481599
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] TRACE o.s.c.s.DefaultLifecycleProcessor - Asking bean 'webServerStartStop' of type [org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle] to stop
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerStartStop' completed its stop procedure
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase -2147483647
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] TRACE o.s.c.s.DefaultLifecycleProcessor - Asking bean 'springBootLoggingLifecycle' of type [org.springframework.boot.context.logging.LoggingApplicationListener$Lifecycle] to stop
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'springBootLoggingLifecycle' completed its stop procedure
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-05 21:20:29 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-05 21:20:47 [main] INFO  com.cmms4.Cmms4Application - Starting Cmms4Application v0.0.1-SNAPSHOT using Java 17.0.15 with PID 10864 (C:\github\cmms4\build\libs\cmms4-0.0.1-SNAPSHOT.jar started by polkn in c:\github\cmms4)
+2025-06-05 21:20:47 [main] DEBUG com.cmms4.Cmms4Application - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-05 21:20:47 [main] INFO  com.cmms4.Cmms4Application - No active profile set, falling back to 1 default profile: "default"
+2025-06-05 21:20:48 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-05 21:20:48 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 44 ms. Found 17 JPA repository interfaces.
+2025-06-05 21:20:48 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-05 21:20:48 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-05 21:20:48 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-06-05 21:20:48 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-05 21:20:48 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 827 ms
+2025-06-05 21:20:48 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-05 21:20:48 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-06-05 21:20:48 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-05 21:20:48 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-05 21:20:48 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-05 21:20:49 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.mariadb.jdbc.Connection@1eacb70
+2025-06-05 21:20:49 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-05 21:20:49 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-05 21:20:50 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-05 21:20:50 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 21:20:51 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-05 21:20:52 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-05 21:20:52 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@15179be, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@95b0b8, org.springframework.security.web.context.SecurityContextHolderFilter@487b86, org.springframework.security.web.header.HeaderWriterFilter@12da875, org.springframework.web.filter.CorsFilter@b8b1ef, org.springframework.security.web.csrf.CsrfFilter@15b1446, org.springframework.security.web.authentication.logout.LogoutFilter@142d320, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1462469, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@13ade3d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@a4763f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@13effc, org.springframework.security.web.access.ExceptionTranslationFilter@4c0019, org.springframework.security.web.access.intercept.AuthorizationFilter@c7a7d3]
+2025-06-05 21:20:53 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase -2147483647
+2025-06-05 21:20:53 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'springBootLoggingLifecycle' of type [org.springframework.boot.context.logging.LoggingApplicationListener$Lifecycle]
+2025-06-05 21:20:53 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'springBootLoggingLifecycle'
+2025-06-05 21:20:53 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147481599
+2025-06-05 21:20:53 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'webServerStartStop' of type [org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle]
+2025-06-05 21:20:53 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2025-06-05 21:20:53 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'webServerStartStop'
+2025-06-05 21:20:53 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147482623
+2025-06-05 21:20:53 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'webServerGracefulShutdown' of type [org.springframework.boot.web.context.WebServerGracefulShutdownLifecycle]
+2025-06-05 21:20:53 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'webServerGracefulShutdown'
+2025-06-05 21:20:53 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647
+2025-06-05 21:20:53 [main] INFO  com.cmms4.Cmms4Application - Started Cmms4Application in 6.23 seconds (process running for 6.564)
+2025-06-05 21:21:53 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-05 21:21:53 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-05 21:21:53 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 5 ms
+2025-06-05 21:21:53 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /login
+2025-06-05 21:21:53 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /login
+2025-06-05 21:21:55 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-05 21:21:59 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing POST /login
+2025-06-05 21:22:00 [http-nio-8080-exec-1] DEBUG o.s.s.a.d.DaoAuthenticationProvider - Authenticated user
+2025-06-05 21:22:00 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.s.ChangeSessionIdAuthenticationStrategy - Changed session id from 30AABD0A33D072EC73FB08AC372E5CE8
+2025-06-05 21:22:00 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.CsrfAuthenticationStrategy - Replaced CSRF Token
+2025-06-05 21:22:00 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Stored SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=30AABD0A33D072EC73FB08AC372E5CE8], Granted Authorities=[ROLE_USER]]] to HttpSession [org.apache.catalina.session.StandardSessionFacade@2935b3]
+2025-06-05 21:22:00 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.UsernamePasswordAuthenticationFilter - Set SecurityContextHolder to UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=30AABD0A33D072EC73FB08AC372E5CE8], Granted Authorities=[ROLE_USER]]
+2025-06-05 21:22:00 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /memo/memoList
+2025-06-05 21:22:00 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=30AABD0A33D072EC73FB08AC372E5CE8], Granted Authorities=[ROLE_USER]]]
+2025-06-05 21:22:00 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /memo/memoList
+2025-06-05 21:22:05 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /inspection/inspectionForm
+2025-06-05 21:22:05 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=30AABD0A33D072EC73FB08AC372E5CE8], Granted Authorities=[ROLE_USER]]]
+2025-06-05 21:22:05 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /inspection/inspectionForm
+2025-06-05 22:50:10 [main] INFO  com.cmms4.Cmms4Application - Starting Cmms4Application v0.0.1-SNAPSHOT using Java 17.0.15 with PID 19232 (C:\github\cmms4\build\libs\cmms4-0.0.1-SNAPSHOT.jar started by polkn in c:\github\cmms4)
+2025-06-05 22:50:10 [main] DEBUG com.cmms4.Cmms4Application - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-05 22:50:10 [main] INFO  com.cmms4.Cmms4Application - No active profile set, falling back to 1 default profile: "default"
+2025-06-05 22:50:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-05 22:50:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 66 ms. Found 17 JPA repository interfaces.
+2025-06-05 22:50:11 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-05 22:50:11 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-05 22:50:11 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-06-05 22:50:12 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-05 22:50:12 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1424 ms
+2025-06-05 22:50:12 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-05 22:50:12 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-06-05 22:50:12 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-05 22:50:13 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-05 22:50:13 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-05 22:50:13 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.mariadb.jdbc.Connection@5339ed
+2025-06-05 22:50:13 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-05 22:50:13 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-05 22:50:16 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-05 22:50:16 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-05 22:50:16 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-05 22:50:17 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-05 22:50:18 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@d291c1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@c7a7d3, org.springframework.security.web.context.SecurityContextHolderFilter@15fa126, org.springframework.security.web.header.HeaderWriterFilter@11426a, org.springframework.web.filter.CorsFilter@1462469, org.springframework.security.web.csrf.CsrfFilter@1e5378b, org.springframework.security.web.authentication.logout.LogoutFilter@14a08ea, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@66b3d9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@603829, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2ab1f4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@141ba8e, org.springframework.security.web.access.ExceptionTranslationFilter@1d69a51, org.springframework.security.web.access.intercept.AuthorizationFilter@1caa0e8]
+2025-06-05 22:50:18 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase -2147483647
+2025-06-05 22:50:18 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'springBootLoggingLifecycle' of type [org.springframework.boot.context.logging.LoggingApplicationListener$Lifecycle]
+2025-06-05 22:50:18 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'springBootLoggingLifecycle'
+2025-06-05 22:50:18 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147481599
+2025-06-05 22:50:18 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'webServerStartStop' of type [org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle]
+2025-06-05 22:50:18 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2025-06-05 22:50:18 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'webServerStartStop'
+2025-06-05 22:50:18 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147482623
+2025-06-05 22:50:18 [main] TRACE o.s.c.s.DefaultLifecycleProcessor - Starting bean 'webServerGracefulShutdown' of type [org.springframework.boot.web.context.WebServerGracefulShutdownLifecycle]
+2025-06-05 22:50:18 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Successfully started bean 'webServerGracefulShutdown'
+2025-06-05 22:50:18 [main] DEBUG o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647
+2025-06-05 22:50:18 [main] INFO  com.cmms4.Cmms4Application - Started Cmms4Application in 9.301 seconds (process running for 9.903)
+2025-06-05 22:50:26 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-05 22:50:26 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-05 22:50:26 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-06-05 22:50:26 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /login
+2025-06-05 22:50:26 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /login
+2025-06-05 22:50:27 [http-nio-8080-exec-1] WARN  o.a.c.util.SessionIdGeneratorBase - Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [102] milliseconds.
+2025-06-05 22:50:27 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-05 22:50:28 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-06-05 22:50:28 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-06-05 22:50:28 [http-nio-8080-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-05 22:50:28 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /error
+2025-06-05 22:50:28 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /error
+2025-06-05 22:50:28 [http-nio-8080-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-05 22:50:32 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing POST /login
+2025-06-05 22:50:33 [http-nio-8080-exec-2] DEBUG o.s.s.a.d.DaoAuthenticationProvider - Authenticated user
+2025-06-05 22:50:33 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.s.ChangeSessionIdAuthenticationStrategy - Changed session id from 966C16E68C2E9A46682ED4A67BEABB3A
+2025-06-05 22:50:33 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.CsrfAuthenticationStrategy - Replaced CSRF Token
+2025-06-05 22:50:33 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Stored SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=966C16E68C2E9A46682ED4A67BEABB3A], Granted Authorities=[ROLE_USER]]] to HttpSession [org.apache.catalina.session.StandardSessionFacade@b2f5ec]
+2025-06-05 22:50:33 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.UsernamePasswordAuthenticationFilter - Set SecurityContextHolder to UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=966C16E68C2E9A46682ED4A67BEABB3A], Granted Authorities=[ROLE_USER]]
+2025-06-05 22:50:33 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /memo/memoList
+2025-06-05 22:50:33 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=966C16E68C2E9A46682ED4A67BEABB3A], Granted Authorities=[ROLE_USER]]]
+2025-06-05 22:50:33 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /memo/memoList
+2025-06-05 22:50:37 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /inspection/inspectionForm
+2025-06-05 22:50:37 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=966C16E68C2E9A46682ED4A67BEABB3A], Granted Authorities=[ROLE_USER]]]
+2025-06-05 22:50:37 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /inspection/inspectionForm
+2025-06-05 23:11:57 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /memo/memoForm
+2025-06-05 23:11:57 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=966C16E68C2E9A46682ED4A67BEABB3A], Granted Authorities=[ROLE_USER]]]
+2025-06-05 23:11:57 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /memo/memoForm
+2025-06-05 23:12:04 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /memo/memoList
+2025-06-05 23:12:04 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=966C16E68C2E9A46682ED4A67BEABB3A], Granted Authorities=[ROLE_USER]]]
+2025-06-05 23:12:04 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /memo/memoList
+2025-06-05 23:12:08 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /memo/memoForm
+2025-06-05 23:12:08 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=966C16E68C2E9A46682ED4A67BEABB3A], Granted Authorities=[ROLE_USER]]]
+2025-06-05 23:12:08 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /memo/memoForm
+2025-06-05 23:13:07 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /inspection/inspectionForm
+2025-06-05 23:13:07 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=com.cmms4.auth.dto.CustomUserDetails [Username=ADMIN, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=966C16E68C2E9A46682ED4A67BEABB3A], Granted Authorities=[ROLE_USER]]]
+2025-06-05 23:13:07 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /inspection/inspectionForm

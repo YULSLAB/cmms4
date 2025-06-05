@@ -25,7 +25,8 @@
         </div>
 
         <div class="mb-3">
-            <a th:href="@{/workorders/new(companyId=${companyId}, siteId=${siteId})}" class="btn btn-primary">Add New Work Order</a>
+            <!-- Fix Add New button URL -->
+            <a th:href="@{/workOrder/workOrderForm}" class="btn btn-primary">Add New Work Order</a>
         </div>
 
         <div class="card">
@@ -55,8 +56,10 @@
                             <td th:text="${wo.siteId}"></td>
                             <td>
                                 <a th:href="@{/workorders/{orderId}/items(orderId=${wo.orderId}, companyId=${wo.companyId})}" class="btn btn-sm btn-info">Items</a>
-                                <a th:href="@{/workorders/{orderId}/edit(orderId=${wo.orderId}, companyId=${wo.companyId})}" class="btn btn-sm btn-warning">Edit</a>
-                                <form th:action="@{/workorders/{orderId}/delete(orderId=${wo.orderId}, companyId=${wo.companyId}, siteId=${wo.siteId})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this work order?');">
+                                <!-- Fix Edit button URL -->
+                                <a th:href="@{/workOrder/workOrderDetail/{orderId}(orderId=${wo.orderId})}" 
+                                   class="btn btn-sm btn-warning">Edit</a>
+                                <form th:action="@{/workOrder/workOrderSave}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this work order?');">
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
                             </td>

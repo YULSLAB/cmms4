@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title th:text="#{inspection.result.title}">Inspection Result</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <h1 th:text="#{inspection.result.title}">Inspection Result</h1>
+        <form th:action="@{/inspection/resultSave}" th:object="${inspection}" method="post">
+            <input type="hidden" th:field="*{companyId}" />
+            <input type="hidden" th:field="*{inspectionId}" />
+            <div th:each="schedule,sStat : ${inspection.schedules}" class="card mb-3">
+                <div class="card-header">
+                    <span th:text="#{inspection.scheduleId}">Schedule</span> <span th:text="${schedule.scheduleId}"></span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <label class="form-label" th:text="#{inspection.scheduleDate}">Schedule Date</label>
+                            <input type="date" class="form-control" th:field="*{schedules[__${sStat.index}__].scheduleDate}" readonly />
+                            <input type="hidden" th:field="*{schedules[__${sStat.index}__].scheduleId}" />
+                            <input type="hidden" th:field="*{schedules[__${sStat.index}__].companyId}" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" th:text="#{inspection.executeDate}">Execute Date</label>
+                            <input type="date" class="form-control" th:field="*{schedules[__${sStat.index}__].executeDate}" />
+                        </div>
+                    </div>
+                    <table class="table table-sm">
+                        <thead>
+                        <tr><th th:text="#{inspection.items.name}">Name</th><th th:text="#{inspection.items.result}">Result</th></tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item,iStat : ${schedule.items}">
+                            <input type="hidden" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemId}" />
+                            <input type="hidden" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].companyId}" />
+                            <input type="hidden" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].scheduleId}" />
+                            <td th:text="${item.itemName}"></td>
+                            <td><input type="number" class="form-control form-control-sm" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemResult}" /></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary" th:text="#{common.save}">Save</button>
+                <a th:href="@{/inspection/inspectionList(companyId=${inspection.companyId},siteId=${inspection.siteId})}" class="btn btn-secondary" th:text="#{common.cancel}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
