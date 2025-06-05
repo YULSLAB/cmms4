@@ -53,7 +53,7 @@ public class InventoryMasterController {
         model.addAttribute("companyId", companyId);
         model.addAttribute("siteId", siteId);
         model.addAttribute("username", username);
-        return "inventoryMaster/inventoryList";
+        return "inventoryMaster/inventoryMasterList";
     }
 
     /**
@@ -62,7 +62,7 @@ public class InventoryMasterController {
      * @param session 세션
      * @return 뷰 이름
      */
-    @GetMapping("/inventoryForm")
+    @GetMapping("/inventoryMasterForm")
     public String form(Model model, HttpSession session) {
         // 새로운 재고 마스터 폼을 위한 모델 초기화
         model.addAttribute("inventoryMaster", new InventoryMaster());
@@ -72,7 +72,7 @@ public class InventoryMasterController {
         model.addAttribute("companyId", companyId);
         model.addAttribute("siteId", siteId);
         
-        return "inventoryMaster/inventoryForm";
+        return "inventoryMaster/inventoryMasterForm";
     }
 
     /** 재고 마스터 상세 조회
@@ -81,7 +81,7 @@ public class InventoryMasterController {
      * @param session 세션
      * @return 뷰 이름
      */
-    @GetMapping("/inventoryDetail/{inventoryId}")
+    @GetMapping("/inventoryMasterDetail/{inventoryId}")
     public String detail(@PathVariable Integer inventoryId,
                           Model model,
                           HttpSession session) {
@@ -91,10 +91,10 @@ public class InventoryMasterController {
         Optional<InventoryMaster> inventoryMasterOpt = inventoryMasterService.getInventoryMasterByInventoryId(companyId, inventoryId);
         if (inventoryMasterOpt.isPresent()) {
             model.addAttribute("inventoryMaster", inventoryMasterOpt.get());
-            return "inventoryMaster/inventoryDetail";
+            return "inventoryMaster/inventoryMasterDetail";
         } else {
             model.addAttribute("errorMessage", "Inventory Master not found with ID: " + inventoryId);
-            return "inventoryMaster/inventoryList";
+            return "inventoryMaster/inventoryMasterList";
         }
     }
 
@@ -119,7 +119,7 @@ public class InventoryMasterController {
 
         if (companyId == null || siteId == null || username == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Session information is missing.");
-            return "redirect:/inventoryMaster/inventoryList";
+            return "redirect:/inventoryMaster/inventoryMasterList";
         }
 
         inventoryMasterService.saveInventoryMaster(inventoryMaster, username);

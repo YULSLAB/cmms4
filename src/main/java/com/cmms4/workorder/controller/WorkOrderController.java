@@ -41,18 +41,22 @@ public class WorkOrderController {
 
     @GetMapping("/workOrderForm")
     public String form(Model model, HttpSession session) {
-        // 새로운 작업 지시서 폼을 위한 모델 초기화
-        model.addAttribute("workOrder", new WorkOrder());
-        // 작업 지시서 항목 리스트 초기화
-        model.addAttribute("workOrderItem", new WorkOrderItem());
-        // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
-        model.addAttribute("companyId", companyId);
-        model.addAttribute("siteId", siteId);
 
+        WorkOrder workOrder = new WorkOrder();
+        workOrder.setCompanyId(companyId);
+        workOrder.setSiteId(siteId);
+
+        // 최소 1개 항목 생성 (초기화용)
+        WorkOrderItem item = new WorkOrderItem();
+        item.setCompanyId(companyId);
+        workOrder.getItems().add(item);
+
+        model.addAttribute("workOrder", workOrder);
         return "workOrder/workOrderForm";
     }
+
 
     @GetMapping("/workOrderDetail/{orderId}")
     public String detail(@PathVariable Integer orderId,
@@ -84,7 +88,7 @@ public class WorkOrderController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to save work order: " + e.getMessage());
         }
-        return "redirect:/workOrder/list";
+        return "redirect:/workOrder/workOrderList";  // Fix redirect path
     }
 
     @PostMapping("/item/workOrderItemSave")
@@ -116,7 +120,7 @@ public class WorkOrderController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete work order: " + e.getMessage());
         }
-        return "redirect:/workOrder/list";
+        return "redirect:/workOrder/workOrderList";  // Fix redirect path
     }
 
     @PostMapping("/item/workOrderItemDelete/{orderId}/{itemId}")

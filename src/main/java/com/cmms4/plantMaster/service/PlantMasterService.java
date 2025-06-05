@@ -57,7 +57,7 @@ public class PlantMasterService {
     }
 
     @Transactional
-    public void deletePlantMaster(String companyId, String plantId) {
+    public void deletePlantMaster(String companyId, Integer plantId) {
         PlantMasterIdClass id = new PlantMasterIdClass(companyId, plantId);
         if (!plantMasterRepository.existsById(id)) {
             throw new RuntimeException("PlantMaster not found with id: " + id);

@@ -1,6 +1,8 @@
 package com.cmms4.inspection.controller;
 
 import com.cmms4.inspection.entity.Inspection;
+import com.cmms4.inspection.entity.InspectionItem;
+import com.cmms4.inspection.entity.InspectionSchedule;
 import com.cmms4.inspection.service.InspectionService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -51,26 +53,38 @@ public class InspectionController {
         model.addAttribute("siteId", siteId);
         return "inspection/inspectionList";
     }
-
+    
     /**
-     * 새로운 점검 등록 폼
+     * 점검 등록 폼
      * @param model 모델
      * @param session 세션
      * @return 뷰 이름
      */
     @GetMapping("/inspectionForm")
     public String form(Model model, HttpSession session) {
-        // Add empty Inspection object to model
-        model.addAttribute("inspection", new Inspection());
-    
-        // Add session attributes if needed
-        String companyId = (String) session.getAttribute("companyId");
-        String siteId = (String) session.getAttribute("siteId");
-        model.addAttribute("companyId", companyId);
-        model.addAttribute("siteId", siteId);
-        
-        return "inspection/inspectionForm";
-    }
+    String companyId = (String) session.getAttribute("companyId");
+    String siteId = (String) session.getAttribute("siteId");
+
+    Inspection inspection = new Inspection();
+    inspection.setCompanyId(companyId);
+    inspection.setSiteId(siteId);
+
+    // ✅ 기본 Schedule 1개 + 기본 Item 1개 추가
+    InspectionSchedule schedule = new InspectionSchedule();
+    schedule.setItems(new ArrayList<>());
+
+    InspectionItem item = new InspectionItem();
+    schedule.getItems().add(item);
+
+    inspection.setSchedules(new ArrayList<>());
+    inspection.getSchedules().add(schedule);
+
+    model.addAttribute("inspection", inspection);
+    model.addAttribute("companyId", companyId);
+    model.addAttribute("siteId", siteId);
+    return "inspection/inspectionForm";
+}
+
 
     /**
      * 점검 수정 폼

@@ -21,7 +21,7 @@ import java.util.Optional;
  * @since 2024-03-19
  */
 @Controller
-@RequestMapping("/plantMaster")
+@RequestMapping("/plantMaster")  // Base path is correct
 public class PlantMasterController {
 
     private final PlantMasterService plantMasterService;
@@ -56,7 +56,7 @@ public class PlantMasterController {
      * @param session
      * @return
      */
-    @GetMapping("/plantMasterForm")
+    @GetMapping("/plantMasterForm")  // Form path is correct
     public String form(Model model, HttpSession session) {
         // 새로운 설비 등록 폼을 위한 모델 초기화
         model.addAttribute("plantMaster", new PlantMaster());
@@ -65,7 +65,7 @@ public class PlantMasterController {
         String siteId = (String) session.getAttribute("siteId");
         model.addAttribute("companyId", companyId); 
         model.addAttribute("siteId", siteId);
-        return "plantMaster/plantMasterForm";
+        return "plantMaster/plantMasterForm";  // 정상
     }
 
     /**
@@ -114,7 +114,7 @@ public class PlantMasterController {
     }
 
     @PostMapping("/plantMasterDelete/{plantId}")
-    public String delete(@PathVariable String plantId,
+    public String delete(@PathVariable Integer plantId,  // Change from String to Integer
                                   HttpSession session,
                                   RedirectAttributes redirectAttributes) {
 
