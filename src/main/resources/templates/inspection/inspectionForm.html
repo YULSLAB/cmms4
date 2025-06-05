@@ -1,261 +1,132 @@
-<!--
-  Updated inspectionForm.html
-  ✅ 지원: 다중 Schedule 및 Schedule 별 다중 Item 입력
-  ✅ JavaScript 기반 schedule 동적 추가 (index 관리 포함)
--->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/defaultLayout}">
 <head>
     <title th:text="${inspection.inspectionId == null ? 'New Inspection' : 'Edit Inspection'}">Inspection Form</title>
-    <style>
-        .item-section {
-            border-left: 1px solid #dee2e6;
-            padding-left: 15px;
-        }
-    </style>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="container mt-4">
         <h1 th:text="${inspection.inspectionId == null ? '예방점검 신규' : '예방점검 수정: ' + inspection.inspectionId}">Inspection Form</h1>
-
-        <!-- Alert Messages -->
-        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-            <span th:text="${successMessage}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            <span th:text="${errorMessage}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-        <!-- Form Start -->
         <form th:action="@{/inspection/inspectionSave}" th:object="${inspection}" method="post">
             <input type="hidden" th:field="*{companyId}" />
             <input type="hidden" th:field="*{createBy}" />
             <input type="hidden" th:field="*{createDate}" />
             <input type="hidden" th:field="*{updateBy}" />
             <input type="hidden" th:field="*{updateDate}" />
-
-            <!-- Inspection Basic Info -->
             <div class="card mb-3">
                 <div class="card-header">Inspection Details</div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-2 mb-3">
-                            <label for="inspectionId" class="form-label">Inspection ID:</label>
-                            <input type="text" class="form-control" id="inspectionId" th:field="*{inspectionId}" readonly style="background-color: #e9ecef;" />
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">ID</label>
+                            <input type="text" class="form-control" th:field="*{inspectionId}" readonly />
                         </div>
-                        <div class="col-md-2 mb-3">
-                            <label for="plantId" class="form-label">Plant ID:</label>
+                        <div class="col-md-3 mb-2">
+                            <label class="form-label">Plant</label>
                             <input type="text" class="form-control" th:field="*{plantId}" />
                         </div>
-                        <div class="col-md-1 mb-3">
-                            <label for="siteId" class="form-label">Site ID:</label>
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">Site</label>
                             <input type="text" class="form-control" th:field="*{siteId}" required />
                         </div>
-                        <div class="col-md-1 mb-3">
-                            <label for="jobType" class="form-label">Job Type:</label>
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">Job Type</label>
                             <input type="text" class="form-control" th:field="*{jobType}" />
                         </div>
-                        <div class="col-md-1 mb-3">
-                            <label for="performDept" class="form-label">Perform Dept:</label>
+                        <div class="col-md-3 mb-2">
+                            <label class="form-label">Perform Dept</label>
                             <input type="text" class="form-control" th:field="*{performDept}" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-10 mb-3">
-                            <label for="inspectionName" class="form-label">Inspection Name:</label>
-                            <input type="text" class="form-control" th:field="*{inspectionName}" required />
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Inspection Name</label>
+                        <input type="text" class="form-control" th:field="*{inspectionName}" required />
                     </div>
-                    <div class="row">
-                        <div class="col-md-10 mb-3">
-                            <label for="note" class="form-label">Note:</label>
-                            <textarea class="form-control" th:field="*{note}" rows="3"></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10 mb-3">
-                            <label for="fileGroupId" class="form-label">File Group ID:</label>
-                            <input type="text" class="form-control" th:field="*{fileGroupId}" />
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Note</label>
+                        <textarea class="form-control" th:field="*{note}" rows="3"></textarea>
                     </div>
                 </div>
             </div>
-
-            <!-- Schedule and Items -->
             <div class="card mb-3">
                 <div class="card-header">Schedules & Items</div>
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Schedule Section -->
-                        <div class="col-md-3">
-                            <h5>Schedules</h5>
-                            <div id="scheduleContainer">
-                                <div th:each="schedule, sStat : ${inspection.schedules}" class="mb-3">
-                                    <input type="hidden" th:field="*{schedules[__${sStat.index}__].scheduleId}" />
-                                    <input type="hidden" th:field="*{schedules[__${sStat.index}__].companyId}" />
-                                    <input type="hidden" th:field="*{schedules[__${sStat.index}__].inspectionId}" />
-                                    <input type="date" class="form-control schedule-date"
-                                           th:field="*{schedules[__${sStat.index}__].scheduleDate}"
-                                           th:data-schedule-id="${schedule.scheduleId != null ? schedule.scheduleId : 'new-' + sStat.index}"
-                                           onchange="loadItems(this)" />
-                                    <button type="button" class="btn btn-danger btn-sm mt-1" 
-                                            onclick="removeSchedule(this)">Remove</button>
-                                </div>
+                <div class="card-body" id="scheduleContainer">
+                    <div th:each="schedule,sStat : ${inspection.schedules}" class="border rounded p-3 mb-3 schedule-block">
+                        <input type="hidden" th:field="*{schedules[__${sStat.index}__].scheduleId}" />
+                        <input type="hidden" th:field="*{schedules[__${sStat.index}__].companyId}" />
+                        <input type="hidden" th:field="*{schedules[__${sStat.index}__].inspectionId}" />
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <label class="form-label">Schedule Date</label>
+                                <input type="date" class="form-control" th:field="*{schedules[__${sStat.index}__].scheduleDate}" />
                             </div>
-                            <button type="button" class="btn btn-secondary btn-sm mt-2" 
-                                    onclick="addSchedule()">
-                                <i class="fas fa-plus"></i> Add Date
-                            </button>
-                        </div>
-                        <div class="col-md-9 item-section">
-                            <h5>Items</h5>
-                            <div id="itemsContainer">
-                                <div th:each="schedule, sStat : ${inspection.schedules}"
-                                     th:id="'items-' + (${schedule.scheduleId != null ? schedule.scheduleId : 'new-' + sStat.index})"
-                                     style="display:none;">
-                                    <table class="table table-sm">
-                                        <thead><tr><th>Item Name</th><th>Lower</th><th>Upper</th><th>Standard</th><th></th></tr></thead>
-                                        <tbody>
-                                            <tr th:each="item, iStat : ${schedule.items}">
-                                                <input type="hidden" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemId}" />
-                                                <td><input type="text" class="form-control form-control-sm" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemName}" /></td>
-                                                <td><input type="number" class="form-control form-control-sm" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemLower}" /></td>
-                                                <td><input type="number" class="form-control form-control-sm" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemUpper}" /></td>
-                                                <td><input type="text" class="form-control form-control-sm" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemStandard}" /></td>
-                                                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">Remove</button></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                            th:data-schedule-id="${schedule.scheduleId != null ? schedule.scheduleId : 'new-' + sStat.index}"
-                                            th:data-schedule-index="${sStat.index}"
-                                            onclick="addItemFromButton(this)">
-                                        Add Item
-                                    </button>
-                                </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Execute Date</label>
+                                <input type="date" class="form-control" th:field="*{schedules[__${sStat.index}__].executeDate}" />
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeSchedule(this)">Remove</button>
                             </div>
                         </div>
+                        <table class="table table-sm">
+                            <thead>
+                            <tr><th>Item Name</th><th>Lower</th><th>Upper</th><th>Standard</th><th></th></tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item,iStat : ${schedule.items}">
+                                <input type="hidden" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemId}" />
+                                <td><input type="text" class="form-control form-control-sm" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemName}" /></td>
+                                <td><input type="number" class="form-control form-control-sm" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemLower}" /></td>
+                                <td><input type="number" class="form-control form-control-sm" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemUpper}" /></td>
+                                <td><input type="text" class="form-control form-control-sm" th:field="*{schedules[__${sStat.index}__].items[__${iStat.index}__].itemStandard}" /></td>
+                                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">Remove</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="addItem(this, [[${sStat.index}]])">Add Item</button>
                     </div>
                 </div>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addSchedule()">Add Schedule</button>
             </div>
-
-            <!-- Submit -->
             <div class="mt-4">
                 <button type="submit" class="btn btn-primary">Save Inspection</button>
-                <a th:href="@{/inspection/inspectionList(companyId=${inspection.companyId}, siteId=${inspection.siteId})}" class="btn btn-secondary">Cancel</a>
+                <a th:href="@{/inspection/inspectionList(companyId=${inspection.companyId},siteId=${inspection.siteId})}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
 </div>
-
-<!-- JavaScript -->
 <script th:inline="javascript">
-    // Initialize counter with existing schedules count
-    let scheduleCounter = /*[[${inspection.schedules != null ? inspection.schedules.size() : 0}]]*/ 0;
-
-    function addSchedule() {
-        const container = document.getElementById('scheduleContainer');
-        const newScheduleId = 'new-' + scheduleCounter;
-        
-        const scheduleHTML = `
-            <div class="mb-3">
-                <input type="hidden" name="schedules[${scheduleCounter}].scheduleId" />
-                <input type="hidden" name="schedules[${scheduleCounter}].companyId" 
-                       value="${/*[[${inspection.companyId}]]*/ ''}" />
-                <input type="hidden" name="schedules[${scheduleCounter}].inspectionId" 
-                       value="${/*[[${inspection.inspectionId}]]*/ ''}" />
-                <input type="date" class="form-control schedule-date"
-                       name="schedules[${scheduleCounter}].scheduleDate"
-                       data-schedule-id="${newScheduleId}"
-                       onchange="loadItems(this)" required />
-                <button type="button" class="btn btn-danger btn-sm mt-1" 
-                        onclick="removeSchedule(this)">Remove</button>
-            </div>
-        `;
-        
-        container.insertAdjacentHTML('beforeend', scheduleHTML);
-
-        // Create corresponding items container
-        const itemsContainer = document.getElementById('itemsContainer');
-        const itemsHTML = `
-            <div id="items-${newScheduleId}" style="display:none;">
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>Item Name</th>
-                            <th>Lower</th>
-                            <th>Upper</th>
-                            <th>Standard</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-                <button type="button" class="btn btn-primary btn-sm" 
-                        onclick="addItem('${newScheduleId}', ${scheduleCounter})">
-                    Add Item
-                </button>
-            </div>
-        `;
-        
-        itemsContainer.insertAdjacentHTML('beforeend', itemsHTML);
-        scheduleCounter++;
-    }
-
-    function removeSchedule(button) {
-        const div = button.closest('.mb-3');
-        const dateInput = div.querySelector('.schedule-date');
-        const id = dateInput.dataset.scheduleId;
-        document.getElementById('items-' + id)?.remove();
-        div.remove();
-    }
-
-    function loadItems(dateInput) {
-        const scheduleId = dateInput.dataset.scheduleId;
-        document.querySelectorAll('[id^="items-"]').forEach(div => {
-            div.style.display = 'none';
-        });
-        const itemsDiv = document.getElementById('items-' + scheduleId);
-        if (itemsDiv) {
-            itemsDiv.style.display = 'block';
-        }
-    }
-
-    function addItem(scheduleId, scheduleIndex) {
-        const tbody = document.querySelector(`#items-${scheduleId} tbody`);
-        const itemCount = tbody.querySelectorAll('tr').length;
-        const row = `
-            <tr>
-                <input type="hidden" name="schedules[${scheduleIndex}].items[${itemCount}].itemId" />
-                <td><input type="text" class="form-control form-control-sm" name="schedules[${scheduleIndex}].items[${itemCount}].itemName" /></td>
-                <td><input type="number" class="form-control form-control-sm" name="schedules[${scheduleIndex}].items[${itemCount}].itemLower" /></td>
-                <td><input type="number" class="form-control form-control-sm" name="schedules[${scheduleIndex}].items[${itemCount}].itemUpper" /></td>
-                <td><input type="text" class="form-control form-control-sm" name="schedules[${scheduleIndex}].items[${itemCount}].itemStandard" /></td>
-                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">Remove</button></td>
-            </tr>
-        `;
-        tbody.insertAdjacentHTML('beforeend', row);
-    }
-
-    function removeItem(button) {
-        button.closest('tr').remove();
-    }
-
-    function addItemFromButton(button) {
-        const scheduleId = button.dataset.scheduleId;
-        const scheduleIndex = parseInt(button.dataset.scheduleIndex);
-        addItem(scheduleId, scheduleIndex);
-    }
-
-    window.addEventListener('DOMContentLoaded', function () {
-        const first = document.querySelector('.schedule-date');
-        if (first) loadItems(first);
-    });
+let scheduleCounter = /*[[${inspection.schedules != null ? inspection.schedules.size() : 0}]]*/ 0;
+function addSchedule(){
+    const container=document.getElementById('scheduleContainer');
+    const idx=scheduleCounter;
+    const html=`<div class="border rounded p-3 mb-3 schedule-block">
+        <input type="hidden" name="schedules[${idx}].scheduleId" />
+        <input type="hidden" name="schedules[${idx}].companyId" value="[[${inspection.companyId}]]" />
+        <input type="hidden" name="schedules[${idx}].inspectionId" value="[[${inspection.inspectionId}]]" />
+        <div class="row mb-2">
+            <div class="col-md-4"><input type="date" class="form-control" name="schedules[${idx}].scheduleDate" /></div>
+            <div class="col-md-4"><input type="date" class="form-control" name="schedules[${idx}].executeDate" /></div>
+            <div class="col-md-2 d-flex align-items-end"><button type="button" class="btn btn-danger btn-sm" onclick="removeSchedule(this)">Remove</button></div>
+        </div>
+        <table class="table table-sm"><thead><tr><th>Item Name</th><th>Lower</th><th>Upper</th><th>Standard</th><th></th></tr></thead><tbody></tbody></table>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addItem(this, ${idx})">Add Item</button>
+    </div>`;
+    container.insertAdjacentHTML('beforeend',html);
+    scheduleCounter++;
+}
+function removeSchedule(btn){btn.closest('.schedule-block').remove();}
+function addItem(button,idx){const tbody=button.parentElement.querySelector('tbody');const count=tbody.querySelectorAll('tr').length;const row=`<tr>
+    <input type="hidden" name="schedules[${idx}].items[${count}].itemId" />
+    <td><input type="text" class="form-control form-control-sm" name="schedules[${idx}].items[${count}].itemName" /></td>
+    <td><input type="number" class="form-control form-control-sm" name="schedules[${idx}].items[${count}].itemLower" /></td>
+    <td><input type="number" class="form-control form-control-sm" name="schedules[${idx}].items[${count}].itemUpper" /></td>
+    <td><input type="text" class="form-control form-control-sm" name="schedules[${idx}].items[${count}].itemStandard" /></td>
+    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">Remove</button></td>
+</tr>`;tbody.insertAdjacentHTML('beforeend',row);}
+function removeItem(btn){btn.closest('tr').remove();}
 </script>
 </body>
 </html>

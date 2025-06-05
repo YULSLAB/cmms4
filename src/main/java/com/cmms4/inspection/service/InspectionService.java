@@ -273,4 +273,19 @@ public class InspectionService {
             throw new RuntimeException("No Inspection Items found for Inspection ID: " + inspectionId);
         }
     }
+    /**
+     * 결과 저장
+     */
+    @Transactional
+    public void saveInspectionResults(Inspection inspection) {
+        if (inspection.getSchedules() == null) return;
+        for (InspectionSchedule schedule : inspection.getSchedules()) {
+            inspectionScheduleRepository.save(schedule);
+            if (schedule.getItems() != null) {
+                for (InspectionItem item : schedule.getItems()) {
+                    inspectionItemRepository.save(item);
+                }
+            }
+        }
+    }
 }
