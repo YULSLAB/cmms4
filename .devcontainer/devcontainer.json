@@ -1,5 +1,6 @@
 {
   "name": "Spring Boot Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/java:21",
   "build": {
     "dockerfile": "Dockerfile"
   },
