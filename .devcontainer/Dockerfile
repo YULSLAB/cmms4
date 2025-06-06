@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/java:17
+FROM mcr.microsoft.com/devcontainers/java:21
 
 # Install Gradle (optional if using wrapper)
 RUN apt-get update && apt-get install -y gradle
