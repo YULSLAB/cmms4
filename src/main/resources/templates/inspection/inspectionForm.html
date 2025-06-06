@@ -5,13 +5,53 @@
 <head>
     <title th:text="${inspection.inspectionId == null ? 'New Inspection' : 'Edit Inspection'}">Inspection Form</title>
     <style>
-        /* Optional: to ensure consistent spacing for remove buttons if needed */
         .action-col {
             width: 120px; /* Adjusted for icon + text */
             text-align: center;
         }
         .btn i { /* Add some margin if icon is next to text */
             margin-right: 0.25rem;
+        }
+
+        div[layout:fragment="content"] {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .form-control,
+        input[type="text"].form-control,
+        input[type="date"].form-control,
+        input[type="number"].form-control,
+        textarea.form-control {
+            border: 1px solid #000000;
+            font-size: 12pt;
+            color: #000000; /* Text color inside inputs */
+            background-color: #ffffff; /* Ensure input background is white */
+        }
+
+        /* Style for select elements, if any are used */
+        select.form-control {
+            border: 1px solid #000000;
+            font-size: 12pt;
+            color: #000000;
+            background-color: #ffffff;
+        }
+
+        /* Titles styling */
+        h1, .card-header { /* h1 for main form title, .card-header for card titles */
+            font-size: 14pt;
+            color: #000000;
+        }
+
+        /* Body text / labels styling */
+        label, .form-label, .card-body, .table th, .table td { /* Added .table th, .table td for table text */
+            font-size: 12pt;
+            color: #000000;
+        }
+
+        /* Ensure placeholder text in inputs also has a noticeable color if needed, though defaults are usually fine */
+        .form-control::placeholder {
+            color: #6c757d; /* Default Bootstrap placeholder color, adjust if needed */
         }
     </style>
 </head>
@@ -81,8 +121,7 @@
                             <div class="row mb-2">
                                 <div class="col-md-5">
                                     <label class="form-label">Schedule Date</label>
-                                    <input type="date" class="form-control" th:field="*{schedules[__${sStat.index}__].scheduleDate}"
-                                           th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" />
+                                    <input type="date" class="form-control" th:field="*{schedules[__${sStat.index}__].scheduleDate}" />
                                 </div>
                                 <div class="col-md-5">
                                     <label class="form-label" style="visibility: hidden;">Execute Date</label> <!-- Keep for alignment -->
@@ -117,12 +156,11 @@
                             </tr>
                         </thead>
                         <tbody id="itemContainerBody">
-                            <!-- Thymeleaf loop for existing items (assuming inspection.items is a direct list) -->
                             <tr th:each="item, iStat : *{items}">
                                 <input type="hidden" th:field="*{items[__${iStat.index}__].itemId}" />
                                 <input type="hidden" th:field="*{items[__${iStat.index}__].companyId}" />
                                 <input type="hidden" th:field="*{items[__${iStat.index}__].inspectionId}" />
-                                <td><input type="text" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemName}" th:value="' '" /></td>
+                                <td><input type="text" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemName}" /></td>
                                 <td><input type="number" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemLower}" /></td>
                                 <td><input type="number" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemUpper}" /></td>
                                 <td><input type="text" class="form-control form-control-sm" th:field="*{items[__${iStat.index}__].itemStandard}" /></td>

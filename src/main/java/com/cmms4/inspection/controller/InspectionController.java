@@ -79,7 +79,7 @@ public class InspectionController {
         // 5. 양방향 관계 설정
         defaultSchedule.setItems(items);
         inspection.setSchedules(schedules);
-        
+
         model.addAttribute("inspection", inspection);
         return "inspection/inspectionForm";
     }
