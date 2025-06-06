@@ -36,7 +36,7 @@
                                 <a th:href="@{/memo/memoForm/{id}(id=${memo.memoId})}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i> 수정
                                 </a>
-                                <form th:action="@{/memo/delete/{id}(id=${memo.memoId})}" method="post" style="display:inline;">
+                                <form th:action="@{/memo/memoDelete/{id}(id=${memo.memoId})}" method="post" style="display:inline;">
                                     <button type="submit" class="btn btn-danger btn-sm" 
                                             onclick="return confirm('정말 삭제하시겠습니까?');">
                                         <i class="fas fa-trash"></i> 삭제
@@ -76,7 +76,7 @@
                         </div>
                         <div class="card-body">
                             <!-- 댓글 작성 폼 -->
-                            <form th:action="@{/memo/comment/save}" method="post" class="mb-4">
+                            <form th:action="@{/memo/memoComment/save}" method="post" class="mb-4">
                                 <input type="hidden" name="memoId" th:value="${memo.memoId}">
                                 <div class="mb-3">
                                     <textarea name="notes" class="form-control" rows="3" required></textarea>
@@ -85,15 +85,26 @@
                             </form>
 
                             <!-- 댓글 목록 -->
-                            <div th:each="comment : ${commentList}" class="comment-item">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <strong th:text="${comment.createBy}"></strong>
-                                        <small class="text-muted ms-2" th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></small>
+                            <div th:if="${commentList != null and !commentList.empty}">
+                                    <div th:each="comment : ${commentList}" class="comment-item">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <form th:action="@{/memo/memoComment/delete}" method="post" style="display:inline;">
+                                                    <input type="hidden" name="memoId" th:value="${memo.memoId}">
+                                                    <input type="hidden" name="commentId" th:value="${comment.commentId}">
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('댓글을 삭제하시겠습니까?');">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2" th:text="${comment.notes}"></div>
                                     </div>
                                 </div>
-                                <div class="mt-2" th:text="${comment.notes}"></div>
-                            </div>
+                                <div th:if="${commentList == null or commentList.empty}" class="text-center text-muted my-3">
+                                    등록된 댓글이 없습니다.
+                                </div>
                         </div>
                     </div>
                 </div>

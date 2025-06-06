@@ -5,7 +5,6 @@
 <head>
     <title th:text="${inspection.inspectionId == null ? 'New Inspection' : 'Edit Inspection'}">Inspection Form</title>
     <style>
-        /* Existing styles */
         .action-col {
             width: 120px; /* Adjusted for icon + text */
             text-align: center;
@@ -14,7 +13,6 @@
             margin-right: 0.25rem;
         }
 
-        /* New styles based on requirements */
         div[layout:fragment="content"] {
             background-color: #ffffff;
             color: #000000;
@@ -55,7 +53,6 @@
         .form-control::placeholder {
             color: #6c757d; /* Default Bootstrap placeholder color, adjust if needed */
         }
-
     </style>
 </head>
 <body>
@@ -159,7 +156,6 @@
                             </tr>
                         </thead>
                         <tbody id="itemContainerBody">
-                            <!-- Thymeleaf loop for existing items (assuming inspection.items is a direct list) -->
                             <tr th:each="item, iStat : *{items}">
                                 <input type="hidden" th:field="*{items[__${iStat.index}__].itemId}" />
                                 <input type="hidden" th:field="*{items[__${iStat.index}__].companyId}" />

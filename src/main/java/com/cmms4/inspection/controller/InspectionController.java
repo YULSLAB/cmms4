@@ -50,26 +50,37 @@ public class InspectionController {
     public String form(Model model, HttpSession session) {
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
+        
+        // 1. Inspection 생성
         Inspection inspection = new Inspection();
         inspection.setCompanyId(companyId);
         inspection.setSiteId(siteId);
-
-        // Initialize schedules and items for the form
-        inspection.setSchedules(new ArrayList<>());
-        inspection.setItems(new ArrayList<>());
-
-        // Add one default empty schedule
+        
+        // 2. Schedule 생성
         InspectionSchedule defaultSchedule = new InspectionSchedule();
-        // defaultSchedule.setCompanyId(companyId); // Will be set during save
-        // defaultSchedule.setScheduleId(0); // Temporary ID, will be managed by service/DB
-        inspection.getSchedules().add(defaultSchedule);
-
-        // Add one default empty item to the global list for the form
-        inspection.getItems().add(new InspectionItem());
+        defaultSchedule.setCompanyId(companyId);
+        defaultSchedule.setScheduleId(1);
+        defaultSchedule.setScheduleDate(LocalDateTime.now());
+        defaultSchedule.setInspection(inspection);  // 양방향 관계 설정
+        
+        // 3. Item 생성
+        InspectionItem defaultItem = new InspectionItem();
+        defaultItem.setCompanyId(companyId);
+        defaultItem.setItemId(1);
+        defaultItem.setItemName(" ");
+        defaultItem.setInspectionSchedule(defaultSchedule);  // Schedule과 연결
+        
+        // 4. 컬렉션 초기화
+        List<InspectionSchedule> schedules = new ArrayList<>();
+        schedules.add(defaultSchedule);
+        List<InspectionItem> items = new ArrayList<>();
+        items.add(defaultItem);
+        
+        // 5. 양방향 관계 설정
+        defaultSchedule.setItems(items);
+        inspection.setSchedules(schedules);
 
         model.addAttribute("inspection", inspection);
-        model.addAttribute("companyId", companyId);
-        model.addAttribute("siteId", siteId);
         return "inspection/inspectionForm";
     }
 

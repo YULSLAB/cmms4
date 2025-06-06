@@ -17,10 +17,10 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
   
   messages:
-    basename: classpath:messages/messages
+    basename: messages/messages
     encoding: UTF-8
-    fallback-to-system-locale: true
-    cache-duration: 3600
+    fallback-to-system-locale: false
+    cache-duration: -1
     use-code-as-default-message: true
     default-locale: ko
   
@@ -38,8 +38,13 @@ server:
       force: true
 
 logging:
+  file:
+    name: logs/application.log
   level:
     org.springframework.security: DEBUG
     com.cmms4: DEBUG 
-    org.springframework.context.support: DEBUG
-    org.springframework.context.i18n: DEBUG
+    org.springframework.context.support: TRACE
+    org.springframework.context.i18n: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
