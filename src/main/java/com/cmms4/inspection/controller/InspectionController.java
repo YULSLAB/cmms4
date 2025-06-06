@@ -5,6 +5,7 @@ import com.cmms4.inspection.entity.InspectionItem;
 import com.cmms4.inspection.entity.InspectionSchedule;
 import com.cmms4.inspection.service.InspectionService;
 import jakarta.servlet.http.HttpSession;
+import java.util.List; // Added import
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -52,11 +53,20 @@ public class InspectionController {
         Inspection inspection = new Inspection();
         inspection.setCompanyId(companyId);
         inspection.setSiteId(siteId);
-        InspectionSchedule schedule = new InspectionSchedule();
-        schedule.setItems(new ArrayList<>());
-        schedule.getItems().add(new InspectionItem());
+
+        // Initialize schedules and items for the form
         inspection.setSchedules(new ArrayList<>());
-        inspection.getSchedules().add(schedule);
+        inspection.setItems(new ArrayList<>());
+
+        // Add one default empty schedule
+        InspectionSchedule defaultSchedule = new InspectionSchedule();
+        // defaultSchedule.setCompanyId(companyId); // Will be set during save
+        // defaultSchedule.setScheduleId(0); // Temporary ID, will be managed by service/DB
+        inspection.getSchedules().add(defaultSchedule);
+
+        // Add one default empty item to the global list for the form
+        inspection.getItems().add(new InspectionItem());
+
         model.addAttribute("inspection", inspection);
         model.addAttribute("companyId", companyId);
         model.addAttribute("siteId", siteId);
@@ -71,7 +81,36 @@ public class InspectionController {
         String companyId = (String) session.getAttribute("companyId");
         Optional<Inspection> inspectionOpt = inspectionService.getInspectionByInspectionId(companyId, inspectionId);
         if (inspectionOpt.isPresent()) {
-            model.addAttribute("inspection", inspectionOpt.get());
+            Inspection inspection = inspectionOpt.get();
+
+            // Populate the transient items list from the first schedule's items
+            if (inspection.getSchedules() != null && !inspection.getSchedules().isEmpty()) {
+                InspectionSchedule firstSchedule = inspection.getSchedules().get(0);
+                if (firstSchedule.getItems() != null && !firstSchedule.getItems().isEmpty()) {
+                    List<InspectionItem> templateItems = new ArrayList<>();
+                    for (InspectionItem item : firstSchedule.getItems()) {
+                        // Create new InspectionItem instances for the form to avoid modifying persisted entities directly
+                        InspectionItem newItem = new InspectionItem();
+                        newItem.setItemName(item.getItemName());
+                        newItem.setItemLower(item.getItemLower());
+                        newItem.setItemUpper(item.getItemUpper());
+                        newItem.setItemStandard(item.getItemStandard());
+                        newItem.setItemMethod(item.getItemMethod());
+                        newItem.setItemUnit(item.getItemUnit());
+                        newItem.setNotes(item.getNotes());
+                        // Do not copy IDs (itemId, scheduleId, inspectionId, companyId) as these are template items
+                        templateItems.add(newItem);
+                    }
+                    inspection.setItems(templateItems);
+                } else {
+                    inspection.setItems(new ArrayList<>()); // Initialize if no items in first schedule
+                    inspection.getItems().add(new InspectionItem()); // Add a default empty item if none exist
+                }
+            } else {
+                inspection.setItems(new ArrayList<>()); // Initialize if no schedules
+                inspection.getItems().add(new InspectionItem()); // Add a default empty item
+            }
+            model.addAttribute("inspection", inspection);
             return "inspection/inspectionForm";
         }
         return "redirect:/inspection/inspectionList";
@@ -80,18 +119,31 @@ public class InspectionController {
     /** 저장 */
     @PostMapping("/inspectionSave")
     public String saveInspection(@ModelAttribute Inspection inspection, HttpSession session) {
-        String companyId = (String) session.getAttribute("companyId");
-        String siteId = (String) session.getAttribute("siteId");
-        inspection.setCompanyId(companyId);
-        inspection.setSiteId(siteId);
+        String username = (String) session.getAttribute("username"); // Get username for service layer
+        // companyId and siteId are already part of the inspection object due to form binding.
+        // Ensure they are set if not bound automatically.
+        if (inspection.getCompanyId() == null) {
+            inspection.setCompanyId((String) session.getAttribute("companyId"));
+        }
+         if (inspection.getSiteId() == null && session.getAttribute("siteId") != null) {
+            inspection.setSiteId((String) session.getAttribute("siteId"));
+        }
+
         if (inspection.getInspectionId() == null) {
-            inspection.setCreateBy((String) session.getAttribute("username"));
+            inspection.setCreateBy(username);
             inspection.setCreateDate(LocalDateTime.now());
         } else {
-            inspection.setUpdateBy((String) session.getAttribute("username"));
+            // For existing inspections, make sure createBy and createDate are preserved if not part of the form
+            Optional<Inspection> existingInspectionOpt = inspectionService.getInspectionByInspectionId(inspection.getCompanyId(), inspection.getInspectionId());
+            if (existingInspectionOpt.isPresent()) {
+                Inspection existingInspection = existingInspectionOpt.get();
+                inspection.setCreateBy(existingInspection.getCreateBy());
+                inspection.setCreateDate(existingInspection.getCreateDate());
+            }
+            inspection.setUpdateBy(username);
             inspection.setUpdateDate(LocalDateTime.now());
         }
-        inspectionService.saveInspection(inspection, inspection.getCreateBy());
+        inspectionService.saveInspection(inspection, username); // Pass username
         return "redirect:/inspection/inspectionList";
     }
 

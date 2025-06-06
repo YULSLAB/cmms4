@@ -51,7 +51,7 @@ public class InspectionSchedule {
     })
     private Inspection inspection; // This will need Inspection in the same package or imported
 
-    @OneToMany(mappedBy = "inspectionSchedule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "inspectionSchedule", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<InspectionItem> items; // This will need InspectionItem in the same package or imported
 
     // equals and hashCode (only for PK fields)

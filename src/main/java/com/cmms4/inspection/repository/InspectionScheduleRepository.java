@@ -40,7 +40,17 @@ public interface InspectionScheduleRepository extends JpaRepository<InspectionSc
      * @param companyId 회사 ID
      * @param inspectionId 점검 ID
      */
-    void deleteByCompanyIdAndInspectionId(String companyId, Integer inspectionId);  
+    void deleteByCompanyIdAndInspectionId(String companyId, Integer inspectionId);
+
+    /**
+     * 회사 ID와 점검 ID에 해당하는 가장 큰 scheduleId를 조회합니다.
+     *
+     * @param companyId 회사 ID
+     * @param inspectionId 점검 ID
+     * @return 가장 큰 scheduleId (없으면 null)
+     */
+    @org.springframework.data.jpa.repository.Query("SELECT MAX(s.scheduleId) FROM InspectionSchedule s WHERE s.companyId = :companyId AND s.inspectionId = :inspectionId")
+    Integer findMaxScheduleIdByCompanyIdAndInspectionId(@org.springframework.data.repository.query.Param("companyId") String companyId, @org.springframework.data.repository.query.Param("inspectionId") Integer inspectionId);
 
     /**
      * 회사 ID, 점검 ID, 일정 ID로 점검 일정을 삭제합니다.
