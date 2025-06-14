@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -27,7 +28,7 @@ public class PlantMaster {
 
     @Id
     @Column(name = "plantId", length = 10, nullable = false)
-    private Integer plantId;
+    private String plantId;
 
     @Column(name = "plantName", length = 100)
     private String plantName;
@@ -42,7 +43,7 @@ public class PlantMaster {
     private String respDept;
 
     @Column(name = "installDate")
-    private LocalDateTime installDate;
+    private LocalDate installDate;
 
     @Column(name = "assetType", length = 5)
     private String assetType;
@@ -108,12 +109,12 @@ public class PlantMaster {
     public PlantMaster() {
     }
 
-    public PlantMaster(String companyId, Integer plantId) {
+    public PlantMaster(String companyId, String plantId) {
         this.companyId = companyId;
         this.plantId = plantId;
     }
 
-    public PlantMaster(String companyId, Integer plantId, String plantName) {
+    public PlantMaster(String companyId, String plantId, String plantName) {
         this.companyId = companyId;
         this.plantId = plantId;
         this.plantName = plantName;

@@ -1,13 +1,18 @@
 ######## CMMS4 개발 규칙 및 가이드
 ### 인프라 구성
-JDK 17
+JDK 21
 Spring Boot, gradle, groovy
-Maria DB
+Maria DB (현재 개발환경:10.6.21-MariaDB)
+springframework.boot' version '3.2.3'
+Gradle 8.14
 운영환경 : Ubuntu, 개발환경 : Windows
+Thymeleaf, tailwind css 적용
 
 ### 기본 원칙
-- 각 코드는 이름, 기능 설명, 생성자, 생성일, 수정자, 수정일, 파라미터 주석 포함
+- 각 코드는 시작 부분에 이름, 기능 설명, 생성자, 생성일, 수정자, 수정일, 파라미터 주석 포함
 - 각 단계별 주요 기능에 대해 간단한 설명 포함
+- 연계되는 프로그램에 대해 파라미터의 type과 name을 확인할 것
+- 코딩은 최대한 간단하게 명확한 방향으로 제시할 것. 유지보수성을 고려하여 디버깅이 어렵거나 코드가 난해하지 않도록 할 것 
 
 ### 파일 Naming Rule 
 - Controller: 폴더명Controller.java → 예: inspectionController.java
@@ -25,7 +30,6 @@ Maria DB
 
 ## 화면 Layout 구조 
 - 로그인 Login.html
-- 메인 Main.html
 - Header, body(왼쪽 site menu), footer 
 - Layout.html 구성, 각 페이지는 Layout.html을 상속속
 - 왼쪽 site menu의 toggle 구성 

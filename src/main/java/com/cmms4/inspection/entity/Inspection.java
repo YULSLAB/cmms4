@@ -30,19 +30,19 @@ public class Inspection {
 
     @Id
     @Column(name = "inspectionId", length = 10, nullable = false)
-    private Integer inspectionId;
+    private String inspectionId;
 
     @Column(name = "inspectionName", length = 100)
     private String inspectionName;
 
     @Column(name = "plantId", length = 10)
-    private Integer plantId;
+    private String plantId;
 
     @Column(name = "jobType", length = 5)
     private String jobType;
 
-    @Column(name = "performDept", length = 5)
-    private String performDept;
+    @Column(name = "dept", length = 5)
+    private String dept;
 
     @Column(name = "note", length = 200)
     private String note;
@@ -66,25 +66,7 @@ public class Inspection {
     private LocalDateTime updateDate;
 
     @OneToMany(mappedBy = "inspection", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<InspectionSchedule> schedules = new ArrayList<>();
-
-    @Transient
-    private List<InspectionItem> items = new ArrayList<>(); // For form binding
-
-    public Inspection(String companyId, Integer inspectionId) {
-        this.companyId = companyId;
-        this.inspectionId = inspectionId;
-        this.schedules = new ArrayList<>();
-        this.items = new ArrayList<>();
-    }
-
-    public Inspection(String companyId, Integer inspectionId, String inspectionName) {
-        this.companyId = companyId;
-        this.inspectionId = inspectionId;
-        this.inspectionName = inspectionName;
-        this.schedules = new ArrayList<>();
-        this.items = new ArrayList<>();
-    }
+    private List<InspectionItem> items = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -100,12 +82,4 @@ public class Inspection {
         return Objects.hash(companyId, inspectionId);
     }
 
-    // Getter and Setter for items
-    public List<InspectionItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<InspectionItem> items) {
-        this.items = items;
-    }
 }

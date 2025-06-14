@@ -71,7 +71,7 @@ public class MemoController {
     @GetMapping("/memoDetail/{memoId}")
     public String detail(Model model, 
                         HttpSession session, 
-                        @PathVariable Integer memoId,
+                        @PathVariable String memoId,
                         RedirectAttributes redirectAttributes) {
         // 1. Session validation first
         String companyId = (String) session.getAttribute("companyId");
@@ -149,7 +149,7 @@ public class MemoController {
      * @return 메모 목록 화면으로 리다이렉트
      */
     @PostMapping("/memoDelete/{memoId}")
-    public String delete(@PathVariable Integer memoId, HttpSession session) {
+    public String delete(@PathVariable String memoId, HttpSession session) {
         String username = (String) session.getAttribute("username");
         String companyId = (String) session.getAttribute("companyId");
         memoService.deleteMemo(companyId, memoId, username);
@@ -195,8 +195,8 @@ public class MemoController {
      * @return 메모 상세 화면으로 리다이렉트
      */
     @PostMapping("/memoComment/delete")
-    public String deleteComment(@RequestParam Integer commentId,
-                                @RequestParam Integer memoId,
+    public String deleteComment(@RequestParam String commentId,
+                                @RequestParam String memoId,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes) {
         try {

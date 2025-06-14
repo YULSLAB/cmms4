@@ -31,12 +31,12 @@ public class WorkOrderService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<WorkOrder> getWorkOrderByWorkOrderId(String companyId, Integer orderId) {
+    public Optional<WorkOrder> getWorkOrderByWorkOrderId(String companyId, String orderId) {
         return workOrderRepository.findByCompanyIdAndOrderId(companyId, orderId);
     }
 
     @Transactional(readOnly = true)
-    public List<WorkOrderItem> getWorkOrderItems(String companyId, Integer orderId) {
+    public List<WorkOrderItem> getWorkOrderItems(String companyId, String orderId) {
         return workOrderItemRepository.findByCompanyIdAndOrderIdOrderByItemIdAsc(companyId, orderId);
     }
 
@@ -46,10 +46,10 @@ public WorkOrder saveWorkOrder(WorkOrder workOrder, String username) {
     
     if (workOrder.getOrderId() == null) {
         // findMaxOrderIdByCompanyId로 메소드명 수정
-        Integer maxOrderId = workOrderRepository.findMaxOrderIdByCompanyId(workOrder.getCompanyId());
-        int newOrderId = (maxOrderId == null) ? 500000000 : maxOrderId + 1;
+        String maxOrderId = workOrderRepository.findMaxOrderIdByCompanyId(workOrder.getCompanyId());
+        int newOrderId = (maxOrderId == null) ? 500000000 : Integer.parseInt(maxOrderId) + 1;
 
-        workOrder.setOrderId(newOrderId);
+        workOrder.setOrderId(String.valueOf(newOrderId));
         workOrder.setCreateDate(now);
         workOrder.setCreateBy(username);
     }
@@ -63,18 +63,18 @@ public WorkOrder saveWorkOrder(WorkOrder workOrder, String username) {
     @Transactional
     public WorkOrderItem saveWorkOrderItem(WorkOrderItem workOrderItem, String username) {
  
-        Integer maxItemId = workOrderItemRepository.findMaxItemIdByCompanyIdAndOrderId(
-            workOrderItem.getCompanyId(), 
+        String maxItemId = workOrderItemRepository.findMaxItemIdByCompanyIdAndOrderId(
+            workOrderItem.getCompanyId(),
             workOrderItem.getOrderId()
         );
-        int newItemId = (maxItemId == null) ? 1 : maxItemId + 1;
-        workOrderItem.setItemId(newItemId);
-        
+        int newItemId = (maxItemId == null) ? 1 : Integer.parseInt(maxItemId) + 1;
+        workOrderItem.setItemId(String.valueOf(newItemId));
+
         return workOrderItemRepository.save(workOrderItem);
     }
 
     @Transactional
-    public void deleteWorkOrder(String companyId, Integer workOrderId) {
+    public void deleteWorkOrder(String companyId, String workOrderId) {
         Optional<WorkOrder> workOrderOpt = workOrderRepository.findByCompanyIdAndOrderId(
             companyId, 
             workOrderId
@@ -93,7 +93,7 @@ public WorkOrder saveWorkOrder(WorkOrder workOrder, String username) {
     }
 
     @Transactional
-    public void deleteWorkOrderItem(String companyId, Integer workOrderId, Integer itemId) {
+    public void deleteWorkOrderItem(String companyId, String workOrderId, String itemId) {
         Optional<WorkOrderItem> itemOpt = workOrderItemRepository.findByCompanyIdAndOrderIdAndItemId(
             companyId, 
             workOrderId, 

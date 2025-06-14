@@ -21,12 +21,12 @@ public interface WorkOrderItemRepository extends JpaRepository<WorkOrderItem, Wo
      *
      * @param companyId 회사 ID
      * @param orderId 작업지시 ID
-     * @return Optional<Integer> 최대 항목 ID
+     * @return Optional<String> 최대 항목 ID
      */
-    @Query("SELECT MAX(CAST(w.itemId AS integer)) FROM WorkOrderItem w WHERE w.companyId = :companyId AND w.orderId = :orderId")
-    Integer findMaxItemIdByCompanyIdAndOrderId(
+    @Query("SELECT MAX(w.itemId) FROM WorkOrderItem w WHERE w.companyId = :companyId AND w.orderId = :orderId")
+    String findMaxItemIdByCompanyIdAndOrderId(
         @Param("companyId") String companyId,
-        @Param("orderId") Integer orderId
+        @Param("orderId") String orderId
     );
     
     /**
@@ -37,7 +37,7 @@ public interface WorkOrderItemRepository extends JpaRepository<WorkOrderItem, Wo
      * @param orderId The ID of the work order.
      * @return A list of WorkOrderItem entities.
      */
-    List<WorkOrderItem> findByCompanyIdAndOrderIdOrderByItemIdAsc(String companyId, Integer orderId);
+    List<WorkOrderItem> findByCompanyIdAndOrderIdOrderByItemIdAsc(String companyId, String orderId);
 
     /**
      * Finds a specific WorkOrderItem by its full composite key.
@@ -47,5 +47,5 @@ public interface WorkOrderItemRepository extends JpaRepository<WorkOrderItem, Wo
      * @param itemId The ID of the item.
      * @return An Optional containing the WorkOrderItem if found, or empty otherwise.
      */
-    Optional<WorkOrderItem> findByCompanyIdAndOrderIdAndItemId(String companyId, Integer orderId, Integer itemId);
+    Optional<WorkOrderItem> findByCompanyIdAndOrderIdAndItemId(String companyId, String orderId, String itemId);
 }

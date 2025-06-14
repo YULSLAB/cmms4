@@ -59,7 +59,7 @@ public class WorkOrderController {
 
 
     @GetMapping("/workOrderDetail/{orderId}")
-    public String detail(@PathVariable Integer orderId,
+    public String detail(@PathVariable String orderId,
                                     HttpSession session,
                                     Model model) {
         // 세션에서 사용자 정보 가져오기
@@ -108,7 +108,7 @@ public class WorkOrderController {
     }
 
     @PostMapping("/workOrderDelete/{orderId}")
-    public String delete(@PathVariable Integer orderId,
+    public String delete(@PathVariable String orderId,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes) {
         
@@ -124,8 +124,8 @@ public class WorkOrderController {
     }
 
     @PostMapping("/item/workOrderItemDelete/{orderId}/{itemId}")
-    public String deleteItem(@PathVariable Integer orderId,
-                                    @PathVariable Integer itemId,
+    public String deleteItem(@PathVariable String orderId,
+                                    @PathVariable String itemId,
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes) {
         

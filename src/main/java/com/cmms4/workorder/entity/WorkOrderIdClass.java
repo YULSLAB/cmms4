@@ -12,13 +12,13 @@ import java.util.Objects;
  */
 public class WorkOrderIdClass implements Serializable {
     private String companyId;
-    private Integer orderId;
+    private String orderId;
 
     // Constructors
     public WorkOrderIdClass() {
     }
 
-    public WorkOrderIdClass(String companyId, Integer orderId) {
+    public WorkOrderIdClass(String companyId, String orderId) {
         this.companyId = companyId;
         this.orderId = orderId;
     }
@@ -32,11 +32,11 @@ public class WorkOrderIdClass implements Serializable {
         this.companyId = companyId;
     }
 
-    public Integer getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 

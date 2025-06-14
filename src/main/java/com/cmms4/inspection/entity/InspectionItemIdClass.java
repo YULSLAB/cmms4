@@ -5,18 +5,16 @@ import java.util.Objects;
 
 public class InspectionItemIdClass implements Serializable {
     private String companyId;
-    private Integer inspectionId;
-    private Integer scheduleId;
-    private Integer itemId; // DB is CHAR(2)
+    private String inspectionId;
+    private String itemId; // DB is CHAR(2)
 
     // Constructors
     public InspectionItemIdClass() {
     }
 
-    public InspectionItemIdClass(String companyId, Integer inspectionId, Integer scheduleId, Integer itemId) {
+    public InspectionItemIdClass(String companyId, String inspectionId, String itemId) {
         this.companyId = companyId;
         this.inspectionId = inspectionId;
-        this.scheduleId = scheduleId;
         this.itemId = itemId;
     }
 
@@ -29,27 +27,19 @@ public class InspectionItemIdClass implements Serializable {
         this.companyId = companyId;
     }
 
-    public Integer getInspectionId() {
+    public String getInspectionId() {
         return inspectionId;
     }
 
-    public void setInspectionId(Integer inspectionId) {
+    public void setInspectionId(String inspectionId) {
         this.inspectionId = inspectionId;
     }
 
-    public Integer getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(Integer scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public Integer getItemId() {
+    public String getItemId() {
         return itemId;
     }
 
-    public void setItemId(Integer itemId) {
+    public void setItemId(String itemId) {
         this.itemId = itemId;
     }
 
@@ -61,12 +51,11 @@ public class InspectionItemIdClass implements Serializable {
         InspectionItemIdClass that = (InspectionItemIdClass) o;
         return Objects.equals(companyId, that.companyId) &&
                Objects.equals(inspectionId, that.inspectionId) &&
-               Objects.equals(scheduleId, that.scheduleId) &&
                Objects.equals(itemId, that.itemId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(companyId, inspectionId, scheduleId, itemId);
+        return Objects.hash(companyId, inspectionId, itemId);
     }
 }

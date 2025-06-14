@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class PlantMasterIdClass implements Serializable {
     private String companyId;
-    private Integer plantId;
+    private String plantId;
 
     // Constructors
     public PlantMasterIdClass() {
     }
 
-    public PlantMasterIdClass(String companyId, Integer plantId) {
+    public PlantMasterIdClass(String companyId, String plantId) {
         this.companyId = companyId;
         this.plantId = plantId;
     }
@@ -25,11 +25,11 @@ public class PlantMasterIdClass implements Serializable {
         this.companyId = companyId;
     }
 
-    public Integer getPlantId() {
+    public String getPlantId() {
         return plantId;
     }
 
-    public void setPlantId(Integer plantId) {
+    public void setPlantId(String plantId) {
         this.plantId = plantId;
     }
 

@@ -22,7 +22,7 @@ public interface InventoryMasterRepository extends JpaRepository<InventoryMaster
      * @return Optional<String> 최대 inventory ID
      */
     @Query("SELECT MAX(p.inventoryId) FROM InventoryMaster p WHERE p.companyId = :companyId")
-    Integer findMaxInventoryIdByCompanyId(@Param("companyId") String companyId);
+    String findMaxInventoryIdByCompanyId(@Param("companyId") String companyId);
 
     /**
      * Finds a page of non-deleted InventoryMaster entries for a given companyId and siteId.
@@ -52,6 +52,6 @@ public interface InventoryMasterRepository extends JpaRepository<InventoryMaster
      * @param deleteMark The mark indicating a deleted item (e.g., "Y").
      * @return An Optional containing the non-deleted InventoryMaster if found, or empty otherwise.
      */
-    Optional<InventoryMaster> findByCompanyIdAndInventoryIdAndDeleteMarkIsNull(String companyId, Integer inventoryId);
+    Optional<InventoryMaster> findByCompanyIdAndInventoryIdAndDeleteMarkIsNull(String companyId, String inventoryId);
 
 }

@@ -25,17 +25,17 @@ public class MemoComment {
 
     @Id
     @Column(name = "memoId", nullable = false)
-    private Integer memoId;
+    private String memoId;
 
     @Id
     @Column(name = "commentId", nullable = false)
-    private Integer commentId;
+    private String commentId;
 
     @Column(name = "notes", length = 200)
     private String notes;
 
     @Column(name = "parentId")
-    private Integer parentId;
+    private String parentId;
 
     @Column(name = "depth")
     private Integer depth;
@@ -54,13 +54,13 @@ public class MemoComment {
     public MemoComment() {
     }
 
-    public MemoComment(String companyId, Integer memoId, Integer commentId) {
+    public MemoComment(String companyId, String memoId, String commentId) {
         this.companyId = companyId;
         this.memoId = memoId;
         this.commentId = commentId;
     }
 
-    public MemoComment(String companyId, Integer memoId, Integer commentId, String notes) {
+    public MemoComment(String companyId, String memoId, String commentId, String notes) {
         this.companyId = companyId;
         this.memoId = memoId;
         this.commentId = commentId;

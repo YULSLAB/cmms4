@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class InspectionIdClass implements Serializable {
     private String companyId;
-    private Integer inspectionId;
+    private String inspectionId;
 
     // Constructors
     public InspectionIdClass() {
     }
 
-    public InspectionIdClass(String companyId, Integer inspectionId) {
+    public InspectionIdClass(String companyId, String inspectionId) {
         this.companyId = companyId;
         this.inspectionId = inspectionId;
     }
@@ -25,10 +25,10 @@ public class InspectionIdClass implements Serializable {
         this.companyId = companyId;
     }
 
-    public Integer getInspectionId() {
+    public String getInspectionId() {
         return inspectionId;
     }
-    public void setInspectionId(Integer inspectionId) {
+    public void setInspectionId(String inspectionId) {
         this.inspectionId = inspectionId;
     }
 

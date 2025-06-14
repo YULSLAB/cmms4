@@ -12,6 +12,13 @@ import java.util.Optional;
 // Imports for InspectionItem and InspectionItemIdClass are not strictly needed here
 // as they are in the same package.
 
+/**
+ * cmms4 - InspectionItemRepository
+ * 점검 항목 관리 레포지토리
+ * 
+ * @author cmms4
+ * @since 2024-03-19
+ */
 @Repository
 public interface InspectionItemRepository extends JpaRepository<InspectionItem, InspectionItemIdClass> {
 
@@ -21,44 +28,41 @@ public interface InspectionItemRepository extends JpaRepository<InspectionItem, 
      *
      * @param companyId The ID of the company.
      * @param inspectionId The ID of the inspection.
-     * @param scheduleId The ID of the schedule.
      * @return A list of InspectionItem entities.
      */
-    List<InspectionItem> findByCompanyIdAndInspectionIdAndScheduleIdOrderByItemIdAsc(String companyId, Integer inspectionId, Integer scheduleId);
+    List<InspectionItem> findByCompanyIdAndInspectionIdOrderByItemIdAsc(String companyId, String inspectionId);
 
     /**
      * Finds a specific InspectionItem by its full composite key.
      *
      * @param companyId The ID of the company.
      * @param inspectionId The ID of the inspection.
-     * @param scheduleId The ID of the schedule.
      * @param itemId The ID of the item.
      * @return An Optional containing the InspectionItem if found, or empty otherwise.
      */
-    Optional<InspectionItem> findByCompanyIdAndInspectionIdAndScheduleIdAndItemId(String companyId, Integer inspectionId, Integer scheduleId, Integer itemId);
-    
+    Optional<InspectionItem> findByCompanyIdAndInspectionIdAndItemId(String companyId, String inspectionId, String itemId);
+
     /**
      * Deletes all InspectionItem entries for a given companyId and inspectionId.
      *
      * @param companyId The ID of the company.
      * @param inspectionId The ID of the inspection.
      */
-    void deleteByCompanyIdAndInspectionId(String companyId, Integer inspectionId);
-
-    /**
-     * companyId, inspectionId, scheduleId 로 삭제
-     * @param companyId 회사 ID
-     * @param inspectionId 점검 ID
-     * @param scheduleId 일정 ID
-     */
-    void deleteByCompanyIdAndInspectionIdAndScheduleId(String companyId, Integer inspectionId, Integer scheduleId);
+    void deleteByCompanyIdAndInspectionId(String companyId, String inspectionId);
 
     /**
      * companyId, inspectionId, scheduleId, itemId 로 삭제
      * @param companyId 회사 ID 
      * @param inspectionId 점검 ID
-     * @param scheduleId 일정 ID
      * @param itemId 항목 ID
      */
-    void deleteByCompanyIdAndInspectionIdAndScheduleIdAndItemId(String companyId, Integer inspectionId, Integer scheduleId, Integer itemId);
- }
+    void deleteByCompanyIdAndInspectionIdAndItemId(String companyId, String inspectionId, String itemId);
+
+    /**
+     * 회사 ID와 점검 ID로 점검 항목 목록을 조회
+     * @param companyId 회사 ID
+     * @param inspectionId 점검 ID
+     * @return 점검 항목 목록
+     */
+    List<InspectionItem> findByCompanyIdAndInspectionId(String companyId, String inspectionId);
+}

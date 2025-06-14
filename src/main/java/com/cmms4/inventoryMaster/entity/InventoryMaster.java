@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * cmms4 - InventoryMaster
@@ -26,7 +27,7 @@ public class InventoryMaster {
 
     @Id
     @Column(name = "inventoryId", length = 10, nullable = false)
-    private Integer inventoryId;
+    private String inventoryId;
 
     @Column(name = "inventoryName", length = 100)
     private String inventoryName;
@@ -41,7 +42,7 @@ public class InventoryMaster {
     private String assetType;
 
     @Column(name = "purchaseDate")
-    private LocalDateTime purchaseDate;
+    private LocalDate purchaseDate;
 
     @Column(name = "purchaseValue", precision = 15, scale = 2)
     private BigDecimal purchaseValue;
@@ -86,12 +87,12 @@ public class InventoryMaster {
     public InventoryMaster() {
     }
 
-    public InventoryMaster(String companyId, Integer inventoryId) {
+    public InventoryMaster(String companyId, String inventoryId) {
         this.companyId = companyId;
         this.inventoryId = inventoryId;
     }
 
-    public InventoryMaster(String companyId, Integer inventoryId, String inventoryName) {
+    public InventoryMaster(String companyId, String inventoryId, String inventoryName) {
         this.companyId = companyId;
         this.inventoryId = inventoryId;
         this.inventoryName = inventoryName;

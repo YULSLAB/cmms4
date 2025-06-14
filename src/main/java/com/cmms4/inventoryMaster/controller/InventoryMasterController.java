@@ -82,7 +82,7 @@ public class InventoryMasterController {
      * @return 뷰 이름
      */
     @GetMapping("/inventoryMasterDetail/{inventoryId}")
-    public String detail(@PathVariable Integer inventoryId,
+    public String detail(@PathVariable String inventoryId,
                           Model model,
                           HttpSession session) {
         // 세션에서 사용자 정보 가져오기

@@ -27,9 +27,9 @@ public interface MemoCommentRepository extends JpaRepository<MemoComment, MemoCo
      * @return 최대 댓글 ID
      */
     @Query("SELECT MAX(m.commentId) FROM MemoComment m WHERE m.companyId = :companyId AND m.memoId = :memoId")
-    Integer findMaxCommentIdByCompanyIdAndMemoId(
+    String findMaxCommentIdByCompanyIdAndMemoId(
         @Param("companyId") String companyId, 
-        @Param("memoId") Integer memoId
+        @Param("memoId") String memoId
     );
     
     /** 특정 메모의 특정 댓글을 조회합니다
@@ -39,7 +39,7 @@ public interface MemoCommentRepository extends JpaRepository<MemoComment, MemoCo
      * @return 댓글 정보 (Optional)
      */
     Optional<MemoComment> findByCompanyIdAndMemoIdAndCommentId(
-        String companyId, Integer memoId, Integer commentId
+        String companyId, String memoId, String commentId
     );
 
     /**
@@ -49,7 +49,7 @@ public interface MemoCommentRepository extends JpaRepository<MemoComment, MemoCo
      * @param memoId 메모 ID
      * @return 댓글 목록
      */
-    List<MemoComment> findByCompanyIdAndMemoIdOrderBySortOrderAsc(String companyId, Integer memoId);
+    List<MemoComment> findByCompanyIdAndMemoIdOrderBySortOrderAsc(String companyId, String memoId);
     
     /**
      * 특정 메모의 댓글 수를 조회합니다.
@@ -58,5 +58,5 @@ public interface MemoCommentRepository extends JpaRepository<MemoComment, MemoCo
      * @param memoId 메모 ID
      * @return 댓글 수
      */
-    long countByCompanyIdAndMemoId(String companyId, Integer memoId);
+    long countByCompanyIdAndMemoId(String companyId, String memoId);
 }

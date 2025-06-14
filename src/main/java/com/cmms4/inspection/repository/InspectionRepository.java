@@ -25,7 +25,7 @@ public interface InspectionRepository extends JpaRepository<Inspection, Inspecti
      * @return Optional<String> 최대 inspection ID
      */
     @Query("SELECT MAX(p.inspectionId) FROM Inspection p WHERE p.companyId = :companyId")
-    Integer findMaxInspectionIdByCompanyId(@Param("companyId") String companyId);
+    String findMaxInspectionIdByCompanyId(@Param("companyId") String companyId);
 
     /**
      * 회사 ID와 점검 ID로 특정 점검을 조회합니다.
@@ -34,8 +34,8 @@ public interface InspectionRepository extends JpaRepository<Inspection, Inspecti
      * @param inspectionId 점검 ID
      * @return 점검 엔티티 (Optional)
      */
-    Optional<Inspection> findByCompanyIdAndInspectionId(String companyId, Integer inspectionId);
-  
+    Optional<Inspection> findByCompanyIdAndInspectionId(String companyId, String inspectionId);
+
     /**
      * 회사 ID와 사이트 ID로 점검 목록을 페이징하여 조회합니다.
      *
@@ -50,11 +50,11 @@ public interface InspectionRepository extends JpaRepository<Inspection, Inspecti
      * 회사 ID와 수행 부서로 점검 목록을 페이징하여 조회합니다.
      *
      * @param companyId 회사 ID
-     * @param performDept 수행 부서
+     * @param Dept 수행 부서
      * @param pageable 페이징 정보
      * @return 점검 엔티티 페이지
      */
-    Page<Inspection> findByCompanyIdAndPerformDept(String companyId, String performDept, Pageable pageable);
+    Page<Inspection> findByCompanyIdAndDept(String companyId, String Dept, Pageable pageable);
 
     /**
      * 회사 ID와 점검 이름으로 점검 목록을 페이징하여 조회합니다.
@@ -73,6 +73,13 @@ public interface InspectionRepository extends JpaRepository<Inspection, Inspecti
      * @param plantId 플랜트 ID
      * @return 점검 엔티티 목록
      */
-    Page<Inspection> findByCompanyIdAndPlantId(String companyId, Integer plantId, Pageable pageable);
+    Page<Inspection> findByCompanyIdAndPlantId(String companyId, String plantId, Pageable pageable);
 
+    /**
+     * 회사 ID와 점검 ID로 점검을 삭제합니다.
+     *
+     * @param companyId 회사 ID
+     * @param inspectionId 점검 ID
+     */
+    void deleteByCompanyIdAndInspectionId(String companyId, String inspectionId);
 }

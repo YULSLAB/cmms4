@@ -31,7 +31,7 @@ public interface MemoRepository extends JpaRepository<Memo, MemoIdClass> {
      * @return 최대 메모 ID (없으면 null)
      */
     @Query("SELECT MAX(m.memoId) FROM Memo m WHERE m.companyId = :companyId")
-    Integer findMaxMemoIdByCompanyId(@Param("companyId") String companyId);
+    String findMaxMemoIdByCompanyId(@Param("companyId") String companyId);
 
     /**
      * 특정 메모를 조회합니다. (삭제되지 않은 메모만)
@@ -43,7 +43,7 @@ public interface MemoRepository extends JpaRepository<Memo, MemoIdClass> {
      */
     Optional<Memo> findByCompanyIdAndMemoId(
         String companyId, 
-        Integer memoId
+        String memoId
     );
 
     /**

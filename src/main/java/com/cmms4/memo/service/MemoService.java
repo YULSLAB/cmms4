@@ -73,7 +73,7 @@ public class MemoService {
      * @param memoId 메모 ID
      * @return 메모
      */
-    public Optional<Memo> getMemo(String companyId, Integer memoId) {
+    public Optional<Memo> getMemo(String companyId, String memoId) {
         Optional<Memo> memoOpt = memoRepository.findByCompanyIdAndMemoId(companyId, memoId);
         
         // 조회된 메모가 있으면 조회수 증가
@@ -100,10 +100,10 @@ public class MemoService {
 
             // 신규 등록
             // 회사별 최대 메모ID 조회 후 +1 값을 새 메모ID로 설정
-            Integer maxMemoId = memoRepository.findMaxMemoIdByCompanyId(memo.getCompanyId());
-            int newMemoId = (maxMemoId == null) ? 1 : maxMemoId + 1;
+            String maxMemoId = memoRepository.findMaxMemoIdByCompanyId(memo.getCompanyId());
+            int newMemoId = (maxMemoId == null) ? 1 : Integer.parseInt(maxMemoId) + 1;
 
-            memo.setMemoId(newMemoId);
+            memo.setMemoId(String.valueOf(newMemoId));
             memo.setCreateBy(username);
             memo.setCreateDate(now);
             memo.setViewCount(0);
@@ -125,7 +125,7 @@ public class MemoService {
      * @param username 사용자 ID
      */
     @Transactional
-    public void deleteMemo(String companyId, Integer memoId, String username) {
+    public void deleteMemo(String companyId, String memoId, String username) {
         Optional<Memo> memoOpt = memoRepository.findByCompanyIdAndMemoId(companyId, memoId);
         if (memoOpt.isPresent()) {
             // 1. First delete all related comments
@@ -147,7 +147,7 @@ public class MemoService {
      * @param memoId 메모 ID
      * @return 댓글 목록
      */
-    public List<MemoComment> getMemoCommentList(String companyId, Integer memoId) {
+    public List<MemoComment> getMemoCommentList(String companyId, String memoId) {
         return memoCommentRepository.findByCompanyIdAndMemoIdOrderBySortOrderAsc(companyId, memoId);
     }
 
@@ -159,19 +159,19 @@ public class MemoService {
      */
     @Transactional
     public MemoComment saveMemoComment(MemoComment comment) {
-        Integer maxCommentId = memoCommentRepository.findMaxCommentIdByCompanyIdAndMemoId(
+        String maxCommentId = memoCommentRepository.findMaxCommentIdByCompanyIdAndMemoId(
             comment.getCompanyId(),
             comment.getMemoId()
         );
-        int newCommentId = (maxCommentId == null) ? 1 : maxCommentId + 1;
-        comment.setCommentId(newCommentId);
+        int newCommentId = (maxCommentId == null) ? 1 : Integer.parseInt(maxCommentId) + 1;
+        comment.setCommentId(String.valueOf(newCommentId));
         comment.setSortOrder(newCommentId); // 댓글 ID를 정렬 순서로 사용
         return memoCommentRepository.save(comment);
     }
 
     /** 메모 댓글을 삭제합니다. */
     @Transactional
-    public void deleteMemoComment(String companyId, Integer memoId, Integer commentId) {
+    public void deleteMemoComment(String companyId, String memoId, String commentId) {
         Optional<MemoComment> commentOpt = memoCommentRepository.findByCompanyIdAndMemoIdAndCommentId(
             companyId, memoId, commentId
         );

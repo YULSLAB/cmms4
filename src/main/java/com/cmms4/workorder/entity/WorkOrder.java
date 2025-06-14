@@ -4,6 +4,7 @@ import com.cmms4.plantMaster.entity.PlantMaster;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,16 +32,16 @@ public class WorkOrder {
 
     @Id
     @Column(name = "orderId", length = 10, nullable = false)
-    private Integer orderId;
+    private String orderId;
 
     @Column(name = "orderName", length = 100)
     private String orderName;
 
     @Column(name = "plantId", length = 10)
-    private Integer plantId;
+    private String plantId;
 
     @Column(name = "memoId", length = 10)
-    private Integer memoId;
+    private String memoId;
 
     @Column(name = "jobType", length = 5)
     private String jobType;
@@ -49,7 +50,7 @@ public class WorkOrder {
     private String performDept;
 
     @Column(name = "scheduleDate")
-    private LocalDateTime scheduleDate;
+    private LocalDate scheduleDate;
 
     @Column(name = "scheduleMM", precision = 15, scale = 2)
     private BigDecimal scheduleMM;
@@ -61,7 +62,7 @@ public class WorkOrder {
     private String scheduleHSE;
 
     @Column(name = "executeDate")
-    private LocalDateTime executeDate;
+    private LocalDate executeDate;
 
     @Column(name = "executeMM", precision = 15, scale = 2)
     private BigDecimal executeMM;

@@ -28,15 +28,11 @@ public class InspectionItem {
 
     @Id
     @Column(name = "inspectionId", length = 10, nullable = false)
-    private Integer inspectionId;
-
-    @Id
-    @Column(name = "scheduleId", length = 2, nullable = false)
-    private Integer scheduleId;
+    private String inspectionId;
 
     @Id
     @Column(name = "itemId", length = 2, nullable = false)
-    private Integer itemId;
+    private String itemId;
 
     @Column(name = "itemName", length = 100)
     private String itemName;
@@ -66,10 +62,9 @@ public class InspectionItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "companyId", referencedColumnName = "companyId", insertable = false, updatable = false),
-        @JoinColumn(name = "inspectionId", referencedColumnName = "inspectionId", insertable = false, updatable = false),
-        @JoinColumn(name = "scheduleId", referencedColumnName = "scheduleId", insertable = false, updatable = false)
+        @JoinColumn(name = "inspectionId", referencedColumnName = "inspectionId", insertable = false, updatable = false)
     })
-    private InspectionSchedule inspectionSchedule; // This will need InspectionSchedule in the same package or imported
+    private Inspection inspection; // This will need Inspection in the same package or imported
 
     @Override
     public boolean equals(Object o) {
@@ -78,12 +73,11 @@ public class InspectionItem {
         InspectionItem that = (InspectionItem) o;
         return Objects.equals(companyId, that.companyId) &&
                Objects.equals(inspectionId, that.inspectionId) &&
-               Objects.equals(scheduleId, that.scheduleId) &&
                Objects.equals(itemId, that.itemId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(companyId, inspectionId, scheduleId, itemId);
+        return Objects.hash(companyId, inspectionId, itemId);
     }
 }

@@ -94,12 +94,12 @@
 | 필드명               | 데이터 타입   | 설명                                              |
 |:---------------------|:--------------|:--------------------------------------------------|
 | companyId            | CHAR(5)       | 회사 ID (PK)                                      |
-| plantId              | INT(10)      | 설비 ID (PK)                                      |
+| plantId              | CHAR(10)      | 설비 ID (PK)                                      |
 | plantName            | VARCHAR(100)  | 설비명                                            |
 | plantLoc             | VARCHAR(100)  | 설비위치                                          |
 | funcId               | CHAR(4)       | 기능 위치 코드(설비에 대한 기능분류류)                                    |
 | respDept             | CHAR(5)       | 관리 부서 ID                                      |
-| installDate          | Datetime      | 설치일                                            |
+| installDate          | Date      | 설치일                                            |
 | assetType            | Char(5)       | 자산 타입                                         |
 | depreMethod          | Char(5)       | 상각방법                                          |
 | acquitionValue       | Decimal(15,2) | 취득가                                            |
@@ -125,12 +125,12 @@
 | 필드명            | 데이터 타입   | 설명                                              |
 |:------------------|:--------------|:--------------------------------------------------|
 | companyId         | CHAR(5)       | 회사 ID (PK)                                      |
-| inventoryId       | INT(10)      | 재고 ID (PK)                                      |
+| inventoryId       | CHAR(10)      | 재고 ID (PK)                                      |
 | inventoryName     | VARCHAR(100)  | 재고명                                            |
 | inventoryLoc      | VARCHAR(100)  | 재고 위치                                         |
 | respDept          | CHAR(5)       | 관리 부서 ID                                      |
 | assetType         | Char(5)       | 자산 타입                                         |
-| purchaseDate      | Datetime      | 구매일                                            |
+| purchaseDate      | Date      | 구매일                                            |
 | purchaseValue     | Decimal(15,2) | 취득가                                            |
 | manufacturer      | Varchar(100)  | 제조사                                            |
 | manufacturerModel | Varchar(100)  | 모델넘버                                          |
@@ -151,7 +151,7 @@
 | 필드명         | 데이터 타입   | 설명             |
 |:---------------|:--------------|:-----------------|
 | companyId      | CHAR(5)       | 회사 ID (PK)     |
-| inspectionId   | INT(10)      | 점검계획 ID (PK) |
+| inspectionId   | CHAR(10)      | 점검계획 ID (PK) |
 | inspectionName | Varchar(100)  | 예방점검 이름    |
 | plantId        | INT(10)      | 설비 ID          |
 | jobType        | CHAR(5)       | 작업 유형        |
@@ -170,20 +170,19 @@
 | 필드명       | 데이터 타입   | 설명                     |
 |:-------------|:--------------|:-------------------------|
 | companyId    | CHAR(5)       | 회사 ID (PK)             |
-| inspectionId | INT(10)      | 점검계획 ID (PK)         |
-| scheduleId   | INT(2)      | 예방점검 일정번호 (PK)   |
+| inspectionId | CHAR(10)      | 점검계획 ID (PK)         |
+| scheduleId   | CHAR(2)      | 예방점검 일정번호 (PK)   |
 | frequency    | Char(5)       | 점검주기(default " day") |
-| scheduleDate | Datetime      | 예방점검일               |
-| executeDate  | Datetime      | 실제점검일               |
+| scheduleDate | Date      | 예방점검일               |
+| executeDate  | Date      | 실제점검일               |
 
 ## inspectionItem
 
 | 필드명       | 데이터 타입   | 설명                   |
 |:-------------|:--------------|:-----------------------|
 | companyId    | CHAR(5)       | 회사 ID (PK)           |
-| inspectionId | INT(10)     | 점검계획 ID (PK)       |
-| scheduleId   | INT(2)       | 예방점검 일정번호 (PK) |
-| itemId       | INT(2)       | 예방점검항목번호 (PK)  |
+| inspectionId | CHAR(10)     | 점검계획 ID (PK)       |
+| itemId       | CHAR(2)       | 예방점검항목번호 (PK)  |
 | itemName     | Varchar(100)  | 예방점검항목이름       |
 | itemMethod   | Varchar(100)  | 예방점검항목방법       |
 | itemUnit     | Char(10)      | 단위                   |
@@ -199,17 +198,17 @@
 | 필드명       | 데이터 타입   | 설명                 |
 |:-------------|:--------------|:---------------------|
 | companyId    | Char(5)       | 회사코드 (PK)        |
-| orderId      | INT(10)     | 작업오더 ID (PK)     |
+| orderId      | CHAR(10)     | 작업오더 ID (PK)     |
 | orderName    | Varchar(100)  | 작업오더 이름        |
-| plantId      | INT(10)     | 설비 마스터 ID       |
-| memoId       | INT(10)     | 메모 ID 레퍼런스             |
+| plantId      | CHAR(10)     | 설비 마스터 ID       |
+| memoId       | CHAR(10)     | 메모 ID 레퍼런스             |
 | jobType      | Char(5)       | 작업유형             |
 | performDept  | Char(5)       | 수행부서             |
-| scheduleDate | Datetime      | 계획일               |
+| scheduleDate | Date      | 계획일               |
 | scheduleMM   | Decimal(15,2) | 예상 공수(Man Month) |
 | scheduleCost | Decimal(15,2) | 예상 비용            |
 | scheduleHSE  | Varchar(100)  | 안전환경계획         |
-| executeDate  | Datetime      | 실적일               |
+| executeDate  | Date      | 실적일               |
 | executeMM    | Decimal(15,2) | 실적 공수(Man Month) |
 | executeCost  | Decimal(15,2) | 실적 비용            |
 | executeHSE   | Varchar(100)  | 안전환경실적         |
@@ -226,8 +225,8 @@
 | 필드명     | 데이터 타입   | 설명             |
 |:-----------|:--------------|:-----------------|
 | companyId  | Char(5)       | 회사코드 (PK)    |
-| orderId    | INT(10)     | 작업오더 ID (PK) |
-| itemId     | INT(2)      | 아이템 ID (PK)   |
+| orderId    | CHAR(10)     | 작업오더 ID (PK) |
+| itemId     | CHAR(2)      | 아이템 ID (PK)   |
 | itemName   | Varchar(100)  | 이름             |
 | itemMethod | Varchar(100)  | 방법             |
 | itemResult | Varchar(100)  | 결과값           |
@@ -239,7 +238,7 @@
 | 필드명      | 데이터 타입   | 설명                     |
 |:------------|:--------------|:-------------------------|
 | companyId   | CHAR(5)       | 회사 ID (PK)             |
-| memoId      | INT(10)      | 메모 ID (PK)             |
+| memoId      | CHAR(10)      | 메모 ID (PK)             |
 | memoName    | VARCHAR(100)  | 제목                     |
 | notes       | VARCHAR(200)  | 내용                     |
 | isPinned    | CHAR(1)       | 상단 고정 여부 (‘Y’/’N’) |
@@ -256,8 +255,8 @@
 | 필드명    | 데이터 타입   | 설명                                     |
 |:----------|:--------------|:-----------------------------------------|
 | companyId | CHAR(5)       | 회사 ID (PK)                             |
-| memoId    | INT(10)           | 메모 ID (PK)                             |
-| commentId | INT(2)           | 댓글 ID (PK)                             |
+| memoId    | CHAR(10)           | 메모 ID (PK)                             |
+| commentId | CHAR(2)           | 댓글 ID (PK)                             |
 | notes     | VARCHAR(200)  | 댓글 내용                                |
 | parentId  | INT           | FK. 부모 댓글 ID (null이면 최상위 댓글)  |
 | depth     | INT           | 계층 수준 (0: 루트, 1: 대댓글 등)        |

@@ -26,7 +26,7 @@ public class Memo {
 
     @Id
     @Column(name = "memoId", nullable = false)
-    private Integer memoId;
+    private String memoId;
 
     @Column(name = "memoName", length = 100)
     private String memoName;
@@ -62,12 +62,12 @@ public class Memo {
     public Memo() {
     }
 
-    public Memo(String companyId, Integer memoId) {
+    public Memo(String companyId, String memoId) {
         this.companyId = companyId;
         this.memoId = memoId;
     }
 
-    public Memo(String companyId, Integer memoId, String memoName) {
+    public Memo(String companyId, String memoId, String memoName) {
         this.companyId = companyId;
         this.memoId = memoId;
         this.memoName = memoName;

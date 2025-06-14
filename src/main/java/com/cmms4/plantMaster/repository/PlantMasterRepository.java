@@ -30,7 +30,7 @@ public interface PlantMasterRepository extends JpaRepository<PlantMaster, PlantM
      * @return Optional<String> 최대 plant ID
      */
     @Query("SELECT MAX(p.plantId) FROM PlantMaster p WHERE p.companyId = :companyId")
-    Integer findMaxPlantIdByCompanyId(@Param("companyId") String companyId);
+    String findMaxPlantIdByCompanyId(@Param("companyId") String companyId);
 
 
     /**
@@ -72,6 +72,6 @@ public interface PlantMasterRepository extends JpaRepository<PlantMaster, PlantM
      * @param plantId The ID of the plant.
      * @return An Optional containing the PlantMaster if found, or empty otherwise.
      */
-    Optional<PlantMaster> findByCompanyIdAndPlantIdAndDeleteMarkIsNull(String companyId, Integer plantId);
+    Optional<PlantMaster> findByCompanyIdAndPlantIdAndDeleteMarkIsNull(String companyId, String plantId);
 
 }

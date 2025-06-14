@@ -75,7 +75,7 @@ public class PlantMasterController {
      * @return
      */
     @GetMapping("/plantMasterDetail/{plantId}")
-    public String detail(@PathVariable Integer plantId,
+    public String detail(@PathVariable String plantId,
                                        HttpSession session,
                                        Model model) {
         // 세션에서 사용자 정보 가져오기
@@ -114,7 +114,7 @@ public class PlantMasterController {
     }
 
     @PostMapping("/plantMasterDelete/{plantId}")
-    public String delete(@PathVariable Integer plantId,  // Change from String to Integer
+    public String delete(@PathVariable String plantId,
                                   HttpSession session,
                                   RedirectAttributes redirectAttributes) {
 

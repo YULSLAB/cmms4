@@ -12,14 +12,14 @@ import java.util.Objects;
  */
 public class MemoCommentIdClass implements Serializable {
     private String companyId;
-    private Integer memoId;
-    private Integer commentId;
+    private String memoId;
+    private String commentId;
 
     // Constructors
     public MemoCommentIdClass() {
     }
 
-    public MemoCommentIdClass(String companyId, Integer memoId, Integer commentId) {
+    public MemoCommentIdClass(String companyId, String memoId, String commentId) {
         this.companyId = companyId;
         this.memoId = memoId;
         this.commentId = commentId;
@@ -34,19 +34,19 @@ public class MemoCommentIdClass implements Serializable {
         this.companyId = companyId;
     }
 
-    public Integer getMemoId() {
+    public String getMemoId() {
         return memoId;
     }
 
-    public void setMemoId(Integer memoId) {
+    public void setMemoId(String memoId) {
         this.memoId = memoId;
     }
 
-    public Integer getCommentId() {
+    public String getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(Integer commentId) {
+    public void setCommentId(String commentId) {
         this.commentId = commentId;
     }
 
