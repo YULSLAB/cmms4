@@ -26,7 +26,7 @@
 
         <div class="mb-3">
             <!-- Fix Add New button URL -->
-            <a th:href="@{/workOrder/workOrderForm}" class="btn btn-primary">Add New Work Order</a>
+            <a th:href="@{/workorder/workorderForm}" class="btn btn-primary">Add New Work Order</a>
         </div>
 
         <div class="card">
@@ -47,7 +47,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="wo : ${workOrderPage.content}">
+                        <tr th:each="wo : ${workorderPage.content}">
                             <td th:text="${wo.orderId}"></td>
                             <td th:text="${wo.orderName}"></td>
                             <td th:text="${wo.plantId}"></td>
@@ -57,14 +57,14 @@
                             <td>
                                 <a th:href="@{/workorders/{orderId}/items(orderId=${wo.orderId}, companyId=${wo.companyId})}" class="btn btn-sm btn-info">Items</a>
                                 <!-- Fix Edit button URL -->
-                                <a th:href="@{/workOrder/workOrderDetail/{orderId}(orderId=${wo.orderId})}" 
+                                <a th:href="@{/workorder/workorderDetail/{orderId}(orderId=${wo.orderId})}" 
                                    class="btn btn-sm btn-warning">Edit</a>
-                                <form th:action="@{/workOrder/workOrderSave}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this work order?');">
+                                <form th:action="@{/workorder/workorderSave}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this work order?');">
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
                             </td>
                         </tr>
-                        <tr th:if="${workOrderPage.empty}">
+                        <tr th:if="${workorderPage.empty}">
                             <td colspan="7" class="text-center">No work orders found.</td>
                         </tr>
                     </tbody>
@@ -73,16 +73,16 @@
         </div>
 
         <!-- Pagination Controls -->
-        <nav aria-label="Page navigation" th:if="${workOrderPage.totalPages > 0}">
+        <nav aria-label="Page navigation" th:if="${workorderPage.totalPages > 0}">
             <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${workOrderPage.first ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/workorders/list(companyId=${companyId}, siteId=${siteId}, page=${workOrderPage.number - 1}, size=${workOrderPage.size})}">Previous</a>
+                <li class="page-item" th:classappend="${workorderPage.first ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/workorders/list(companyId=${companyId}, siteId=${siteId}, page=${workorderPage.number - 1}, size=${workorderPage.size})}">Previous</a>
                 </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, workOrderPage.totalPages - 1)}" th:classappend="${i == workOrderPage.number ? 'active' : ''}">
-                    <a class="page-link" th:href="@{/workorders/list(companyId=${companyId}, siteId=${siteId}, page=${i}, size=${workOrderPage.size})}" th:text="${i + 1}"></a>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, workorderPage.totalPages - 1)}" th:classappend="${i == workorderPage.number ? 'active' : ''}">
+                    <a class="page-link" th:href="@{/workorders/list(companyId=${companyId}, siteId=${siteId}, page=${i}, size=${workorderPage.size})}" th:text="${i + 1}"></a>
                 </li>
-                <li class="page-item" th:classappend="${workOrderPage.last ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/workorders/list(companyId=${companyId}, siteId=${siteId}, page=${workOrderPage.number + 1}, size=${workOrderPage.size})}">Next</a>
+                <li class="page-item" th:classappend="${workorderPage.last ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/workorders/list(companyId=${companyId}, siteId=${siteId}, page=${workorderPage.number + 1}, size=${workorderPage.size})}">Next</a>
                 </li>
             </ul>
         </nav>

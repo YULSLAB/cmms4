@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title th:text="${inventoryMaster.inventoryId == null ? 'New Inventory Master' : 'Edit Inventory Master'}">Inventory Master Form</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <!-- User info (from session) - Handled by layout/defaultLayout.html -->
+
+        <h1 th:text="${inventoryMaster.inventoryId == null ? 'Create New Inventory Master' : 'Edit Inventory Master: ' + inventoryMaster.inventoryId}">Inventory Master Form</h1>
+        
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <form th:action="@{/inventoryMaster/inventoryMasterSave}" th:object="${inventoryMaster}" method="post" class="needs-validation" novalidate>
+            <!-- Hidden fields for IDs and audit info if not part of form -->
+            <input type="hidden" th:field="*{companyId}" />
+            <input type="hidden" th:field="*{deleteMarkYN}" />
+            <input type="hidden" th:field="*{createBy}" />
+            <input type="hidden" th:field="*{createDate}" />
+            <input type="hidden" th:field="*{updateBy}" />
+            <input type="hidden" th:field="*{updateDate}" />
+
+            <div class="card mb-3">
+                <div class="card-header">Basic Information</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="inventoryId" class="form-label">Inventory ID:</label>
+                            <input type="text" class="form-control" id="inventoryId" th:field="*{inventoryId}" th:readonly="${inventoryMaster.inventoryId != null && !inventoryMaster.inventoryId.isEmpty()}" required />
+                            <div class="invalid-feedback">Inventory ID is required.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="inventoryName" class="form-label">Inventory Name:</label>
+                            <input type="text" class="form-control" id="inventoryName" th:field="*{inventoryName}" required />
+                            <div class="invalid-feedback">Inventory Name is required.</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="inventoryLoc" class="form-label">Location:</label>
+                            <input type="text" class="form-control" id="inventoryLoc" th:field="*{inventoryLoc}" />
+                        </div>
+                         <div class="col-md-6 mb-3">
+                            <label for="siteId" class="form-label">Site ID:</label>
+                            <input type="text" class="form-control" id="siteId" th:field="*{siteId}" required />
+                            <div class="invalid-feedback">Site ID is required.</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="respDept" class="form-label">Responsible Dept:</label>
+                            <input type="text" class="form-control" id="respDept" th:field="*{respDept}" />
+                             <!-- TODO: Consider dropdown from Dept table -->
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="assetType" class="form-label">Asset Type:</label>
+                            <input type="text" class="form-control" id="assetType" th:field="*{assetType}" />
+                            <!-- TODO: Consider dropdown from CommonCode where codeType='ASSET' -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">Purchase Information</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="purchaseDate" class="form-label">Purchase Date:</label>
+                            <input type="date" class="form-control" id="purchaseDate" th:field="*{purchaseDate}" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="purchaseValue" class="form-label">Purchase Value:</label>
+                            <input type="number" step="0.01" class="form-control" id="purchaseValue" th:field="*{purchaseValue}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="card-header">Manufacturer Details</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="manufacturer" class="form-label">Manufacturer:</label>
+                            <input type="text" class="form-control" id="manufacturer" th:field="*{manufacturer}" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="manufacturerModel" class="form-label">Model:</label>
+                            <input type="text" class="form-control" id="manufacturerModel" th:field="*{manufacturerModel}" />
+                        </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-6 mb-3">
+                            <label for="manufacturerSN" class="form-label">Serial Number:</label>
+                            <input type="text" class="form-control" id="manufacturerSN" th:field="*{manufacturerSN}" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="manufacturerSpec" class="form-label">Specification:</label>
+                            <input type="text" class="form-control" id="manufacturerSpec" th:field="*{manufacturerSpec}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">Notes & Files</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Note:</label>
+                        <textarea class="form-control" id="note" th:field="*{note}" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fileGroupId" class="form-label">File Group ID:</label>
+                        <input type="text" class="form-control" id="fileGroupId" th:field="*{fileGroupId}" />
+                        <!-- TODO: File upload handling to be implemented separately -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Save Inventory Master</button>
+                <a th:href="@{/inventoryMaster/inventoryList}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

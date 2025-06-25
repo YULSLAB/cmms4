@@ -61,7 +61,6 @@ public class InspectionController {
                                 Model model,
                                 HttpSession session) {
         String username = (String) session.getAttribute("username");
-        System.out.println("Saving inspection: " + inspection);
         inspectionService.saveInspection(inspection, username);
         return "redirect:/inspection/inspectionList";
     }
@@ -87,8 +86,8 @@ public class InspectionController {
         String siteId = (String) session.getAttribute("siteId");
         Page<Inspection> inspectionPage = inspectionService.getAllInspections(companyId, siteId, pageable);
         model.addAttribute("inspectionPage", inspectionPage);
-        model.addAttribute("companyId", companyId);
-        model.addAttribute("siteId", siteId);
+        //model.addAttribute("companyId", companyId);
+        //model.addAttribute("siteId", siteId);
         return "inspection/inspectionList";
     }
 
@@ -101,7 +100,10 @@ public class InspectionController {
         Optional<Inspection> inspectionOpt = inspectionService.getInspectionByInspectionId(companyId, inspectionId);
         if (inspectionOpt.isPresent()) {
             Inspection inspection = inspectionOpt.get();
-            
+            // InspectionItem 리스트 조회 및 세팅
+            List<InspectionItem> items = inspectionService.getInspectionItemByInspectionId(companyId, inspectionId);
+            inspection.setItems(items);
+
             model.addAttribute("inspection", inspection);
             return "inspection/inspectionForm";
         }

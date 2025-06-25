@@ -41,7 +41,7 @@ public class PlantMasterService {
     @Transactional
     public PlantMaster savePlantMaster(PlantMaster plantMaster, String username) {
         LocalDateTime now = LocalDateTime.now();
-        if(plantMaster.getPlantId() == null) {
+        if(plantMaster.getPlantId() == null || plantMaster.getPlantId().isEmpty()) {
             String maxPlantId = plantMasterRepository.findMaxPlantIdByCompanyId(plantMaster.getCompanyId());
             int newPlantId = (maxPlantId == null) ? 1000000000 : Integer.parseInt(maxPlantId) + 1;
             plantMaster.setPlantId(String.valueOf(newPlantId));

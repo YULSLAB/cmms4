@@ -29,6 +29,38 @@ public class MemoService {
         this.memoRepository = memoRepository;
         this.memoCommentRepository = memoCommentRepository;
     }
+    
+    /**
+     * 메모를 저장합니다.
+     * 
+     * @param memo 메모
+     * @param username 사용자 ID
+     * @return 저장된 메모
+     */
+    @Transactional
+    public synchronized Memo saveMemo(Memo memo, String username) {
+        LocalDateTime now = LocalDateTime.now();
+
+        if (memo.getMemoId() == null || memo.getMemoId().isEmpty()) {
+
+            // 신규 등록
+            // 회사별 최대 메모ID 조회 후 +1 값을 새 메모ID로 설정
+            String maxMemoId = memoRepository.findMaxMemoIdByCompanyId(memo.getCompanyId());
+            int newMemoId = (maxMemoId == null) ? 1 : Integer.parseInt(maxMemoId) + 1;
+
+            memo.setMemoId(String.valueOf(newMemoId));
+            memo.setCreateBy(username);
+            memo.setCreateDate(now);
+            memo.setViewCount(0);
+
+        } else {
+            // 수정
+            memo.setUpdateBy(username);
+            memo.setUpdateDate(now);
+        }
+        
+        return memoRepository.save(memo);
+    }
 
     /**
      * 페이징 처리된 메모 목록을 조회합니다.
@@ -86,38 +118,6 @@ public class MemoService {
     }
 
     /**
-     * 메모를 저장합니다.
-     * 
-     * @param memo 메모
-     * @param username 사용자 ID
-     * @return 저장된 메모
-     */
-    @Transactional
-    public synchronized Memo saveMemo(Memo memo, String username) {
-        LocalDateTime now = LocalDateTime.now();
-
-        if (memo.getMemoId() == null) {
-
-            // 신규 등록
-            // 회사별 최대 메모ID 조회 후 +1 값을 새 메모ID로 설정
-            String maxMemoId = memoRepository.findMaxMemoIdByCompanyId(memo.getCompanyId());
-            int newMemoId = (maxMemoId == null) ? 1 : Integer.parseInt(maxMemoId) + 1;
-
-            memo.setMemoId(String.valueOf(newMemoId));
-            memo.setCreateBy(username);
-            memo.setCreateDate(now);
-            memo.setViewCount(0);
-
-        } else {
-            // 수정
-            memo.setUpdateBy(username);
-            memo.setUpdateDate(now);
-        }
-        
-        return memoRepository.save(memo);
-    }
-
-    /**
      * 메모를 삭제합니다.
      * 
      * @param companyId 회사 ID
@@ -125,7 +125,7 @@ public class MemoService {
      * @param username 사용자 ID
      */
     @Transactional
-    public void deleteMemo(String companyId, String memoId, String username) {
+    public void deleteMemo(String companyId, String memoId) {
         Optional<Memo> memoOpt = memoRepository.findByCompanyIdAndMemoId(companyId, memoId);
         if (memoOpt.isPresent()) {
             // 1. First delete all related comments

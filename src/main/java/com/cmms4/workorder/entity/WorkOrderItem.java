@@ -7,19 +7,19 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 
 /**
- * cmms4 - WorkOrderItem
+ * cmms4 - workorderItem
  * 작업 오더 항목 관리 엔티티
  * 
  * @author cmms4
  * @since 2024-03-19
  */
 @Entity
-@Table(name = "workOrderItem")
-@IdClass(WorkOrderItemIdClass.class)
+@Table(name = "workorderItem")
+@IdClass(WorkorderItemIdClass.class)
 @Getter
 @Setter
 @NoArgsConstructor
-public class WorkOrderItem {
+public class WorkorderItem {
 
     @Id
     @Column(name = "companyId", length = 5, nullable = false)
@@ -43,21 +43,21 @@ public class WorkOrderItem {
     private String itemResult;
 
     @Lob
-    @Column(name = "notes")
-    private String notes;
+    @Column(name = "note")
+    private String note;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "companyId", referencedColumnName = "companyId", insertable = false, updatable = false),
         @JoinColumn(name = "orderId", referencedColumnName = "orderId", insertable = false, updatable = false)
     })
-    private WorkOrder workOrder;
+    private Workorder workorder;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WorkOrderItem that = (WorkOrderItem) o;
+        WorkorderItem that = (WorkorderItem) o;
         return Objects.equals(companyId, that.companyId) &&
                Objects.equals(orderId, that.orderId) &&
                Objects.equals(itemId, that.itemId);

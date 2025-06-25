@@ -111,7 +111,7 @@ templates/cmms4/
 ## ID 채번 규칙
 - 수동: companyId, siteId, deptId, username, codeId
 - 자동 숫자 일련번호 : scheduleId, itemId, memoId, commentId
-- 자동이나 채번규칙 있음 : plantId(1로 시작,10자리 숫자)  , inventoryId(2로 시작,10자리 숫자), inspectionId(3로 시작,10자리 숫자), workOrderId(5로 시작,10자리 숫자), fileGroupId(테이블 이름 + YYMM + 5자리번호)
+- 자동이나 채번규칙 있음 : plantId(1로 시작,10자리 숫자)  , inventoryId(2로 시작,10자리 숫자), inspectionId(3로 시작,10자리 숫자), workorderId(5로 시작,10자리 숫자), fileGroupId(테이블 이름 + YYMM + 5자리번호)
 
 ## 보안 및 로깅
 - CSRF, CORS, AOP 적용

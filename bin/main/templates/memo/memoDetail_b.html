@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title>메모 상세</title>
+    <th:block layout:fragment="page-css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            .card-header { background-color: #f8f9fa; }
+            .btn-sm { margin-left: 5px; }
+            .border.rounded { background-color: #fff; }
+            .comment-section { margin-top: 20px; }
+            .comment-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+            .comment-item:last-child { border-bottom: none; }
+        </style>
+    </th:block>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col">
+                    <a th:href="@{/memo/memoList}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> 목록으로
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" th:text="${memo.memoName}"></h5>
+                            <div>
+                                <a th:href="@{/memo/memoForm/{id}(id=${memo.memoId})}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> 수정
+                                </a>
+                                <form th:action="@{/memo/memoDelete/{id}(id=${memo.memoId})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm" 
+                                            onclick="return confirm('정말 삭제하시겠습니까?');">
+                                        <i class="fas fa-trash"></i> 삭제
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p class="mb-1"><strong>작성자:</strong> <span th:text="${memo.createBy}"></span></p>
+                                    <p class="mb-1"><strong>작성일:</strong> <span th:text="${#temporals.format(memo.createDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <p class="mb-1"><strong>조회수:</strong> <span th:text="${memo.viewCount}"></span></p>
+                                    <p class="mb-1" th:if="${memo.isPinned == 'Y'}">
+                                        <i class="fas fa-thumbtack text-primary"></i> 고정됨
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="border rounded p-3" th:text="${memo.note}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 댓글 섹션 -->
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">댓글</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- 댓글 작성 폼 -->
+                            <form th:action="@{/memo/memoComment/save}" method="post" class="mb-4">
+                                <input type="hidden" name="memoId" th:value="${memo.memoId}">
+                                <div class="mb-3">
+                                    <textarea name="note" class="form-control" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">댓글 작성</button>
+                            </form>
+
+                            <!-- 댓글 목록 -->
+                            <div th:if="${commentList != null and !commentList.empty}">
+                                    <div th:each="comment : ${commentList}" class="comment-item">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <form th:action="@{/memo/memoComment/delete}" method="post" style="display:inline;">
+                                                    <input type="hidden" name="memoId" th:value="${memo.memoId}">
+                                                    <input type="hidden" name="commentId" th:value="${comment.commentId}">
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('댓글을 삭제하시겠습니까?');">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2" th:text="${comment.note}"></div>
+                                    </div>
+                                </div>
+                                <div th:if="${commentList == null or commentList.empty}" class="text-center text-muted my-3">
+                                    등록된 댓글이 없습니다.
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

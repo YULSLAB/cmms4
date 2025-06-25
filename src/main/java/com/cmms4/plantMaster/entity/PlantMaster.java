@@ -81,7 +81,8 @@ public class PlantMaster {
     @Column(name = "tagYN", length = 1)
     private String tagYN;
 
-    @Column(name = "note", length = 200)
+    @Lob // For TEXT type
+    @Column(name = "note", columnDefinition = "TEXT")
     private String note;
 
     @Column(name = "siteId", length = 5)

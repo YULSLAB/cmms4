@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title>Plant Master</title>
+    <!-- Page-specific CSS or JS can be added here -->
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <!-- User info (from session) - Handled by layout/defaultLayout.html -->
+
+        <h1>Plant Master</h1>
+        <p>Company ID: <span th:text="${companyId}"></span> | Site ID: <span th:text="${siteId}"></span></p>
+        
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="mb-3">
+            <!-- Change from: /asset/plants/new -->
+            <a th:href="@{/plantMaster/plantMasterForm}" 
+               class="btn btn-primary">Add New Plant</a>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Plant Master List
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Plant ID</th>
+                            <th>Plant Name</th>
+                            <th>Location</th>
+                            <th>Asset Type</th>
+                            <th>Site ID</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="plant : ${plantPage.content}">
+                            <td th:text="${plant.plantId}"></td>
+                            <td th:text="${plant.plantName}"></td>
+                            <td th:text="${plant.plantLoc}"></td>
+                            <td th:text="${plant.assetType}"></td>
+                            <td th:text="${plant.siteId}"></td>
+                            <td>
+                                <!-- Change from: /asset/plants/edit -->
+                                <a th:href="@{/plantMaster/plantMasterDetail/{plantId}(plantId=${plant.plantId}, companyId=${plant.companyId})}" 
+                                   class="btn btn-sm btn-warning">Edit</a>
+                                
+                                <!-- Change from: /asset/plants/delete -->
+                                <form th:action="@{/plantMaster/plantMasterDelete/{plantId}(plantId=${plant.plantId})}"
+                                      method="post" style="display:inline;" 
+                                      onsubmit="return confirm('Are you sure you want to delete this plant master?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${plantPage.empty}">
+                            <td colspan="6" class="text-center">No plant masters found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation" th:if="${plantPage.totalPages > 0}">
+            <ul class="pagination justify-content-center">
+                <!-- Change from: /asset/plants/list -->
+                <li class="page-item" th:classappend="${plantPage.first ? 'disabled' : ''}">
+                    <a class="page-link" 
+                       th:href="@{/plantMaster/plantMasterList(companyId=${companyId}, siteId=${siteId}, page=${plantPage.number - 1}, size=${plantPage.size})}">Previous</a>
+                </li>
+                <li class="page-item" 
+                    th:each="i : ${#numbers.sequence(0, plantPage.totalPages - 1)}" 
+                    th:classappend="${i == plantPage.number ? 'active' : ''}">
+                    <a class="page-link" 
+                       th:href="@{/plantMaster/plantMasterList(companyId=${companyId}, siteId=${siteId}, page=${i}, size=${plantPage.size})}" 
+                       th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${plantPage.last ? 'disabled' : ''}">
+                    <a class="page-link" 
+                       th:href="@{/plantMaster/plantMasterList(companyId=${companyId}, siteId=${siteId}, page=${plantPage.number + 1}, size=${plantPage.size})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+</body>
+</html>

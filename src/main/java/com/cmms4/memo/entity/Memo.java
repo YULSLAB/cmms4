@@ -31,8 +31,9 @@ public class Memo {
     @Column(name = "memoName", length = 100)
     private String memoName;
 
-    @Column(name = "notes", length = 200)
-    private String notes;
+    @Lob // For TEXT type
+    @Column(name = "note", columnDefinition = "TEXT")
+    private String note;
 
     @Column(name = "isPinned", length = 1)
     private String isPinned;

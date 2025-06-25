@@ -35,6 +35,8 @@
                         <td>
                             <a th:href="@{/inspection/inspectionDetail/{id}(id=${insp.inspectionId})}"
                                class="btn btn-sm btn-warning" th:text="#{inspection.button.edit}">Edit</a>
+                            <a th:href="@{/inspection/print/{id}(id=${insp.inspectionId})}"
+                               class="btn btn-sm btn-info" th:text="#{inspection.button.print}">Print</a>
                             <form th:action="@{/inspection/inspectionDelete/{id}(id=${insp.inspectionId})}"
                                   method="post" style="display:inline;"
                                   th:onsubmit="return confirm(#{inspection.delete.confirm});">

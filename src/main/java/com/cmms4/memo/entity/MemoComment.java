@@ -31,8 +31,9 @@ public class MemoComment {
     @Column(name = "commentId", nullable = false)
     private String commentId;
 
-    @Column(name = "notes", length = 200)
-    private String notes;
+    @Lob // For TEXT type
+    @Column(name = "note", columnDefinition = "TEXT")
+    private String note;
 
     @Column(name = "parentId")
     private String parentId;
@@ -60,11 +61,11 @@ public class MemoComment {
         this.commentId = commentId;
     }
 
-    public MemoComment(String companyId, String memoId, String commentId, String notes) {
+    public MemoComment(String companyId, String memoId, String commentId, String note) {
         this.companyId = companyId;
         this.memoId = memoId;
         this.commentId = commentId;
-        this.notes = notes;
+        this.note = note;
     }
 
     // equals and hashCode (only for PK fields)

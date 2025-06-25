@@ -1,6 +1,6 @@
 # CMMS3 DB 테이블 정의서 (Full Version)
 
-### 마스터 데이터 관리(단수 표현현)
+### 마스터 데이터 관리(단수 표현현),UTF8mb4_general_ci  
 ## company
 
 | 필드명      | 데이터 타입   | 설명          |
@@ -84,8 +84,8 @@
 | 필드명   | 타입        | PK   | FK          | 설명                   |
 |:---------|:------------|:-----|:------------|:-----------------------|
 | roleId   | char(5)     | PK   |          | 권한 ID              |
-| pageId   | varchar(50) | PK   |         | 페이지 ID (폴더명)       |
-| authGranted | char(10)     | PK  |          | 권한 문자열 (SAVE, deleteMark,...) |
+| roleName  | varchar(50) |    |         | 권한 Name      |
+| authGranted | char(10)     |   |          | 권한 문자열 (SAVE, deleteMark,...) |
 
 
 ### 기준 정보관리 : 기준정보는 삭제하지 않고 deleteMarkYN 마크처리 (삭제된 데이터는 복구할 수 있도록. 기본 null, 삭제 "X")
@@ -112,7 +112,7 @@
 | plannedMaintenanceYN | Char(1)       | 예방점검대상                                      |
 | psmYN                | Char(1)       | PSM대상                                           |
 | tagYN                | Char(1)       | TAG대상                                           |
-| note                 | VARCHAR(200)  | 비고(notes 아닌 note. Naming rule에 복수형 안 씀) |
+| note                 | text  | 비고(notes 아닌 note. Naming rule에 복수형 안 씀) |
 | siteId             | CHAR(5)       | 사이트 ID                                       |
 | fileGroupId          | CHAR(10)      | 첨부파일 그룹                                     |
 | createBy             | CHAR(5)       | 생성자                                            |
@@ -130,13 +130,13 @@
 | inventoryLoc      | VARCHAR(100)  | 재고 위치                                         |
 | respDept          | CHAR(5)       | 관리 부서 ID                                      |
 | assetType         | Char(5)       | 자산 타입                                         |
-| purchaseDate      | Date      | 구매일                                            |
-| purchaseValue     | Decimal(15,2) | 취득가                                            |
+| currentQty        | Decimal(15,2) | 현재수량                                           |
+| current Value     | Decimal(15,2) | 현재가치                                            |
 | manufacturer      | Varchar(100)  | 제조사                                            |
 | manufacturerModel | Varchar(100)  | 모델넘버                                          |
 | manufacturerSN    | Varchar(100)  | 시리얼번호                                        |
 | manufacturerSpec  | Varchar(100)  | 규격                                              |
-| note              | VARCHAR(200)  | 비고(notes 아닌 note. Naming rule에 복수형 안 씀) |
+| note              | text  | 비고(notes 아닌 note. Naming rule에 복수형 안 씀) |
 | siteId          | CHAR(5)       | 사이트 ID                                       |
 | fileGroupId       | CHAR(10)      | 첨부파일 그룹                                     |
 | createBy          | CHAR(5)       | 생성자                                            |
@@ -144,6 +144,22 @@
 | updateBy          | CHAR(5)       | 수정자                                            |
 | updateDate        | DATETIME      | 수정일                                            |
 | deleteMark        | CHAR(1)       | 삭제 마크                                         |
+
+## inventoryHistory
+| 필드명         | 데이터 타입        | 설명                        |
+| :---------- | :------------ | :------------------------ |
+| companyId   | CHAR(5)       | 회사 ID (PK)                |
+| historyId   | CHAR(10)      | 입출고 이력 ID (PK)            |
+| inventoryId | CHAR(10)      | 재고 ID                     |
+| ioType      | CHAR(1)       | 입출고 구분 ('I': 입고, 'O': 출고) |
+| ioDate      | DATETIME      | 입출고 일시                    |
+| qty         | Decimal(15,2) | 입출고 수량 (출고는 음수 가능)        |
+| unitPrice   | Decimal(15,2) | 단가 (평균단가 기준)              |
+| totalValue  | Decimal(15,2) | 총 금액 (수량 × 단가)            |
+| note        | TEXT          | 비고                        |
+| siteId      | CHAR(5)       | 사이트 ID                    |
+| createBy    | CHAR(5)       | 생성자                       |
+| createDate  | DATETIME      | 생성일                       |
 
 ### 점검 관리 : 향후 status 필드 추가하여 결재 등 상태관리 추가
 ## inspection
@@ -156,7 +172,7 @@
 | plantId        | INT(10)      | 설비 ID          |
 | jobType        | CHAR(5)       | 작업 유형        |
 | performDept    | CHAR(5)       | 수행부서         |
-| note           | VARCHAR(200)  | 비고             |
+| note           | text  | 비고             |
 | fileGroupId    | CHAR(10)      | 첨부파일 그룹    |
 | siteId       | CHAR(5)       | 사이트 ID      |
 | fileGroupId    | CHAR(10)      | 첨부파일 그룹    |
@@ -190,10 +206,10 @@
 | itemUpper    | Decimal(15,2) | 상한값                 |
 | itemStandard | Decimal(15,2) | 표준값                 |
 | itemResult   | Decimal(15,2) | 결과값                 |
-| notes        | Text          | 비고                   |
+| note        | Text          | 비고                   |
 
 ### 작업오더 관리 : 향후 status 필드 추가하여 결재 등 상태관리 추가
-## workOrder
+## workorder
 
 | 필드명       | 데이터 타입   | 설명                 |
 |:-------------|:--------------|:---------------------|
@@ -203,7 +219,7 @@
 | plantId      | CHAR(10)     | 설비 마스터 ID       |
 | memoId       | CHAR(10)     | 메모 ID 레퍼런스             |
 | jobType      | Char(5)       | 작업유형             |
-| performDept  | Char(5)       | 수행부서             |
+| dept          | Char(5)       | 수행부서             |
 | scheduleDate | Date      | 계획일               |
 | scheduleMM   | Decimal(15,2) | 예상 공수(Man Month) |
 | scheduleCost | Decimal(15,2) | 예상 비용            |
@@ -212,7 +228,7 @@
 | executeMM    | Decimal(15,2) | 실적 공수(Man Month) |
 | executeCost  | Decimal(15,2) | 실적 비용            |
 | executeHSE   | Varchar(100)  | 안전환경실적         |
-| notes        | Text          | 비고                 |
+| note        | Text          | 비고                 |
 | siteId     | CHAR(5)       | 사이트 ID          |
 | fileGroupId  | CHAR(10)      | 첨부파일 그룹        |
 | createBy     | CHAR(5)       | 생성자               |
@@ -220,7 +236,7 @@
 | updateBy     | CHAR(5)       | 수정자               |
 | updateDate   | DATETIME      | 수정일               |
 
-## workOrderItem
+## workorderItem
 
 | 필드명     | 데이터 타입   | 설명             |
 |:-----------|:--------------|:-----------------|
@@ -230,7 +246,7 @@
 | itemName   | Varchar(100)  | 이름             |
 | itemMethod | Varchar(100)  | 방법             |
 | itemResult | Varchar(100)  | 결과값           |
-| notes      | Text          | 비고             |
+| note      | Text          | 비고             |
 
 ### 메모 관리 : 작업 현황 메모 리스트에 등록하여 공유 목적 
 ## memo
@@ -240,7 +256,7 @@
 | companyId   | CHAR(5)       | 회사 ID (PK)             |
 | memoId      | CHAR(10)      | 메모 ID (PK)             |
 | memoName    | VARCHAR(100)  | 제목                     |
-| notes       | VARCHAR(200)  | 내용                     |
+| note       | text  | 내용                     |
 | isPinned    | CHAR(1)       | 상단 고정 여부 (‘Y’/’N’) |
 | viewCount   | INT           | 조회수                   |
 | siteId    | CHAR(5)       | 사이트 ID              |
@@ -257,7 +273,7 @@
 | companyId | CHAR(5)       | 회사 ID (PK)                             |
 | memoId    | CHAR(10)           | 메모 ID (PK)                             |
 | commentId | CHAR(2)           | 댓글 ID (PK)                             |
-| notes     | VARCHAR(200)  | 댓글 내용                                |
+| note     | text  | 댓글 내용                                |
 | parentId  | INT           | FK. 부모 댓글 ID (null이면 최상위 댓글)  |
 | depth     | INT           | 계층 수준 (0: 루트, 1: 대댓글 등)        |
 | sortOrder | INT           | 정렬 순서 (UI에서 표시 순서를 위한 필드) |

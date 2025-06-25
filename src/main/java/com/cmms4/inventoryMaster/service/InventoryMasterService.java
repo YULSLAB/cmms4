@@ -1,14 +1,17 @@
 package com.cmms4.inventoryMaster.service;
 
+import com.cmms4.inventoryMaster.entity.InventoryHistory;
 import com.cmms4.inventoryMaster.entity.InventoryMaster;
 import com.cmms4.inventoryMaster.entity.InventoryMasterIdClass;
 import com.cmms4.inventoryMaster.repository.InventoryMasterRepository;
+import com.cmms4.inventoryMaster.repository.InventoryHistoryRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -59,6 +62,37 @@ public class InventoryMasterService {
             throw new RuntimeException("InventoryMaster not found with id: " + id);
         }
         inventoryMasterRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void processInventoryIo(List<InventoryHistory> ioList, String username) {
+        for (InventoryHistory dto : ioList) {
+            
+            InventoryMaster inv = inventoryMasterRepository
+                .findByCompanyIdAndInventoryIdForUpdate(dto.getCompanyId(), dto.getInventoryId())
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+
+            BigDecimal qtyChange = "I".equals(dto.getIoType()) ? dto.getQty() : dto.getQty().negate();
+            BigDecimal newQty = inv.getCurrentQty().add(qtyChange);
+
+            if (newQty.compareTo(BigDecimal.ZERO) < 0) {
+                throw new RuntimeException("Insufficient stock for " + dto.getInventoryId());
+            }
+
+            inv.setCurrentQty(newQty);
+
+            BigDecimal valueChange = "I".equals(dto.getIoType()) ? dto.getTotalValue() : dto.getTotalValue().negate();
+            inv.setCurrentValue(inv.getCurrentValue().add(valueChange));
+
+            inventoryMasterRepository.save(inv);
+
+            dto.setIoDate(LocalDateTime.now());
+            dto.setCreateDate(LocalDateTime.now());
+            dto.setCreateBy(username);
+            dto.setHistoryId(generateHistoryId());
+
+            inventoryHistoryRepository.save(dto);
+        }
     }
 
 } 

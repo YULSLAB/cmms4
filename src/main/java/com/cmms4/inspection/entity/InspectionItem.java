@@ -56,8 +56,8 @@ public class InspectionItem {
     private BigDecimal itemResult;
 
     @Lob // For TEXT type
-    @Column(name = "notes")
-    private String notes;
+    @Column(name = "note")
+    private String note;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({

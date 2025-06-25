@@ -1,8 +1,8 @@
 package com.cmms4.workorder.controller;
 
-import com.cmms4.workorder.entity.WorkOrder;
-import com.cmms4.workorder.entity.WorkOrderItem;
-import com.cmms4.workorder.service.WorkOrderService;
+import com.cmms4.workorder.entity.Workorder;
+import com.cmms4.workorder.entity.WorkorderItem;
+import com.cmms4.workorder.service.WorkorderService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,16 +15,16 @@ import java.util.List;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/workOrder")
-public class WorkOrderController {
+@RequestMapping("/workorder")
+public class WorkorderController {
 
-    private final WorkOrderService workOrderService;
+    private final WorkorderService workorderService;
 
-    public WorkOrderController(WorkOrderService workOrderService) {
-        this.workOrderService = workOrderService;
+    public WorkorderController(WorkorderService workorderService) {
+        this.workorderService = workorderService;
     }
 
-    @GetMapping("/workOrderList")
+    @GetMapping("/workorderList")
     public String list(Model model,
                                HttpSession session,
                                @PageableDefault(size = 10, sort = "orderId") Pageable pageable) {
@@ -33,81 +33,81 @@ public class WorkOrderController {
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
         
-        Page<WorkOrder> workOrderPage = workOrderService.getAllWorkOrders(companyId, siteId, pageable);
-        model.addAttribute("workOrderPage", workOrderPage);
+        Page<Workorder> workorderPage = workorderService.getAllWorkorders(companyId, siteId, pageable);
+        model.addAttribute("workorderPage", workorderPage);
         
-        return "workOrder/workOrderList";
+        return "workorder/workorderList";
     }
 
-    @GetMapping("/workOrderForm")
+    @GetMapping("/workorderForm")
     public String form(Model model, HttpSession session) {
         String companyId = (String) session.getAttribute("companyId");
         String siteId = (String) session.getAttribute("siteId");
 
-        WorkOrder workOrder = new WorkOrder();
-        workOrder.setCompanyId(companyId);
-        workOrder.setSiteId(siteId);
+        Workorder workorder = new Workorder();
+        workorder.setCompanyId(companyId);
+        workorder.setSiteId(siteId);
 
         // 최소 1개 항목 생성 (초기화용)
-        WorkOrderItem item = new WorkOrderItem();
+        WorkorderItem item = new WorkorderItem();
         item.setCompanyId(companyId);
-        workOrder.getItems().add(item);
+        workorder.getItems().add(item);
 
-        model.addAttribute("workOrder", workOrder);
-        return "workOrder/workOrderForm";
+        model.addAttribute("workorder", workorder);
+        return "workorder/workorderForm";
     }
 
 
-    @GetMapping("/workOrderDetail/{orderId}")
+    @GetMapping("/workorderDetail/{orderId}")
     public String detail(@PathVariable String orderId,
                                     HttpSession session,
                                     Model model) {
         // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
-        
-        workOrderService.getWorkOrderByWorkOrderId(companyId, orderId)
-            .ifPresent(workOrder -> {
-                model.addAttribute("workOrder", workOrder);
-                List<WorkOrderItem> items = workOrderService.getWorkOrderItems(companyId, orderId);
-                model.addAttribute("workOrderItems", items);
+
+        workorderService.getWorkorderByWorkorderId(companyId, orderId)
+            .ifPresent(workorder -> {
+                model.addAttribute("workorder", workorder);
+                List<WorkorderItem> items = workorderService.getWorkorderItems(companyId, orderId);
+                model.addAttribute("workorderItems", items);
             });
         
-        return "workOrder/workOrderDetail";
+        return "workorder/workorderDetail";
     }
 
-    @PostMapping("/workOrderSave")
-    public String save(@ModelAttribute WorkOrder workOrder,
+    @PostMapping("/workorderSave")
+    public String save(@ModelAttribute Workorder workorder,
                               HttpSession session,
                               RedirectAttributes redirectAttributes) {
         // 세션에서 사용자 정보 가져오기
         String username = (String) session.getAttribute("username");
 
         try {
-            workOrderService.saveWorkOrder(workOrder, username);
+            workorderService.saveWorkorder(workorder, username);
             redirectAttributes.addFlashAttribute("successMessage", "Work order saved successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to save work order: " + e.getMessage());
         }
-        return "redirect:/workOrder/workOrderList";  // Fix redirect path
+        return "redirect:/workorder/workorderList";  // Fix redirect path
     }
 
-    @PostMapping("/item/workOrderItemSave")
-    public String saveItem(@ModelAttribute WorkOrderItem workOrderItem,
+    @PostMapping("/item/workorderItemSave")
+    public String saveItem(@ModelAttribute WorkorderItem workorderItem,
                                   HttpSession session,
                                   RedirectAttributes redirectAttributes) {
         
         // 세션에서 사용자 정보 가져오기
         String username = (String) session.getAttribute("username");
         try {
-            workOrderService.saveWorkOrderItem(workOrderItem, username);
+            workorderService.saveWorkorderItem(workorderItem, username);
             redirectAttributes.addFlashAttribute("successMessage", "Work order item saved successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to save work order item: " + e.getMessage());
         }
-        return "redirect:/workOrder/detail/" + workOrderItem.getOrderId();
+        return "redirect:/workorder/detail/" + workorderItem.getOrderId();
     }
 
-    @PostMapping("/workOrderDelete/{orderId}")
+    @PostMapping("/workorderDelete/{orderId}")
     public String delete(@PathVariable String orderId,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes) {
@@ -115,15 +115,15 @@ public class WorkOrderController {
         // 세션에서 사용자 정보 가져오기
         String companyId = (String) session.getAttribute("companyId");
         try {
-            workOrderService.deleteWorkOrder(companyId, orderId);
+            workorderService.deleteWorkorder(companyId, orderId);
             redirectAttributes.addFlashAttribute("successMessage", "Work order deleted successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete work order: " + e.getMessage());
         }
-        return "redirect:/workOrder/workOrderList";  // Fix redirect path
+        return "redirect:/workorder/workorderList";  // Fix redirect path
     }
 
-    @PostMapping("/item/workOrderItemDelete/{orderId}/{itemId}")
+    @PostMapping("/item/workorderItemDelete/{orderId}/{itemId}")
     public String deleteItem(@PathVariable String orderId,
                                     @PathVariable String itemId,
                                     HttpSession session,
@@ -131,11 +131,11 @@ public class WorkOrderController {
         
         String companyId = (String) session.getAttribute("companyId");
         try {
-            workOrderService.deleteWorkOrderItem(companyId, orderId, itemId);
+            workorderService.deleteWorkorderItem(companyId, orderId, itemId);
             redirectAttributes.addFlashAttribute("successMessage", "Work order item deleted successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete work order item: " + e.getMessage());
         }
-        return "redirect:/workOrder/detail/" + orderId;
+        return "redirect:/workorder/detail/" + orderId;
     }
 }

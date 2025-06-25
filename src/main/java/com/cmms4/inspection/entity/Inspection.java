@@ -44,7 +44,8 @@ public class Inspection {
     @Column(name = "dept", length = 5)
     private String dept;
 
-    @Column(name = "note", length = 200)
+    @Lob // For TEXT type
+    @Column(name = "note", columnDefinition = "TEXT")
     private String note;
 
     @Column(name = "siteId", length = 5)

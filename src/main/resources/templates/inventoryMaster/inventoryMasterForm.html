@@ -1,29 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/defaultLayout}">
+
 <head>
     <title th:text="${inventoryMaster.inventoryId == null ? 'New Inventory Master' : 'Edit Inventory Master'}">Inventory Master Form</title>
 </head>
+
 <body>
-
 <div layout:fragment="content">
-    <div class="container mt-4">
-        <!-- User info (from session) - Handled by layout/defaultLayout.html -->
-
-        <h1 th:text="${inventoryMaster.inventoryId == null ? 'Create New Inventory Master' : 'Edit Inventory Master: ' + inventoryMaster.inventoryId}">Inventory Master Form</h1>
+    <div class="max-w-5xl mx-auto mt-6">
         
-        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <h2 class="text-2xl font-bold mb-4" th:text="${inventoryMaster.inventoryId == null ? 'Create New Inventory Master' : 'Edit Inventory Master: ' + inventoryMaster.inventoryId}">Inventory Master Form</h2>
+
+        <div th:if="${successMessage}" class="p-3 mb-4 text-green-800 bg-green-100 rounded">
             <span th:text="${successMessage}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div th:if="${errorMessage}" class="p-3 mb-4 text-red-800 bg-red-100 rounded">
             <span th:text="${errorMessage}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <form th:action="@{/inventoryMaster/inventoryMasterSave}" th:object="${inventoryMaster}" method="post" class="needs-validation" novalidate>
-            <!-- Hidden fields for IDs and audit info if not part of form -->
+        <form th:action="@{/inventoryMaster/inventoryMasterSave}" th:object="${inventoryMaster}" method="post" class="space-y-6">
             <input type="hidden" th:field="*{companyId}" />
             <input type="hidden" th:field="*{deleteMarkYN}" />
             <input type="hidden" th:field="*{createBy}" />
@@ -31,111 +27,112 @@
             <input type="hidden" th:field="*{updateBy}" />
             <input type="hidden" th:field="*{updateDate}" />
 
-            <div class="card mb-3">
-                <div class="card-header">Basic Information</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="inventoryId" class="form-label">Inventory ID:</label>
-                            <input type="text" class="form-control" id="inventoryId" th:field="*{inventoryId}" th:readonly="${inventoryMaster.inventoryId != null && !inventoryMaster.inventoryId.isEmpty()}" required />
-                            <div class="invalid-feedback">Inventory ID is required.</div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="inventoryName" class="form-label">Inventory Name:</label>
-                            <input type="text" class="form-control" id="inventoryName" th:field="*{inventoryName}" required />
-                            <div class="invalid-feedback">Inventory Name is required.</div>
-                        </div>
+            <!-- Basic Information -->
+            <div class="border rounded-lg shadow p-4 bg-white">
+                <h5 class="text-lg font-semibold mb-4 border-b pb-2">Basic Information</h5>
+
+                <div class="grid grid-cols-12 gap-4">
+                    <div class="col-span-4">
+                        <label for="inventoryId" class="block text-sm font-medium mb-1">Inventory ID:</label>
+                        <input type="text" id="inventoryId" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                               th:field="*{inventoryId}" th:readonly="${inventoryMaster.inventoryId != null && !inventoryMaster.inventoryId.isEmpty()}" required />
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="inventoryLoc" class="form-label">Location:</label>
-                            <input type="text" class="form-control" id="inventoryLoc" th:field="*{inventoryLoc}" />
-                        </div>
-                         <div class="col-md-6 mb-3">
-                            <label for="siteId" class="form-label">Site ID:</label>
-                            <input type="text" class="form-control" id="siteId" th:field="*{siteId}" required />
-                            <div class="invalid-feedback">Site ID is required.</div>
-                        </div>
+                    <div class="col-span-8">
+                        <label for="inventoryName" class="block text-sm font-medium mb-1">Inventory Name:</label>
+                        <input type="text" id="inventoryName" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                               th:field="*{inventoryName}" required />
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="respDept" class="form-label">Responsible Dept:</label>
-                            <input type="text" class="form-control" id="respDept" th:field="*{respDept}" />
-                             <!-- TODO: Consider dropdown from Dept table -->
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="assetType" class="form-label">Asset Type:</label>
-                            <input type="text" class="form-control" id="assetType" th:field="*{assetType}" />
-                            <!-- TODO: Consider dropdown from CommonCode where codeType='ASSET' -->
-                        </div>
+                </div>
+                <div class "grid grid-cols-12 gap-4">
+                    <div class="col-span-6">
+                        <label for="inventoryLoc" class="block text-sm font-medium mb-1">Location:</label>
+                        <input type="text" id="inventoryLoc" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                               th:field="*{inventoryLoc}" />
+                    </div>
+                    <div class="col-span-3">
+                        <label for="siteId" class="block text-sm font-medium mb-1">Site ID:</label>
+                        <input type="text" id="siteId" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                               th:field="*{siteId}" required />
+                    </div>
+                    <div class="col-span-3">
+                        <label for="respDept" class="block text-sm font-medium mb-1">Responsible Dept:</label>
+                        <input type="text" id="respDept" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                               th:field="*{respDept}" />
+                    </div>
+                    <div class="col-span-3">
+                        <label for="assetType" class="block text-sm font-medium mb-1">Asset Type:</label>
+                        <input type="text" id="assetType" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                               th:field="*{assetType}" />
                     </div>
                 </div>
             </div>
 
-            <div class="card mb-3">
-                <div class="card-header">Purchase Information</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="purchaseDate" class="form-label">Purchase Date:</label>
-                            <input type="date" class="form-control" id="purchaseDate" th:field="*{purchaseDate}" />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="purchaseValue" class="form-label">Purchase Value:</label>
-                            <input type="number" step="0.01" class="form-control" id="purchaseValue" th:field="*{purchaseValue}" />
-                        </div>
+            <!-- Purchase Information -->
+            <div class="border rounded-lg shadow p-4 bg-white">
+                <h5 class="text-lg font-semibold mb-4 border-b pb-2">Purchase Information</h5>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="purchaseDate" class="block text-sm font-medium mb-1">Purchase Date:</label>
+                        <input type="date" id="purchaseDate" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                               th:field="*{purchaseDate}" />
+                    </div>
+                    <div>
+                        <label for="purchaseValue" class="block text-sm font-medium mb-1">Purchase Value:</label>
+                        <input type="number" step="0.01" id="purchaseValue" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                               th:field="*{purchaseValue}" />
                     </div>
                 </div>
             </div>
-            
-            <div class="card mb-3">
-                <div class="card-header">Manufacturer Details</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="manufacturer" class="form-label">Manufacturer:</label>
-                            <input type="text" class="form-control" id="manufacturer" th:field="*{manufacturer}" />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="manufacturerModel" class="form-label">Model:</label>
-                            <input type="text" class="form-control" id="manufacturerModel" th:field="*{manufacturerModel}" />
-                        </div>
+
+            <!-- Manufacturer Details -->
+            <div class="border rounded-lg p-4 shadow">
+                <h5 class="text-lg font-semibold mb-4">Manufacturer Details</h5>
+
+                <div class="grid grid-cols-12 gap-4">
+                    <div class="col-span-3">
+                        <label for="manufacturer" class="block text-sm font-medium">Manufacturer</label>
+                        <input type="text" id="manufacturer" th:field="*{manufacturer}" class="mt-1 block w-full border border-gray-300 rounded" />
                     </div>
-                    <div class="row">
-                         <div class="col-md-6 mb-3">
-                            <label for="manufacturerSN" class="form-label">Serial Number:</label>
-                            <input type="text" class="form-control" id="manufacturerSN" th:field="*{manufacturerSN}" />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="manufacturerSpec" class="form-label">Specification:</label>
-                            <input type="text" class="form-control" id="manufacturerSpec" th:field="*{manufacturerSpec}"/>
-                        </div>
+                    <div class="col-span-3">
+                        <label for="manufacturerModel" class="block text-sm font-medium">Model</label>
+                        <input type="text" id="manufacturerModel" th:field="*{manufacturerModel}" class="mt-1 block w-full border border-gray-300 rounded" />
+                    </div>
+                    <div class="col-span-3">
+                        <label for="manufacturerSN" class="block text-sm font-medium">Serial Number</label>
+                        <input type="text" id="manufacturerSN" th:field="*{manufacturerSN}" class="mt-1 block w-full border border-gray-300 rounded" />
+                    </div>
+                    <div class="col-span-3">
+                        <label for="manufacturerSpec" class="block text-sm font-medium">Specification</label>
+                        <input type="text" id="manufacturerSpec" th:field="*{manufacturerSpec}" class="mt-1 block w-full border border-gray-300 rounded" />
                     </div>
                 </div>
             </div>
-            
-            <div class="card">
-                <div class="card-header">Notes & Files</div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label for="note" class="form-label">Note:</label>
-                        <textarea class="form-control" id="note" th:field="*{note}" rows="3"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="fileGroupId" class="form-label">File Group ID:</label>
-                        <input type="text" class="form-control" id="fileGroupId" th:field="*{fileGroupId}" />
-                        <!-- TODO: File upload handling to be implemented separately -->
-                    </div>
+
+            <!-- Notes & Files -->
+            <div class="border rounded-lg shadow p-4 bg-white">
+                <h5 class="text-lg font-semibold mb-4 border-b pb-2">Notes & Files</h5>
+
+                <div class="mb-4">
+                    <label for="note" class="block text-sm font-medium mb-1">Note:</label>
+                    <textarea id="note" rows="3" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                              th:field="*{note}"></textarea>
+                </div>
+
+                <div>
+                    <label for="fileGroupId" class="block text-sm font-medium mb-1">File Group ID:</label>
+                    <input type="text" id="fileGroupId" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                           th:field="*{fileGroupId}" />
                 </div>
             </div>
-            
-            <div class="mt-4">
-                <button type="submit" class="btn btn-primary">Save Inventory Master</button>
-                <a th:href="@{/inventoryMaster/inventoryList}" class="btn btn-secondary">Cancel</a>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 mt-6">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save Inventory Master</button>
+                <a th:href="@{/inventoryMaster/inventoryList}" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Cancel</a>
             </div>
         </form>
     </div>
 </div>
-
 </body>
 </html>

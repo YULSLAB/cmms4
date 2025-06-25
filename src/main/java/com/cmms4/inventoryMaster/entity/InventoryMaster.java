@@ -44,8 +44,11 @@ public class InventoryMaster {
     @Column(name = "purchaseDate")
     private LocalDate purchaseDate;
 
-    @Column(name = "purchaseValue", precision = 15, scale = 2)
-    private BigDecimal purchaseValue;
+    @Column(name = "currentQty", precision = 15, scale = 2)
+    private BigDecimal currentQty;
+
+    @Column(name = "currentValue", precision = 15, scale = 2)
+    private BigDecimal currentValue;
 
     @Column(name = "manufacturer", length = 100)
     private String manufacturer;
@@ -59,7 +62,8 @@ public class InventoryMaster {
     @Column(name = "manufacturerSpec", length = 100)
     private String manufacturerSpec;
 
-    @Column(name = "note", length = 200)
+    @Lob // For TEXT type
+    @Column(name = "note", columnDefinition = "TEXT")
     private String note;
 
     @Column(name = "siteId", length = 5)

@@ -1,9 +1,9 @@
 package com.cmms4.workorder.service;
 
-import com.cmms4.workorder.entity.WorkOrder;
-import com.cmms4.workorder.entity.WorkOrderItem;
-import com.cmms4.workorder.repository.WorkOrderRepository;
-import com.cmms4.workorder.repository.WorkOrderItemRepository;
+import com.cmms4.workorder.entity.Workorder;
+import com.cmms4.workorder.entity.WorkorderItem;
+import com.cmms4.workorder.repository.WorkorderRepository;
+import com.cmms4.workorder.repository.WorkorderItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,100 +11,123 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class WorkOrderService {
-    private final WorkOrderRepository workOrderRepository;
-    private final WorkOrderItemRepository workOrderItemRepository;
+public class WorkorderService {
+    private final WorkorderRepository workorderRepository;
+    private final WorkorderItemRepository workorderItemRepository;
 
-    public WorkOrderService(
-            WorkOrderRepository workOrderRepository,
-            WorkOrderItemRepository workOrderItemRepository) {
-        this.workOrderRepository = workOrderRepository;
-        this.workOrderItemRepository = workOrderItemRepository;
+    public WorkorderService(
+            WorkorderRepository workorderRepository,
+            WorkorderItemRepository workorderItemRepository) {
+        this.workorderRepository = workorderRepository;
+        this.workorderItemRepository = workorderItemRepository;
     }
 
     @Transactional(readOnly = true)
-    public Page<WorkOrder> getAllWorkOrders(String companyId, String siteId, Pageable pageable) {
-        return workOrderRepository.findByCompanyIdAndSiteId(companyId, siteId, pageable);
+    public Page<Workorder> getAllWorkorders(String companyId, String siteId, Pageable pageable) {
+        return workorderRepository.findByCompanyIdAndSiteId(companyId, siteId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Optional<WorkOrder> getWorkOrderByWorkOrderId(String companyId, String orderId) {
-        return workOrderRepository.findByCompanyIdAndOrderId(companyId, orderId);
+    public Optional<Workorder> getWorkorderByWorkorderId(String companyId, String orderId) {
+        return workorderRepository.findByCompanyIdAndOrderId(companyId, orderId);
     }
 
     @Transactional(readOnly = true)
-    public List<WorkOrderItem> getWorkOrderItems(String companyId, String orderId) {
-        return workOrderItemRepository.findByCompanyIdAndOrderIdOrderByItemIdAsc(companyId, orderId);
+    public List<WorkorderItem> getWorkorderItems(String companyId, String orderId) {
+        return workorderItemRepository.findByCompanyIdAndOrderIdOrderByItemIdAsc(companyId, orderId);
     }
 
     @Transactional
-public WorkOrder saveWorkOrder(WorkOrder workOrder, String username) {
-    LocalDateTime now = LocalDateTime.now();
-    
-    if (workOrder.getOrderId() == null) {
-        // findMaxOrderIdByCompanyId로 메소드명 수정
-        String maxOrderId = workOrderRepository.findMaxOrderIdByCompanyId(workOrder.getCompanyId());
-        int newOrderId = (maxOrderId == null) ? 500000000 : Integer.parseInt(maxOrderId) + 1;
+    public Workorder saveWorkorder(Workorder workorder, String username) {
+        LocalDateTime now = LocalDateTime.now();
+        boolean isNewWorkorder = (workorder.getOrderId() == null || workorder.getOrderId().isEmpty());
 
-        workOrder.setOrderId(String.valueOf(newOrderId));
-        workOrder.setCreateDate(now);
-        workOrder.setCreateBy(username);
+        if (isNewWorkorder) {
+            String maxOrderId = workorderRepository.findMaxOrderIdByCompanyId(workorder.getCompanyId());
+            String newOrderId = (maxOrderId == null) ? "5000000000" : String.valueOf(Integer.parseInt(maxOrderId) + 1);
+
+            workorder.setOrderId(newOrderId);
+            workorder.setCreateDate(now);
+            workorder.setCreateBy(username);
+        } else {
+            workorder.setUpdateDate(now);
+            workorder.setUpdateBy(username);
+        }
+
+        // WorkorderItem 처리
+        List<WorkorderItem> items = workorder.getItems();
+        if (items != null && !items.isEmpty()) {
+            // 새로운 리스트를 생성하여 유효한 항목만 추가
+            List<WorkorderItem> validItems = new ArrayList<>();
+            int itemIndex = 1;
+
+            for (WorkorderItem item : items) {
+                if (item.getItemName() != null && !item.getItemName().isEmpty()) {
+                    item.setCompanyId(workorder.getCompanyId());
+                    item.setOrderId(workorder.getOrderId());
+                    item.setItemId(String.format("%02d", itemIndex++));
+                    item.setWorkorder(workorder);
+                    validItems.add(item);
+                }
+            }
+            
+            // 기존 리스트를 비우고 유효한 항목들로 교체
+            items.clear();
+            items.addAll(validItems);
+        }
+
+        return workorderRepository.save(workorder);
     }
-    
-    workOrder.setUpdateDate(now);
-    workOrder.setUpdateBy(username);
-    
-    return workOrderRepository.save(workOrder);
-}
 
     @Transactional
-    public WorkOrderItem saveWorkOrderItem(WorkOrderItem workOrderItem, String username) {
- 
-        String maxItemId = workOrderItemRepository.findMaxItemIdByCompanyIdAndOrderId(
-            workOrderItem.getCompanyId(),
-            workOrderItem.getOrderId()
+    public WorkorderItem saveWorkorderItem(WorkorderItem workorderItem, String username) {
+
+        String maxItemId = workorderItemRepository.findMaxItemIdByCompanyIdAndOrderId(
+            workorderItem.getCompanyId(),
+            workorderItem.getOrderId()
         );
         int newItemId = (maxItemId == null) ? 1 : Integer.parseInt(maxItemId) + 1;
-        workOrderItem.setItemId(String.valueOf(newItemId));
+        workorderItem.setItemId(String.valueOf(newItemId));
 
-        return workOrderItemRepository.save(workOrderItem);
+        return workorderItemRepository.save(workorderItem);
     }
 
     @Transactional
-    public void deleteWorkOrder(String companyId, String workOrderId) {
-        Optional<WorkOrder> workOrderOpt = workOrderRepository.findByCompanyIdAndOrderId(
+    public void deleteWorkorder(String companyId, String workorderId) {
+        Optional<Workorder> workorderOpt = workorderRepository.findByCompanyIdAndOrderId(
             companyId, 
-            workOrderId
+            workorderId
         );
         
-        if (workOrderOpt.isPresent()) {
-            WorkOrder workOrder = workOrderOpt.get();
+        if (workorderOpt.isPresent()) {
+            Workorder workorder = workorderOpt.get();
             // Delete associated items first
-            List<WorkOrderItem> items = workOrderItemRepository.findByCompanyIdAndOrderIdOrderByItemIdAsc(companyId, workOrderId);
-            workOrderItemRepository.deleteAll(items);
+            List<WorkorderItem> items = workorderItemRepository.findByCompanyIdAndOrderIdOrderByItemIdAsc(companyId, workorderId);
+            workorderItemRepository.deleteAll(items);
             // Delete the work order
-            workOrderRepository.delete(workOrder);
+            workorderRepository.delete(workorder);
         } else {
-            throw new RuntimeException("WorkOrder not found with ID: " + workOrderId);
+            throw new RuntimeException("workorder not found with ID: " + workorderId);
         }
     }
 
     @Transactional
-    public void deleteWorkOrderItem(String companyId, String workOrderId, String itemId) {
-        Optional<WorkOrderItem> itemOpt = workOrderItemRepository.findByCompanyIdAndOrderIdAndItemId(
+    public void deleteWorkorderItem(String companyId, String workorderId, String itemId) {
+        Optional<WorkorderItem> itemOpt = workorderItemRepository.findByCompanyIdAndOrderIdAndItemId(
             companyId, 
-            workOrderId, 
+            workorderId, 
             itemId
         );
         
         if (itemOpt.isPresent()) {
-            WorkOrderItem item = itemOpt.get();
-            workOrderItemRepository.delete(item);
+            WorkorderItem item = itemOpt.get();
+            workorderItemRepository.delete(item);
         } else {
-            throw new RuntimeException("WorkOrderItem not found with ID: " + itemId);
+            throw new RuntimeException("workorderItem not found with ID: " + itemId);
         }
     }
 }

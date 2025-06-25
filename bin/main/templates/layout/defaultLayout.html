@@ -1,326 +1,183 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="#{page.title.default}">CMMS Application</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Font Awesome (아이콘용) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        body {
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-        .main-container {
-            display: flex;
-            flex: 1;
-        }
-        .sidebar {
-            width: 250px;
-            background-color: #343a40;
-            color: white;
-            transition: all 0.3s;
-            overflow-y: auto;
-        }
-        .sidebar-collapsed {
-            width: 60px;
-        }
-        .content-wrapper {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .user-info {
-            font-size: 0.9em;
-        }
-        .logout-form {
-            margin-left: 15px;
-        }
-        .nav-link {
-            color: rgba(255,255,255,.75);
-            padding: 8px 16px;
-        }
-        .nav-link:hover {
-            color: white;
-        }
-        .submenu {
-            padding-left: 20px;
-            display: none;
-        }
-        .submenu.show {
-            display: block;
-        }
-        .menu-toggle {
-            cursor: pointer;
-        }
-        .menu-icon {
-            width: 20px;
-            text-align: center;
-            margin-right: 8px;
-        }
-        .sidebar-toggle {
-            cursor: pointer;
-            padding: 10px;
-        }
-    </style>
-    <!-- 페이지별 CSS -->
-    <th:block layout:fragment="page-css"></th:block>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="#{page.title.default}">CMMS Application</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <th:block layout:fragment="page-css"></th:block>
 </head>
-<body>
-    <header class="header">
-        <div class="d-flex align-items-center">
-            <div class="sidebar-toggle" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <span class="ms-3 fw-bold">CMMS</span>
-        </div>
-        <div sec:authorize="isAuthenticated()" class="user-info">
-            <span th:text="${session.formattedUserInfo}">User Info Placeholder</span>
-            <form th:action="@{/logout}" method="post" style="display: inline;" class="logout-form">
-                <button type="submit" class="btn btn-sm btn-outline-secondary" th:text="#{logout.button}">Logout</button>
-            </form>
-        </div>
-    </header>
+<body class="flex flex-col min-h-screen bg-white text-gray-800">
 
-    <div class="main-container">
-        <nav class="sidebar" id="sidebar">
-            <div class="pt-3">
-                <ul class="nav flex-column">
-                    <!-- 메모 메뉴 -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link menu-toggle">
-                            <span class="menu-icon"><i class="fas fa-sticky-note"></i></span>
-                            <span class="menu-text">Memo</span>
-                            <i class="fas fa-chevron-down float-end mt-1"></i>
-                        </a>
-                        <ul class="submenu nav flex-column">
-                            <li class="nav-item">
-                                <a th:href="@{/memo/memoForm}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-plus-circle"></i></span>
-                                    <span class="menu-text">입력</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/memo/memoList}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-list"></i></span>
-                                    <span class="menu-text">목록</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <!-- Inspection 메뉴 -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link menu-toggle">
-                            <span class="menu-icon"><i class="fas fa-clipboard-check"></i></span>
-                            <span class="menu-text">Inspection</span>
-                            <i class="fas fa-chevron-down float-end mt-1"></i>
-                        </a>
-                        <ul class="submenu nav flex-column">
-                            <li class="nav-item">
-                                <a th:href="@{/inspection/inspectionForm}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-plus-circle"></i></span>
-                                    <span class="menu-text">입력</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/inspection/inspectionList}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-list"></i></span>
-                                    <span class="menu-text">목록</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <!-- WorkOrder 메뉴 -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link menu-toggle">
-                            <span class="menu-icon"><i class="fas fa-tasks"></i></span>
-                            <span class="menu-text">WorkOrder</span>
-                            <i class="fas fa-chevron-down float-end mt-1"></i>
-                        </a>
-                        <ul class="submenu nav flex-column">
-                            <li class="nav-item">
-                                <a th:href="@{/workorder/workorderForm}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-plus-circle"></i></span>
-                                    <span class="menu-text">입력</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/workorder/workorderList}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-list"></i></span>
-                                    <span class="menu-text">목록</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <!-- PlantMaster 메뉴 -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link menu-toggle">
-                            <span class="menu-icon"><i class="fas fa-industry"></i></span>
-                            <span class="menu-text">PlantMaster</span>
-                            <i class="fas fa-chevron-down float-end mt-1"></i>
-                        </a>
-                        <ul class="submenu nav flex-column">
-                            <li class="nav-item">
-                                <a th:href="@{/plant/plantForm}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-plus-circle"></i></span>
-                                    <span class="menu-text">입력</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/plant/plantList}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-list"></i></span>
-                                    <span class="menu-text">목록</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <!-- InventoryMaster 메뉴 -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link menu-toggle">
-                            <span class="menu-icon"><i class="fas fa-boxes"></i></span>
-                            <span class="menu-text">InventoryMaster</span>
-                            <i class="fas fa-chevron-down float-end mt-1"></i>
-                        </a>
-                        <ul class="submenu nav flex-column">
-                            <li class="nav-item">
-                                <a th:href="@{/inventory/inventoryForm}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-plus-circle"></i></span>
-                                    <span class="menu-text">입력</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/inventory/inventoryList}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-list"></i></span>
-                                    <span class="menu-text">목록</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <!-- 공통코드 메뉴 -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link menu-toggle">
-                            <span class="menu-icon"><i class="fas fa-code"></i></span>
-                            <span class="menu-text">공통코드</span>
-                            <i class="fas fa-chevron-down float-end mt-1"></i>
-                        </a>
-                        <ul class="submenu nav flex-column">
-                            <li class="nav-item">
-                                <a th:href="@{/code/codeForm}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-plus-circle"></i></span>
-                                    <span class="menu-text">입력</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/code/codeList}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-list"></i></span>
-                                    <span class="menu-text">목록</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <!-- 설정정보 메뉴 -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link menu-toggle">
-                            <span class="menu-icon"><i class="fas fa-cogs"></i></span>
-                            <span class="menu-text">설정정보</span>
-                            <i class="fas fa-chevron-down float-end mt-1"></i>
-                        </a>
-                        <ul class="submenu nav flex-column">
-                            <li class="nav-item">
-                                <a th:href="@{/settings/site}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-building"></i></span>
-                                    <span class="menu-text">사이트</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/settings/department}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-sitemap"></i></span>
-                                    <span class="menu-text">부서</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/settings/user}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-users"></i></span>
-                                    <span class="menu-text">사용자</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/settings/role}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-user-tag"></i></span>
-                                    <span class="menu-text">Role</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/settings/siteAccess}" class="nav-link">
-                                    <span class="menu-icon"><i class="fas fa-key"></i></span>
-                                    <span class="menu-text">SiteAccess</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <div class="content-wrapper">
-            <main layout:fragment="content">
-                <!-- 페이지별 콘텐츠가 여기에 삽입됩니다 -->
-                <p>This is default content from layout.html. If you see this, the page did not provide its own content fragment.</p>
-            </main>
-        </div>
+  <!-- Header -->
+  <header class="flex justify-between items-center px-4 py-3 bg-white shadow-md border-b border-gray-200">
+    <div class="flex items-center gap-3">
+      <button id="sidebarToggle" class="text-gray-600 hover:text-black">
+        <i class="fas fa-bars"></i>
+      </button>
+      <span class="font-bold text-lg">CMMS</span>
     </div>
+    <div sec:authorize="isAuthenticated()" class="text-sm flex items-center gap-3">
+      <span th:text="${session.formattedUserInfo}">User Info Placeholder</span>
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="px-3 py-1 border border-gray-400 rounded text-gray-600 hover:bg-gray-200" th:text="#{logout.button}">Logout</button>
+      </form>
+    </div>
+  </header>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <script>
-        $(document).ready(function() {
-            // 메뉴 토글 기능
-            $('.menu-toggle').click(function(e) {
-                e.preventDefault();
-                $(this).next('.submenu').toggleClass('show');
-                $(this).find('.fa-chevron-down').toggleClass('fa-chevron-up');
-            });
-            
-            // 사이드바 토글 기능
-            $('#sidebarToggle').click(function() {
-                $('#sidebar').toggleClass('sidebar-collapsed');
-                if ($('#sidebar').hasClass('sidebar-collapsed')) {
-                    $('.menu-text').hide();
-                    $('.submenu').removeClass('show');
-                    $('.fa-chevron-down, .fa-chevron-up').hide();
-                } else {
-                    $('.menu-text').show();
-                    $('.fa-chevron-down, .fa-chevron-up').show();
-                }
-            });
+  <!-- Main Container -->
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <nav id="sidebar" class="w-64 bg-gray-800 text-white transition-all duration-300 overflow-y-auto">
+      <ul class="p-4 space-y-1 text-sm">
+        <!-- 메뉴 블록 샘플 -->
+        <li>
+          <button class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-700 rounded menu-toggle">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-sticky-note w-5 text-center"></i>
+              <span class="menu-text">Memo</span>
+            </div>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul class="submenu hidden pl-7 mt-1 space-y-1">
+            <li><a th:href="@{/memo/memoForm}" class="block py-1 hover:text-yellow-300">입력</a></li>
+            <li><a th:href="@{/memo/memoList}" class="block py-1 hover:text-yellow-300">목록</a></li>
+          </ul>
+        </li>
+
+        <!-- Inspection 메뉴 (같은 방식으로 반복) -->
+        <li>
+          <button class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-700 rounded menu-toggle">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clipboard-check w-5 text-center"></i>
+              <span class="menu-text">Inspection</span>
+            </div>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul class="submenu hidden pl-7 mt-1 space-y-1">
+            <li><a th:href="@{/inspection/inspectionForm}" class="block py-1 hover:text-yellow-300">입력</a></li>
+            <li><a th:href="@{/inspection/inspectionList}" class="block py-1 hover:text-yellow-300">목록</a></li>
+          </ul>
+        </li>
+
+        <!-- Workorder 메뉴  -->
+        <li>
+          <button class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-700 rounded menu-toggle">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clipboard-check w-5 text-center"></i>
+              <span class="menu-text">Workorder</span>
+            </div>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul class="submenu hidden pl-7 mt-1 space-y-1">
+            <li><a th:href="@{/workorder/workorderForm}" class="block py-1 hover:text-yellow-300">입력</a></li>
+            <li><a th:href="@{/workorder/workorderList}" class="block py-1 hover:text-yellow-300">목록</a></li>
+          </ul>
+        </li>
+
+        <!-- PlantMaster 메뉴  -->
+        <li>
+          <button class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-700 rounded menu-toggle">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clipboard-check w-5 text-center"></i>
+              <span class="menu-text">PlantMaster</span>
+            </div>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul class="submenu hidden pl-7 mt-1 space-y-1">
+            <li><a th:href="@{/plantMaster/plantMasterForm}" class="block py-1 hover:text-yellow-300">입력</a></li>
+            <li><a th:href="@{/plantMaster/plantMasterList}" class="block py-1 hover:text-yellow-300">목록</a></li>
+          </ul>
+        </li>
+
+        <!-- InventoryMaster 메뉴  -->
+        <li>
+          <button class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-700 rounded menu-toggle">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clipboard-check w-5 text-center"></i>
+              <span class="menu-text">InventoryMaster</span>
+            </div>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul class="submenu hidden pl-7 mt-1 space-y-1">
+            <li><a th:href="@{/inventoryMaster/inventoryMasterForm}" class="block py-1 hover:text-yellow-300">입력</a></li>
+            <li><a th:href="@{/inventoryMaster/inventoryMasterList}" class="block py-1 hover:text-yellow-300">목록</a></li>
+          </ul>
+        </li>
+
+        <!-- Common 메뉴  -->
+        <li>
+          <button class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-700 rounded menu-toggle">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clipboard-check w-5 text-center"></i>
+              <span class="menu-text">Common</span>
+            </div>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul class="submenu hidden pl-7 mt-1 space-y-1">
+            <li><a th:href="@{/common/commonForm}" class="block py-1 hover:text-yellow-300">입력</a></li>
+            <li><a th:href="@{/common/commonList}" class="block py-1 hover:text-yellow-300">목록</a></li>
+          </ul>
+        </li>
+
+        <!-- Domain 메뉴  -->
+        <li>
+          <button class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-700 rounded menu-toggle">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clipboard-check w-5 text-center"></i>
+              <span class="menu-text">Domain</span>
+            </div>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul class="submenu hidden pl-7 mt-1 space-y-1">
+            <li><a th:href="@{/domain/companyForm}" class="block py-1 hover:text-yellow-300">회사코드</a></li>
+            <li><a th:href="@{/domain/siteForm}" class="block py-1 hover:text-yellow-300">사이트코드</a></li>
+            <li><a th:href="@{/domain/deptForm}" class="block py-1 hover:text-yellow-300">부서코드</a></li>
+            <li><a th:href="@{/domain/userForm}" class="block py-1 hover:text-yellow-300">사용자</a></li>
+            <li><a th:href="@{/domain/siteAccessForm}" class="block py-1 hover:text-yellow-300">사이트권한</a></li>
+            <li><a th:href="@{/domain/roleAuthForm}" class="block py-1 hover:text-yellow-300">권한</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </nav>
+
+    <!-- Content -->
+    <main class="flex-1 p-6 overflow-y-auto" layout:fragment="content">
+      <p class="text-gray-400 text-sm">This is default content from layout.html. If you see this, the page did not provide its own content fragment.</p>
+    </main>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('hidden');
+          const icon = btn.querySelector('.fa-chevron-down, .fa-chevron-up');
+          icon.classList.toggle('fa-chevron-down');
+          icon.classList.toggle('fa-chevron-up');
         });
-    </script>
-    
-    <!-- 페이지별 JS -->
-    <th:block layout:fragment="page-js"></th:block>
+      });
+
+      document.getElementById('sidebarToggle').addEventListener('click', () => {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('w-64');
+        sidebar.classList.toggle('w-16');
+        document.querySelectorAll('.menu-text').forEach(el => el.classList.toggle('hidden'));
+      });
+    });
+  </script>
+
+  <th:block layout:fragment="page-js"></th:block>
 </body>
 </html>

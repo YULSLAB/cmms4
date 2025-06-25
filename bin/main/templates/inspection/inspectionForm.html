@@ -11,13 +11,10 @@
         <div class="container">
             <h5 th:text="${inspection.inspectionId == null ? '예방점검 신규' : '예방점검 수정: ' + inspection.inspectionId}">Inspection Form</h5>
             <form th:action="@{/inspection/inspectionSave}" th:object="${inspection}" method="post">
-                <input type="hidden" th:field="*{companyId}" id="mainCompanyId" />
+                <!-- hidden fields for tracking -->
+                <input type="hidden" th:field="*{companyId}"/>
                 <input type="hidden" th:field="*{siteId}" />
-                <input type="hidden" th:field="*{createBy}" />
-                <input type="hidden" th:field="*{createDate}" />
-                <input type="hidden" th:field="*{updateBy}" />
-                <input type="hidden" th:field="*{updateDate}" />
-                <input type="hidden" th:field="*{inspectionId}" id="mainInspectionId" />
+ 
                 <!-- 기본정보보기 -->
                 <div class="card mb-3">
                     <div class="card-header">Basic Information</div>
@@ -25,7 +22,7 @@
                         <div class="row mb-2">
                             <div class="col-md-2">
                                 <label class="form-label">ID</label>
-                                <input type="text" class="form-control" th:field="*{inspectionId}" readonly disabled />
+                                <input type="text" class="form-control" th:field="*{inspectionId}" readonly />
                             </div>
                             <div class="col-md-2">
                                 <label class="form-label">Plant</label>
@@ -53,50 +50,48 @@
                 <!-- 점검항목 -->
                 <div class="card mb-3">
                     <div class="card-header">Inspection Item</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <table class="table table-sm table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Item Name</th>
-                                            <th>Lower</th>
-                                            <th>Upper</th>
-                                            <th>Standard</th>
-                                            <th>Result</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="itemTableBody">
-                                        <tr th:each="item, i : *{items}">
-                                            <td>
-                                            <input type="text" class="form-control form-control-sm"
-                                                    th:field="*{items[__${i.index}__].itemName}" />
-                                            </td>
-                                            <td>
-                                            <input type="number" class="form-control form-control-sm"
-                                                    th:field="*{items[__${i.index}__].itemLower}" />
-                                            </td>
-                                            <td>
-                                            <input type="number" class="form-control form-control-sm"
-                                                    th:field="*{items[__${i.index}__].itemUpper}" />
-                                            </td>
-                                            <td>
-                                            <input type="text" class="form-control form-control-sm"
-                                                    th:field="*{items[__${i.index}__].itemStandard}" />
-                                            </td>
-                                            <td>
-                                            <input type="text" class="form-control form-control-sm"
-                                                    th:field="*{items[__${i.index}__].itemResult}" />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="addItem()">Add</button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeItem()">Remove</button>
-                                </div>
+                    <div class="card-body">                        
+                        <div class="col-md-10">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Item Name</th>
+                                        <th>Lower</th>
+                                        <th>Upper</th>
+                                        <th>Standard</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itemTableBody">
+                                    <tr th:each="item, i : *{items}">
+                                        <td>
+                                        <input type="text" class="form-control form-control-sm"
+                                                th:field="*{items[__${i.index}__].itemName}" />
+                                        </td>
+                                        <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                                step="0.01" th:field="*{items[__${i.index}__].itemLower}" />
+                                        </td>
+                                        <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                                step="0.01" th:field="*{items[__${i.index}__].itemUpper}" />
+                                        </td>
+                                        <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                                step="0.01" th:field="*{items[__${i.index}__].itemStandard}" />
+                                        </td>
+                                        <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                                step="0.01" th:field="*{items[__${i.index}__].itemResult}" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addItem()">Add</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeItem()">Remove</button>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
 
@@ -114,22 +109,22 @@
             function addItem() {
                 const tbody = document.getElementById('itemTableBody');
                 const row = document.createElement('tr');
+                itemIndex = tbody.children.length;
                 row.innerHTML = `
                     <td><input type="text" name="items[${itemIndex}].itemName" class="form-control form-control-sm" /></td>
                     <td><input type="number" name="items[${itemIndex}].itemLower" class="form-control form-control-sm" /></td>
                     <td><input type="number" name="items[${itemIndex}].itemUpper" class="form-control form-control-sm" /></td>
-                    <td><input type="text" name="items[${itemIndex}].itemStandard" class="form-control form-control-sm" /></td>
-                    <td><input type="text" name="items[${itemIndex}].itemResult" class="form-control form-control-sm" /></td>
+                    <td><input type="number" name="items[${itemIndex}].itemStandard" class="form-control form-control-sm" /></td>
+                    <td><input type="number" name="items[${itemIndex}].itemResult" class="form-control form-control-sm" /></td>
                 `;
                 tbody.appendChild(row);
-                itemIndex++;
             }
 
             function removeItem() {
                 const tbody = document.getElementById('itemTableBody');
                 if (tbody.children.length > 0) {
                     tbody.removeChild(tbody.lastElementChild);
-                    itemIndex--;
+                    itemIndex = tbody.children.length;
                 }
             }
         </script>

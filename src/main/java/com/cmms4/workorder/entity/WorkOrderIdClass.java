@@ -4,21 +4,21 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * cmms4 - WorkOrderIdClass
+ * cmms4 - workorderIdClass
  * 작업 오더 복합키 클래스
  * 
  * @author cmms4
  * @since 2024-03-19
  */
-public class WorkOrderIdClass implements Serializable {
+public class WorkorderIdClass implements Serializable {
     private String companyId;
     private String orderId;
 
     // Constructors
-    public WorkOrderIdClass() {
+    public WorkorderIdClass() {
     }
 
-    public WorkOrderIdClass(String companyId, String orderId) {
+    public WorkorderIdClass(String companyId, String orderId) {
         this.companyId = companyId;
         this.orderId = orderId;
     }
@@ -45,7 +45,7 @@ public class WorkOrderIdClass implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WorkOrderIdClass that = (WorkOrderIdClass) o;
+        WorkorderIdClass that = (WorkorderIdClass) o;
         return Objects.equals(companyId, that.companyId) &&
                Objects.equals(orderId, that.orderId);
     }

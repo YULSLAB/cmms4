@@ -75,29 +75,6 @@ public class InventoryMasterController {
         return "inventoryMaster/inventoryMasterForm";
     }
 
-    /** 재고 마스터 상세 조회
-     * @param inventoryId 재고 ID
-     * @param model 모델
-     * @param session 세션
-     * @return 뷰 이름
-     */
-    @GetMapping("/inventoryMasterDetail/{inventoryId}")
-    public String detail(@PathVariable String inventoryId,
-                          Model model,
-                          HttpSession session) {
-        // 세션에서 사용자 정보 가져오기
-        String companyId = (String) session.getAttribute("companyId");
-
-        Optional<InventoryMaster> inventoryMasterOpt = inventoryMasterService.getInventoryMasterByInventoryId(companyId, inventoryId);
-        if (inventoryMasterOpt.isPresent()) {
-            model.addAttribute("inventoryMaster", inventoryMasterOpt.get());
-            return "inventoryMaster/inventoryMasterDetail";
-        } else {
-            model.addAttribute("errorMessage", "Inventory Master not found with ID: " + inventoryId);
-            return "inventoryMaster/inventoryMasterList";
-        }
-    }
-
     /**
      * 재고 마스터 저장
      * @param inventoryMaster 재고 마스터 정보
@@ -126,6 +103,31 @@ public class InventoryMasterController {
 
         return "redirect:/inventoryMaster/inventoryMasterList";
     }
+
+    /** 재고 마스터 상세 조회
+     * @param inventoryId 재고 ID
+     * @param model 모델
+     * @param session 세션
+     * @return 뷰 이름
+     */
+    @GetMapping("/inventoryMasterDetail/{inventoryId}")
+    public String detail(@PathVariable String inventoryId,
+                          Model model,
+                          HttpSession session) {
+        // 세션에서 사용자 정보 가져오기
+        String companyId = (String) session.getAttribute("companyId");
+
+        Optional<InventoryMaster> inventoryMasterOpt = inventoryMasterService.getInventoryMasterByInventoryId(companyId, inventoryId);
+        if (inventoryMasterOpt.isPresent()) {
+            model.addAttribute("inventoryMaster", inventoryMasterOpt.get());
+            return "inventoryMaster/inventoryMasterDetail";
+        } else {
+            model.addAttribute("errorMessage", "Inventory Master not found with ID: " + inventoryId);
+            return "inventoryMaster/inventoryMasterList";
+        }
+    }
+
+
 
     /**
      * 재고 마스터 삭제

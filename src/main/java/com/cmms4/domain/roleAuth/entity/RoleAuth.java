@@ -25,27 +25,24 @@ public class RoleAuth {
     @Column(name = "roleId", length = 5, nullable = false)
     private String roleId;
 
-    @Id
-    @Column(name = "pageId", length = 50, nullable = false)
-    private String pageId;
+    @Column(name = "roleName", length = 50)
+    private String roleName;
 
     @Id
-    @Column(name = "authGranted", length = 10, nullable = false)
+    @Column(name = "authGranted", length = 50, nullable = false)
     private String authGranted;
 
-    // equals and hashCode (only for PK fields)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoleAuth that = (RoleAuth) o;
         return Objects.equals(roleId, that.roleId) &&
-               Objects.equals(pageId, that.pageId) &&
                Objects.equals(authGranted, that.authGranted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roleId, pageId, authGranted);
+        return Objects.hash(roleId, authGranted);
     }
 }

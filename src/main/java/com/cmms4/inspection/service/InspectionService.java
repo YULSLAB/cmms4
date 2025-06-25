@@ -138,4 +138,14 @@ public class InspectionService {
         }
     }
 
+    /**
+     * 점검 ID로 점검 항목 목록 조회
+     * @param companyId 회사 ID
+     * @param inspectionId 점검 ID
+     * @return 점검 항목 목록
+     */
+    public List<InspectionItem> getInspectionItemByInspectionId(String companyId, String inspectionId) {
+        return inspectionItemRepository.findByCompanyIdAndInspectionId(companyId, inspectionId);
+    }
+
 }

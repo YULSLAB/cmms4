@@ -6,11 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Lock;
 
 import com.cmms4.inventoryMaster.entity.InventoryMaster;
 import com.cmms4.inventoryMaster.entity.InventoryMasterIdClass;
 
 import java.util.Optional;
+
+import jakarta.persistence.LockModeType;
 
 @Repository
 public interface InventoryMasterRepository extends JpaRepository<InventoryMaster, InventoryMasterIdClass> {
@@ -49,9 +52,13 @@ public interface InventoryMasterRepository extends JpaRepository<InventoryMaster
      *
      * @param companyId The ID of the company.
      * @param inventoryId The ID of the inventory.
-     * @param deleteMark The mark indicating a deleted item (e.g., "Y").
      * @return An Optional containing the non-deleted InventoryMaster if found, or empty otherwise.
      */
+
     Optional<InventoryMaster> findByCompanyIdAndInventoryIdAndDeleteMarkIsNull(String companyId, String inventoryId);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT i FROM InventoryMaster i WHERE i.companyId = :companyId AND i.inventoryId = :inventoryId")
+    Optional<InventoryMaster> findByCompanyIdAndInventoryIdForUpdate(@Param("companyId") String companyId, @Param("inventoryId") String inventoryId);
 
 }

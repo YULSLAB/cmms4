@@ -63,9 +63,6 @@ public class CustomUserDetails extends User {
         return userFullName;
     }
 
-    // Convenience method for display, matching the requested format
-    // companyId(companyName)/siteId(siteName)/deptId(deptName)/userId(userName)
-    // Note: getUsername() from Spring's User class returns the userId here.
     public String getFormattedUserInfo() {
         return String.format("%s(%s)/%s(%s)/%s(%s)/%s(%s)",
                 companyId, companyName,

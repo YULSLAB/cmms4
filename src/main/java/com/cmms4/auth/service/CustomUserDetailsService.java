@@ -2,6 +2,8 @@ package com.cmms4.auth.service;
 
 import com.cmms4.domain.user.entity.User;
 import com.cmms4.domain.user.repository.UserRepository;
+import com.cmms4.domain.roleAuth.entity.RoleAuth;
+import com.cmms4.domain.roleAuth.repository.RoleAuthRepository;
 import com.cmms4.domain.company.entity.Company;
 import com.cmms4.domain.company.repository.CompanyRepository;
 import com.cmms4.domain.site.entity.Site;
@@ -17,9 +19,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.management.relation.Role;
 
 /**
  * cmms4 - CustomUserDetailsService
@@ -32,18 +37,23 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final RoleAuthRepository roleAuthRepository;
     private final CompanyRepository companyRepository;
     private final SiteRepository siteRepository;
     private final DeptRepository deptRepository;
     // default company ID
-    private static final String DEFAULT_COMPANY_ID = "C0001";
+    // private static final String DEFAULT_COMPANY_ID = "C0001";
+    @Value("${cmms4.default-company-id}")
+    private String defaultCompanyId;
 
     public CustomUserDetailsService(
             UserRepository userRepository,
+            RoleAuthRepository roleAuthRepository,
             CompanyRepository companyRepository,
             SiteRepository siteRepository,
             DeptRepository deptRepository) {
         this.userRepository = userRepository;
+        this.roleAuthRepository = roleAuthRepository;
         this.companyRepository = companyRepository;
         this.siteRepository = siteRepository;
         this.deptRepository = deptRepository;
@@ -54,48 +64,56 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("=== CustomUserDetailsService.loadUserByUsername ===");
         System.out.println("Attempting to load user with username: " + username);
-        System.out.println("Using default company ID: " + DEFAULT_COMPANY_ID);
 
-        // 사용자 정보 조회
-        User user = userRepository.findByCompanyIdAndUsernameAndDeleteMarkIsNull(DEFAULT_COMPANY_ID, username)
+        // 사용자 정보 조회 (테스트 목적이므로 password 평문)
+        User user = userRepository.findByCompanyIdAndUsernameAndDeleteMarkIsNull(defaultCompanyId, username)
                 .orElseThrow(() -> {
-                    System.out.println("User not found - CompanyId: " + DEFAULT_COMPANY_ID + ", Username: " + username);
-                    return new UsernameNotFoundException("User not found with companyId: " + DEFAULT_COMPANY_ID + " and username: " + username);
+                    System.out.println("User not found - CompanyId: " + defaultCompanyId + ", Username: " + username);
+                    return new UsernameNotFoundException("User not found with companyId: " + defaultCompanyId + " and username: " + username);
                 });
         System.out.println("User found: " + user.getUsername() + ", Full Name: " + user.getUserFullName());
-        System.out.println("Stored password hash: " + user.getPassword());
+
+        // 권한 동적 조회
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if (user.getRoleId() != null) {
+            // roleId로 여러 권한(복수 row) 조회
+            List<RoleAuth> roleAuthList = roleAuthRepository.findByRoleId(user.getRoleId());
+            if (roleAuthList.isEmpty()) {
+                throw new UsernameNotFoundException("권한 정보 없음: " + user.getRoleId());
+            }
+            for (RoleAuth roleAuth : roleAuthList) {
+                // authGranted에 콤마로 여러 권한이 있을 수 있음
+                for (String role : roleAuth.getAuthGranted().split(",")) {
+                    String trimmed = role.trim();
+                    if (!trimmed.isEmpty()) {
+                        authorities.add(new SimpleGrantedAuthority(trimmed));
+                    }
+                }
+            }
+        } else {
+            // 기본 권한
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        System.out.println("Granted authorities: " + authorities);
 
         // 회사 정보 조회
-        Company company = companyRepository.findByCompanyIdAndDeleteMarkIsNull(DEFAULT_COMPANY_ID)
-                .orElseThrow(() -> {
-                    System.out.println("Company not found - CompanyId: " + DEFAULT_COMPANY_ID);
-                    return new UsernameNotFoundException("Company not found with id: " + DEFAULT_COMPANY_ID);
-                });
-        System.out.println("Company found: " + company.getCompanyName());
-
+        Company company = companyRepository.findByCompanyIdAndDeleteMarkIsNull(user.getCompanyId())
+                .orElseThrow(() -> new UsernameNotFoundException("Company not found with ID: " + user.getCompanyId())); 
+        
         // 사이트 정보 조회
         Site site = null;
-        if (user.getSiteId() != null && !user.getSiteId().isEmpty()) {
-            site = siteRepository.findByCompanyIdAndSiteIdAndDeleteMarkIsNull(DEFAULT_COMPANY_ID, user.getSiteId())
-                    .orElse(null);
-            System.out.println("Site found: " + (site != null ? site.getSiteName() : "null"));
-        } else {
-            System.out.println("No site ID provided for user");
+        if (user.getSiteId() != null) {
+            site = siteRepository.findByCompanyIdAndSiteIdAndDeleteMarkIsNull(user.getCompanyId(), user.getSiteId())
+                    .orElseThrow(() -> new UsernameNotFoundException("Site not found with ID: " + user.getSiteId()));
         }
-
+        
         // 부서 정보 조회
         Dept dept = null;
-        if (user.getDeptId() != null && !user.getDeptId().isEmpty()) {
-            dept = deptRepository.findByCompanyIdAndDeptIdAndDeleteMarkIsNull(DEFAULT_COMPANY_ID, user.getDeptId())
-                    .orElse(null);
-            System.out.println("Department found: " + (dept != null ? dept.getDeptName() : "null"));
-        } else {
-            System.out.println("No department ID provided for user");
-        }
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        System.out.println("Granted authorities: " + authorities);
+        if (user.getDeptId() != null) {
+            dept = deptRepository.findByCompanyIdAndDeptIdAndDeleteMarkIsNull(user.getCompanyId(), user.getDeptId())
+                    .orElseThrow(() -> new UsernameNotFoundException("Dept not found with ID: " + user.getDeptId()));
+        }       
+        
 
         CustomUserDetails userDetails = new CustomUserDetails(
                 user.getUsername(),
