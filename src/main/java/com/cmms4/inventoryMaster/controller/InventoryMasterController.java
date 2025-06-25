@@ -75,6 +75,15 @@ public class InventoryMasterController {
         return "inventoryMaster/inventoryMasterForm";
     }
 
+    @GetMapping("/inventoryIoHistory")
+    public String ioHistory(Model model, HttpSession session) {
+        String companyId = (String) session.getAttribute("companyId");
+        String siteId = (String) session.getAttribute("siteId");
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("siteId", siteId);
+        return "inventoryMaster/inventoryIoHistory";
+    }
+
     /**
      * 재고 마스터 저장
      * @param inventoryMaster 재고 마스터 정보

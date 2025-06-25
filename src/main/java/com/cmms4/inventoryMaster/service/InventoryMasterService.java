@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,9 +28,12 @@ import java.util.Optional;
 public class InventoryMasterService {
 
     private final InventoryMasterRepository inventoryMasterRepository;
+    private final InventoryHistoryRepository inventoryHistoryRepository;
 
-    public InventoryMasterService(InventoryMasterRepository inventoryMasterRepository) {
+    public InventoryMasterService(InventoryMasterRepository inventoryMasterRepository,
+                                  InventoryHistoryRepository inventoryHistoryRepository) {
         this.inventoryMasterRepository = inventoryMasterRepository;
+        this.inventoryHistoryRepository = inventoryHistoryRepository;
     }
 
     @Transactional(readOnly = true)
@@ -55,6 +59,11 @@ public class InventoryMasterService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<InventoryHistory> getInventoryHistory(String companyId, String inventoryId) {
+        return inventoryHistoryRepository.findByCompanyIdAndInventoryIdOrderByIoDateDesc(companyId, inventoryId);
+    }
+
     @Transactional
     public void deleteInventoryMaster(String companyId, String inventoryId) {
         InventoryMasterIdClass id = new InventoryMasterIdClass(companyId, inventoryId);
@@ -67,13 +76,14 @@ public class InventoryMasterService {
     @Transactional
     public void processInventoryIo(List<InventoryHistory> ioList, String username) {
         for (InventoryHistory dto : ioList) {
-            
+
             InventoryMaster inv = inventoryMasterRepository
                 .findByCompanyIdAndInventoryIdForUpdate(dto.getCompanyId(), dto.getInventoryId())
                 .orElseThrow(() -> new RuntimeException("Inventory not found"));
 
-            BigDecimal qtyChange = "I".equals(dto.getIoType()) ? dto.getQty() : dto.getQty().negate();
-            BigDecimal newQty = inv.getCurrentQty().add(qtyChange);
+            BigDecimal qtyChange = "I".equalsIgnoreCase(dto.getIoType()) ? dto.getQty() : dto.getQty().negate();
+            BigDecimal currentQty = inv.getCurrentQty() == null ? BigDecimal.ZERO : inv.getCurrentQty();
+            BigDecimal newQty = currentQty.add(qtyChange);
 
             if (newQty.compareTo(BigDecimal.ZERO) < 0) {
                 throw new RuntimeException("Insufficient stock for " + dto.getInventoryId());
@@ -81,18 +91,30 @@ public class InventoryMasterService {
 
             inv.setCurrentQty(newQty);
 
-            BigDecimal valueChange = "I".equals(dto.getIoType()) ? dto.getTotalValue() : dto.getTotalValue().negate();
-            inv.setCurrentValue(inv.getCurrentValue().add(valueChange));
+            BigDecimal valueChange = "I".equalsIgnoreCase(dto.getIoType()) ? dto.getTotalValue() : dto.getTotalValue().negate();
+            BigDecimal currentValue = inv.getCurrentValue() == null ? BigDecimal.ZERO : inv.getCurrentValue();
+            inv.setCurrentValue(currentValue.add(valueChange));
+            inv.setUpdateBy(username);
+            inv.setUpdateDate(LocalDateTime.now());
 
             inventoryMasterRepository.save(inv);
 
-            dto.setIoDate(LocalDateTime.now());
+            dto.setIoDate(dto.getIoDate() == null ? LocalDateTime.now() : dto.getIoDate());
             dto.setCreateDate(LocalDateTime.now());
             dto.setCreateBy(username);
-            dto.setHistoryId(generateHistoryId());
+            if (dto.getTotalValue() == null && dto.getQty() != null && dto.getUnitPrice() != null) {
+                dto.setTotalValue(dto.getQty().multiply(dto.getUnitPrice()));
+            }
+            dto.setHistoryId(generateHistoryId(dto.getCompanyId()));
 
             inventoryHistoryRepository.save(dto);
         }
+    }
+
+    private String generateHistoryId(String companyId) {
+        String maxId = inventoryHistoryRepository.findMaxHistoryIdByCompanyId(companyId);
+        int newId = (maxId == null) ? 1 : Integer.parseInt(maxId) + 1;
+        return String.valueOf(newId);
     }
 
 } 
