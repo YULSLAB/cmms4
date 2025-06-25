@@ -35,13 +35,20 @@ public class InventoryIoController {
     @PostMapping("/save")
     public String saveInventoryIo(@RequestBody List<InventoryHistory> ioList, HttpSession session) {
         String companyId = (String) session.getAttribute("companyId");
+        String username = (String) session.getAttribute("username");
 
         try {
-            ioList.forEach(io -> io.setCompanyId(companyId)); // companyId 서버에서 세팅
-            inventoryMasterService.processInventoryIo(ioList);
+            ioList.forEach(io -> io.setCompanyId(companyId));
+            inventoryMasterService.processInventoryIo(ioList, username);
             return "success";
         } catch (Exception e) {
             return "error: " + e.getMessage();
         }
+    }
+
+    @GetMapping("/history/{inventoryId}")
+    public List<InventoryHistory> getHistory(@PathVariable String inventoryId, HttpSession session) {
+        String companyId = (String) session.getAttribute("companyId");
+        return inventoryMasterService.getInventoryHistory(companyId, inventoryId);
     }
 }

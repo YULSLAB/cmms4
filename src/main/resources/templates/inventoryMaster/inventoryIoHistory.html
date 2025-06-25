@@ -68,11 +68,20 @@
     });
 
     document.getElementById('saveBtn').addEventListener('click', () => {
-        const data = hot.getData().filter(row => row[2]); // Inventory ID 필수
+        const rows = hot.getData().filter(r => r[2]);
+        const payload = rows.map(r => ({
+            ioDate: r[0],
+            ioType: r[1],
+            inventoryId: r[2],
+            qty: r[4],
+            unitPrice: r[5],
+            totalValue: r[6],
+            note: r[7]
+        }));
         fetch('/inventoryIo/save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(payload)
         })
         .then(res => res.ok ? location.reload() : alert('Error saving data'))
         .catch(err => alert('Error: ' + err));
