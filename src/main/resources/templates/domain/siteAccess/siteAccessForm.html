@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title>Site Access Form</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <h1 th:text="${access.siteAccessId == null ? 'Grant Site Access' : 'Edit Site Access'}"></h1>
+        <form th:action="@{/siteAccess/save}" th:object="${access}" method="post">
+            <input type="hidden" th:field="*{companyId}" />
+            <input type="hidden" th:field="*{username}" />
+            <div class="mb-3">
+                <label for="siteAccessId" class="form-label">Access ID</label>
+                <input type="text" class="form-control" id="siteAccessId" th:field="*{siteAccessId}" required>
+            </div>
+            <div class="mb-3">
+                <label for="siteId" class="form-label">Site ID</label>
+                <input type="text" class="form-control" id="siteId" th:field="*{siteId}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a th:href="@{/siteAccess/list(username=${access.username})}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

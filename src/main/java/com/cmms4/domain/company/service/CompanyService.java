@@ -24,6 +24,11 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
+    @Transactional(readOnly = true)
+    public java.util.List<Company> getAllCompanies() {
+        return companyRepository.findAll();
+    }
+
     /**
      * 회사 ID로 회사 정보를 조회합니다.
      * 

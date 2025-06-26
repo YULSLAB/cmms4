@@ -31,4 +31,20 @@ public class UserService {
     public Optional<User> getUser(String companyId, String username) {
         return userRepository.findByCompanyIdAndUsernameAndDeleteMarkIsNull(companyId, username);
     }
-} 
+
+    @Transactional(readOnly = true)
+    public java.util.List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(String companyId, String username) {
+        userRepository.findByCompanyIdAndUsername(companyId, username).ifPresent(u -> {
+            u.setDeleteMark("Y");
+            userRepository.save(u);
+        });
+    }
+}

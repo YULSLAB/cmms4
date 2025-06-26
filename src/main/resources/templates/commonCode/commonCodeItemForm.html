@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title th:text="${commonCodeItem.codeItemId == null ? 'New Item for ' + commonCode.codeName : 'Edit Item ' + commonCodeItem.codeItemId}">Common Code Item Form</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <!-- User Info (from session) - Handled by layout/defaultLayout.html -->
+
+        <h1 th:text="${commonCodeItem.codeItemId == null ? 'Add New Item to Common Code' : 'Edit Item'}">Common Code Item Form</h1>
+        
+        <div th:if="${commonCode}" class="mb-3 alert alert-secondary">
+            <h5>Parent Common Code</h5>
+            <p><strong>Code ID:</strong> <span th:text="${commonCode.codeId}"></span></p>
+            <p><strong>Code Name:</strong> <span th:text="${commonCode.codeName}"></span></p>
+            <p><strong>Company ID:</strong> <span th:text="${commonCode.companyId}"></span></p>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card">
+            <div class="card-header" th:text="${commonCodeItem.codeItemId == null ? 'New Item Details' : 'Edit Item Details'}">
+                Item Details
+            </div>
+            <div class="card-body">
+                <form th:action="@{/common/codes/{codeId}/items/save(codeId=${commonCodeItem.codeId}, companyId=${commonCodeItem.companyId})}" th:object="${commonCodeItem}" method="post" class="needs-validation" novalidate>
+                    
+                    <input type="hidden" th:field="*{companyId}" />
+                    <input type="hidden" th:field="*{codeId}" />
+
+                    <div class="mb-3">
+                        <label for="codeItemId" class="form-label">Item ID:</label>
+                        <input type="text" class="form-control" id="codeItemId" th:field="*{codeItemId}" th:readonly="${commonCodeItem.codeItemId != null && !commonCodeItem.codeItemId.isEmpty()}" required />
+                        <div class="invalid-feedback">Item ID is required.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="codeItemName" class="form-label">Item Name:</label>
+                        <input type="text" class="form-control" id="codeItemName" th:field="*{codeItemName}" required />
+                        <div class="invalid-feedback">Item Name is required.</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Item</button>
+                    <a th:href="@{/common/codes/{codeId}/items(codeId=${commonCodeItem.codeId}, companyId=${commonCodeItem.companyId})}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -28,7 +28,7 @@ public class SiteController {
     @GetMapping("/list")
     public String list(Model model, Authentication auth) {
         model.addAttribute("siteList", siteService.findByCompanyId(auth.getName()));
-        return "site/siteList";
+        return "domain/site/siteList";
     }
 
     /**
@@ -39,7 +39,7 @@ public class SiteController {
                         @PathVariable String siteId, 
                         Model model) {
         model.addAttribute("site", siteService.findById(companyId, siteId));
-        return "site/siteDetail";
+        return "domain/site/siteDetail";
     }
 
     /**
@@ -52,7 +52,7 @@ public class SiteController {
         if (companyId != null && siteId != null) {
             model.addAttribute("site", siteService.findById(companyId, siteId));
         }
-        return "site/siteForm";
+        return "domain/site/siteForm";
     }
 
     /**
