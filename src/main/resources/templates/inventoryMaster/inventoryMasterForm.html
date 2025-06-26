@@ -21,7 +21,7 @@
 
         <form th:action="@{/inventoryMaster/inventoryMasterSave}" th:object="${inventoryMaster}" method="post" class="space-y-6">
             <input type="hidden" th:field="*{companyId}" />
-            <input type="hidden" th:field="*{deleteMarkYN}" />
+            <input type="hidden" th:field="*{deleteMark}" />
             <input type="hidden" th:field="*{createBy}" />
             <input type="hidden" th:field="*{createDate}" />
             <input type="hidden" th:field="*{updateBy}" />
@@ -34,53 +34,35 @@
                 <div class="grid grid-cols-12 gap-4">
                     <div class="col-span-4">
                         <label for="inventoryId" class="block text-sm font-medium mb-1">Inventory ID:</label>
-                        <input type="text" id="inventoryId" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
-                               th:field="*{inventoryId}" th:readonly="${inventoryMaster.inventoryId != null && !inventoryMaster.inventoryId.isEmpty()}" required />
+                        <input type="text" id="inventoryId" class="mt-1 block w-full border border-gray-300 rounded"
+                               th:field="*{inventoryId}" readonly required />
                     </div>
                     <div class="col-span-8">
                         <label for="inventoryName" class="block text-sm font-medium mb-1">Inventory Name:</label>
-                        <input type="text" id="inventoryName" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                        <input type="text" id="inventoryName" class="mt-1 block w-full border border-gray-300 rounded"
                                th:field="*{inventoryName}" required />
                     </div>
                 </div>
-                <div class "grid grid-cols-12 gap-4">
+                <div class="grid grid-cols-12 gap-4">
                     <div class="col-span-6">
                         <label for="inventoryLoc" class="block text-sm font-medium mb-1">Location:</label>
-                        <input type="text" id="inventoryLoc" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                        <input type="text" id="inventoryLoc" class="mt-1 block w-full border border-gray-300 rounded"
                                th:field="*{inventoryLoc}" />
                     </div>
                     <div class="col-span-3">
                         <label for="siteId" class="block text-sm font-medium mb-1">Site ID:</label>
-                        <input type="text" id="siteId" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                        <input type="text" id="siteId" class="mt-1 block w-full border border-gray-300 rounded"
                                th:field="*{siteId}" required />
                     </div>
                     <div class="col-span-3">
                         <label for="respDept" class="block text-sm font-medium mb-1">Responsible Dept:</label>
-                        <input type="text" id="respDept" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                        <input type="text" id="respDept" class="mt-1 block w-full border border-gray-300 rounded"
                                th:field="*{respDept}" />
                     </div>
                     <div class="col-span-3">
                         <label for="assetType" class="block text-sm font-medium mb-1">Asset Type:</label>
-                        <input type="text" id="assetType" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                        <input type="text" id="assetType" class="mt-1 block w-full border border-gray-300 rounded"
                                th:field="*{assetType}" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Purchase Information -->
-            <div class="border rounded-lg shadow p-4 bg-white">
-                <h5 class="text-lg font-semibold mb-4 border-b pb-2">Purchase Information</h5>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="purchaseDate" class="block text-sm font-medium mb-1">Purchase Date:</label>
-                        <input type="date" id="purchaseDate" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
-                               th:field="*{purchaseDate}" />
-                    </div>
-                    <div>
-                        <label for="purchaseValue" class="block text-sm font-medium mb-1">Purchase Value:</label>
-                        <input type="number" step="0.01" id="purchaseValue" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
-                               th:field="*{purchaseValue}" />
                     </div>
                 </div>
             </div>

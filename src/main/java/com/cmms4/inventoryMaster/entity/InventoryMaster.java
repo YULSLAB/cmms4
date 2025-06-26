@@ -41,9 +41,6 @@ public class InventoryMaster {
     @Column(name = "assetType", length = 5)
     private String assetType;
 
-    @Column(name = "purchaseDate")
-    private LocalDate purchaseDate;
-
     @Column(name = "currentQty", precision = 15, scale = 2)
     private BigDecimal currentQty;
 

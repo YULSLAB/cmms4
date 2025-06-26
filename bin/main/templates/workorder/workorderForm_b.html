@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+    <title>workorder Form</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <h5 th:text="${workorder.orderId == null ? '작업오더 신규' : '작업오더 수정: ' + workorder.orderId}">Work Order Form</h5>
+
+        <!-- Alerts -->
+        <div th:if="${successMessage}" class="alert alert-success">[[${successMessage}]]</div>
+        <div th:if="${errorMessage}" class="alert alert-danger">[[${errorMessage}]]</div>
+
+        <form th:action="@{/workorder/workorderSave}" th:object="${workorder}" method="post">
+            <!-- hidden fields for tracking -->
+            <input type="hidden" th:field="*{companyId}" />
+            <input type="hidden" th:field="*{siteId}" />
+            
+            <div class="card mb-3">
+                <div class="card-header">Basic Info</div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label>Order ID</label>
+                            <input type="text" class="form-control" th:field="*{orderId}" readonly disabled />
+                        </div>
+                        <div class="col-md-2">
+                            <label>Plant ID</label>
+                            <input type="text" class="form-control" th:field="*{plantId}" />
+                        </div>
+                        <div class="col-md-1">
+                            <label>Job Type</label>
+                            <input type="text" class="form-control" th:field="*{jobType}" />
+                        </div>
+                        <div class="col-md-2">
+                            <label>Dept</label>
+                            <input type="text" class="form-control" th:field="*{dept}" />
+                        </div>
+                    </div>
+                    <div class="row mb-2">                        
+                        <label>Order Name</label>
+                        <input type="text" class="form-control" th:field="*{orderName}" required />                        
+                    </div>
+                    <div class="row mb-2">                        
+                        <label>Note</label>
+                        <textarea class="form-control" th:field="*{note}" rows="3"></textarea>                      
+                    </div>
+                </div>
+            </div>
+
+            <!-- workorderItem 입력 섹션 -->
+            <div class="card mb-3">
+                <div class="card-header">Work Order Items</div>
+                <div class="card-body">
+                    <div class="col-md-10">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr><th>Item Name</th>
+                                    <th>Item Method</th>
+                                    <th>Item Result</th>
+                                    <th>note</th>
+                            </thead>
+                            <tbody id="itemTableBody">
+                                <tr th:each="item, iterStat : ${workorder.items}">
+                                    <td>
+                                        <input type="text" class="form-control" th:field="*{items[__${iterStat.index}__].itemName}" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" th:field="*{items[__${iterStat.index}__].itemMethod}" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" th:field="*{items[__${iterStat.index}__].itemResult}" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" th:field="*{items[__${iterStat.index}__].note}" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addItemRow()">Add Item</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeItemRow(this)">Remove Item</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a th:href="@{/workorder/workorderList(companyId=${session.companyId},siteId=${session.siteId})}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function addItemRow() {
+        const index = document.querySelectorAll('#itemTableBody tr').length;
+        const tbody = document.getElementById('itemTableBody');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><input type="text" class="form-control" name="items[${index}].itemName" /></td>
+            <td><input type="text" class="form-control" name="items[${index}].workDetail" /></td>
+            <td><input type="text" class="form-control" name="items[${index}].workResult" /></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeItemRow(this)">Remove</button></td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    function removeItemRow(button) {
+        const row = button.closest('tr');
+        row.remove();
+    }
+</script>
+</body>
+</html>

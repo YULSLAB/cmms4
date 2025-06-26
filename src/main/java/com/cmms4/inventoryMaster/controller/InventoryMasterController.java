@@ -39,7 +39,7 @@ public class InventoryMasterController {
      * @param pageable 페이지 정보
      * @return 뷰 이름
      */
-    @GetMapping("/inventoryList")
+    @GetMapping("/inventoryMasterList")
     public String list(Model model, 
                             HttpSession session,
                             @PageableDefault(size = 10, sort = "inventoryId") Pageable pageable) {
