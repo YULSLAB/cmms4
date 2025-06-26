@@ -24,6 +24,11 @@ public class DeptService {
         this.deptRepository = deptRepository;
     }
 
+    @Transactional(readOnly = true)
+    public java.util.List<Dept> getAllDepts() {
+        return deptRepository.findAll();
+    }
+
     /**
      * 회사 ID와 부서 ID로 부서 정보를 조회합니다.
      * 
